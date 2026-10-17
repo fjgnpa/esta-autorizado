@@ -98,3 +98,6 @@ a.rc:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:var(--l
 .faq p{margin:.5em 0 0}.sec-h a{font-weight:600;font-size:14px}.phead .eyebrow{margin:0 0 8px;box-shadow:none}
 .verdict .pill{margin-top:10px;white-space:normal}
 .narrow .grid{grid-template-columns:repeat(2,1fr)}.narrow .news{grid-template-columns:1fr}@media(max-width:400px){.narrow .grid{grid-template-columns:1fr}}
+.news-r{min-width:0}.bh-wrap{min-height:64px;border-radius:12px}.bh-wrap iframe{max-width:100%!important;color-scheme:normal}
+.news-fb{font-size:13px;margin:6px 0 0;color:var(--tx3)}.news-r .btn{display:inline-flex;align-items:center;text-decoration:none;color:#fff!important}
+.bh-wrap{overflow:hidden;border:1px solid var(--line);background:#fff}

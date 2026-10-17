@@ -1,5 +1,6 @@
 {
-  "_ayuda": "Newsletter Beehiiv: pega en beehiivEmbedUrl la URL del iframe de tu formulario (Beehiiv > Grow > Subscribe Forms > Embed, p. ej. https://embeds.beehiiv.com/XXXX). Mientras sea null se muestra el formulario de prueba. email: contacto del proyecto (aparece en Aviso legal y Privacidad).",
-  "beehiivEmbedUrl": null,
-  "email": "frang@mail.grokbot.com"
+  "_ayuda": "Newsletter Beehiiv: beehiivFormId = id del formulario v3 (data-beehiiv-form); beehiivSubscribeUrl = página pública de suscripción (respaldo si el script se bloquea). email: contacto del proyecto.",
+  "email": "frang@mail.grokbot.com",
+  "beehiivFormId": "4b9c34d2-16ff-4d57-962c-c98a0426b7a5",
+  "beehiivSubscribeUrl": "https://estaautorizado.beehiiv.com/subscribe"
 }

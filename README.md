@@ -1,4 +1,6 @@
-# ¿Está autorizado?
+# Registro MiCA
+
+_Proyecto independiente; no es el registro oficial de ESMA ni de la CNMV. Antes llamado «¿Está autorizado?»._
 
 Buscador en español del registro MiCA de ESMA: comprueba si un exchange o plataforma cripto tiene licencia (Art. 59) o notificación (Art. 60) y si puede operar en España.
 
