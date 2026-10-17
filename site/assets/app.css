@@ -239,3 +239,5 @@ html,body{overflow-x:clip}
 .dym{margin-top:10px}.dym button{all:unset;cursor:pointer;color:var(--acc2);font-weight:650;text-decoration:underline;text-underline-offset:3px}
 @media (max-width:860px){.nsr{display:none}}
 @media (max-width:560px){.bc-t b,.bc-t small{white-space:normal;overflow-wrap:anywhere}.pill{white-space:normal}.tools{flex-wrap:wrap}.seg{flex-wrap:wrap}}
+
+.ent li>.pill{flex:none}

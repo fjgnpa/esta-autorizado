@@ -49,3 +49,8 @@ Edita `data/config.json`:
 - LSSI: el proyecto es personal, sin ánimo de lucro ni actividad económica; por decisión del titular el aviso legal no publica nombre ni domicilio y da un correo de contacto. Si el sitio pasara a tener actividad económica (publicidad, afiliación, patrocinio), habría que añadir los datos del art. 10 LSSI-CE.
 - `data/casps.json`: copia del JSON de CASP Tracker (CC BY 4.0) usada como referencia del formato del respaldo; no se publica en la web.
 Haz push a `main`: el workflow regenera y publica.
+
+## SEO
+- Páginas: portada, `marcas.html`, `proveedores.html` (lista completa con enlaces a todas las fichas), `guia-mica.html` (guía con fuentes oficiales; revisar `GUIDE_REV` en `scripts/build_site.py` si se edita), fichas `p/` y `marca/`. Todas en `sitemap.xml`; las bajas llevan `noindex`.
+- IndexNow: la clave está en `data/config.json` (`indexNowKey`) y se publica en `https://registromica.es/<clave>.txt`. No se envía ningún aviso automáticamente. Para avisar a mano tras un cambio:
+  `curl "https://api.indexnow.org/indexnow?url=https://registromica.es/&key=<clave>"`

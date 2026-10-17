@@ -4,5 +4,6 @@
  "beehiivSubscribeUrl": "https://registromica.beehiiv.com/subscribe",
  "useCustomDomain": true,
  "siteBaseGithub": "https://fjgnpa.github.io/esta-autorizado/",
- "siteBaseCustom": "https://registromica.es/"
+ "siteBaseCustom": "https://registromica.es/",
+ "indexNowKey": "d44a8c23a0c7a7439bca1751ae945dca"
 }

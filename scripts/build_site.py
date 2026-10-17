@@ -127,7 +127,7 @@ def page(title, desc, body, depth=0, path="", ld=None, otype="website", cur="", 
 <main id="main">{body}</main>
 <footer class="foot"><div class="wrap"><div class="foot-g"><div><a class="logo" href="{up}index.html"><img src="{up}assets/brand/mark.svg" alt="" width="28" height="28" loading="lazy"><span>Registro <b>MiCA</b></span></a>
 <p><strong>Registro MiCA</strong> es un proyecto independiente: <strong>no es el registro oficial</strong> de ESMA ni de la CNMV. Reproduce, con fecha, el registro provisional MiCA de ESMA (actualizado {esc(fmt(M["date"]))}). No es asesoramiento financiero ni una determinación oficial. Confirma siempre en <a href="{ESMA_URL}" {EXT}>ESMA</a> y en la <a href="{CNMV_URL}" {EXT}>CNMV</a>.</p></div>
-<p class="flinks"><a href="{up}index.html#buscar">Buscador</a><a href="{up}marcas.html">Todas las marcas</a><a href="{up}cambios.html">Cambios recientes</a><a href="{up}metodologia.html">Metodología</a><a href="{up}aviso-legal.html">Aviso legal</a><a href="{up}privacidad.html">Política de privacidad</a></p></div>
+<p class="flinks"><a href="{up}index.html#buscar">Buscador</a><a href="{up}marcas.html">Todas las marcas</a><a href="{up}proveedores.html">Lista de proveedores</a><a href="{up}guia-mica.html">Guía MiCA</a><a href="{up}cambios.html">Cambios recientes</a><a href="{up}metodologia.html">Metodología</a><a href="{up}aviso-legal.html">Aviso legal</a><a href="{up}privacidad.html">Política de privacidad</a></p></div>
 <p class="disc"><strong>Aviso:</strong> proyecto informativo sin ánimo de lucro, sin publicidad ni enlaces de afiliado. Nada de lo publicado es asesoramiento financiero, fiscal ni jurídico, ni recomendación de inversión. Los criptoactivos son de alto riesgo y puedes perder todo lo invertido.</p>
 <p class="src">Fuentes: ESMA (CASPS.csv, NCASP.csv, registro MiFID), BCE (lista de IFM), CNMV, cryptocodes.eu. Histórico hasta el 06/10/2026: <a href="https://casptracker.eu" {EXT}>CASP Tracker</a>, licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" {EXT}>CC BY 4.0</a>, datos transformados. Los logotipos pertenecen a sus titulares y solo identifican a cada entidad.</p></div></footer>
 <script src="{up}assets/app.js" defer></script></body></html>'''
@@ -215,7 +215,7 @@ home = f'''<section class="hero"><div class="aurora" aria-hidden="true"><i></i><
 <div class="card"><span class="ic lic">{ICON["shield"]}</span><h3>Licencia MiCA completa</h3><p>Autorización como proveedor de servicios de criptoactivos (CASP) concedida por un supervisor de la UE/EEE. Si ESMA no publica la base legal y la deducimos, se marca como «inferida».</p><p><span class="pill lic">Licencia MiCA completa<em>Art. 59</em></span></p></div>
 <div class="card"><span class="ic ntf">{ICON["bank"]}</span><h3>Notificación de entidad financiera</h3><p>Bancos, empresas de inversión y gestoras ya supervisados que notifican servicios cripto sin licencia CASP aparte.</p><p><span class="pill ntf">Notificación de entidad financiera<em>Art. 60</em></span></p></div>
 <div class="card"><span class="ic ok">{ICON["es"]}</span><h3>Puede operar en España</h3><p>Autorización vigente y España como país de origen o entre los países notificados. Una autorización retirada nunca cuenta.</p><p><span class="pill ok">{ICON["check"]}Puede operar en España</span></p></div></div>
-<p class="muted center" style="margin-top:22px"><a href="metodologia.html">Cómo lo determinamos y con qué confianza →</a></p></section>
+<p class="muted center" style="margin-top:22px"><a href="proveedores.html">Lista completa de proveedores</a> · <a href="guia-mica.html">Guía MiCA: licencia, notificación y periodo transitorio</a> · <a href="metodologia.html">Cómo lo determinamos →</a></p></section>
 {newsletter()}</div>'''
 ORG = {"@context":"https://schema.org","@type":"Organization","name":"Registro MiCA","url":BASE,"logo":BASE+"assets/brand/icon-512.png"}
 DATASET = {"@context":"https://schema.org","@type":"Dataset","name":"Proveedores de servicios de criptoactivos MiCA con acceso a España",
@@ -238,6 +238,24 @@ def weblinks(e):
     h = "".join(f'<a href="{esc(u)}" {EXT}>{esc(re.sub(r"^https?://(www\.)?", "", u).rstrip("/"))}</a>' for u in ws)
     if wp: h += '<span class="muted"> · plataforma: </span>' + "".join(f'<a href="{esc(u)}" {EXT}>{esc(re.sub(r"^https?://(www\.)?", "", u).rstrip("/"))}</a>' for u in wp)
     return f'<span class="wl">{h}</span>' if h else "—"
+def ecard(e, up="../"):
+    return f'<a class="bc" href="{up}p/{e["slug"]}.html">{elogo(e, "md", up)}<span class="bc-t"><b>{esc(e["n"])}</b><small>{esc(C.get(e["h"], e["h"]))} · {esc(kind(e)[2])}</small>{stsmall(e)}</span></a>'
+def related_ents(e, n=6):
+    """Enlaces internos rastreables: otros proveedores activos del mismo país (primero los que pueden operar en España)."""
+    pool = [x for x in E if x is not e and x["h"] == e["h"] and x.get("active", True)]
+    pool.sort(key=lambda x: (not x["es"], x["n"].lower()))
+    if not pool: return ""
+    hs = C.get(e["h"], e["h"])
+    return f'<section class="sec"><div class="sec-h"><h2>Otros proveedores con sede en {esc(hs)}</h2><a href="../proveedores.html">Ver la lista completa →</a></div><div class="grid chg">{"".join(ecard(x) for x in pool[:n])}</div><p class="muted" style="margin-top:14px">¿Dudas sobre licencias, notificaciones o el periodo transitorio? Lee la <a href="../guia-mica.html">guía MiCA para España</a>.</p></section>'
+def entld(e, title, desc):
+    org = {"@type": "Organization", "name": e["n"], "legalName": e["l"]}
+    if e.get("lei"): org["leiCode"] = e["lei"]
+    if e.get("addr"): org["address"] = e["addr"]
+    w = safe_url(e.get("w") or "")
+    if w: org["url"] = w
+    if e.get("active", True) and e["cs"]: org["areaServed"] = [C.get(x, x) for x in e["cs"]]
+    return {"@context": "https://schema.org", "@type": "WebPage", "name": title, "description": desc, "url": BASE + f'p/{e["slug"]}.html', "inLanguage": "es",
+            "dateModified": M["date"], "isPartOf": {"@type": "WebSite", "name": "Registro MiCA", "url": BASE}, "about": org}
 for e in E:
     c, t, a = kind(e); hs = C.get(e["h"], e["h"]); act = e.get("active", True)
     cty = "".join(f'<span class="{"es" if x == "ES" else ""}">{esc(C.get(x, x))}</span>' for x in e["cs"]) or "—"
@@ -257,6 +275,7 @@ for e in E:
     tag = (f" ({hs})" if nhcount[(e["n"].lower(), e["h"])] == 1 else f" ({hs}, LEI …{(e['lei'] or e['slug'])[-4:]})") if dup else ""
     nm_t = e["n"] + tag
     title = fit([f"{nm_t}: ¿autorizado en España? MiCA", f"{nm_t} · registro MiCA", nm_t]) if not dup else (e["n"][:60 - len(tag) - 1].rstrip() + ("…" if len(e["n"]) > 60 - len(tag) - 1 else "") + tag)
+    if dup and len(title) <= 34: title = fit([title + ": ¿autorizado en España?", title + " · registro MiCA", title])
     srcu = safe_url(e.get("srcUrl"))
     ctyh = "Países notificados (antes de la retirada)" if not act else ("Solo en su país de origen" if e.get("homeOnly") else "Países donde puede operar")
     body = f'''<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../index.html">Inicio</a><span>/</span><span>{esc(e["n"])}</span></nav>
@@ -272,9 +291,10 @@ for e in E:
 <dt>Web</dt><dd>{weblinks(e)}</dd>{f'<dt>Comentarios ESMA</dt><dd>{esc(e["cm"])}</dd>' if e["cm"] else ""}<dt>Última actualización</dt><dd>{esc(fmt(e.get("lu")))}</dd></dl></section>
 <section class="card"><h2>Servicios MiCA {"que tenía autorizados" if not act else "autorizados"} <span class="n">{len(e["s"])}</span></h2><ul class="svc">{"".join(f'<li><b>{esc(s)}</b>{esc(SV.get(s, s))}</li>' for s in e["s"] if s in SV)}</ul></section>
 <section class="card"><h2>{ctyh} <span class="n">{len(e["cs"])}</span></h2><div class="cty">{cty}</div></section>
-{brandlinks(e)}</div>'''
+{brandlinks(e)}
+{related_ents(e)}</div>'''
     desc = clip(f'{e["l"]} ({hs}). {meta_d} {t} ({a}). Registro ESMA a {fmt(M["date"])}.')
-    (S/"p"/f'{e["slug"]}.html').write_text(page(title, desc, body, 1, f'p/{e["slug"]}.html', [crumbs([("Inicio",""),(e["n"],f'p/{e["slug"]}.html')])]))
+    (S/"p"/f'{e["slug"]}.html').write_text(page(title, desc, body, 1, f'p/{e["slug"]}.html', [entld(e, title, desc), crumbs([("Inicio",""),("Proveedores","proveedores.html"),(e["n"],f'p/{e["slug"]}.html')])]))
 for g in GONE:
     body = f'''<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../index.html">Inicio</a><span>/</span><span>{esc(g["n"])}</span></nav>
 <section class="phead card">{tile({}, g["n"], "lg")}<div><h1>{esc(g["n"])}</h1><p class="muted">{esc(g["l"])}</p><div class="pills"><span class="pill no">{ICON["x"]}Ya no figura en el registro</span></div></div></section>
@@ -300,7 +320,7 @@ for f in sorted((R/"data/snapshots").glob("*.json")):
 ct_last = max([k for k, v in SNAPSRC.items() if v.startswith("CASP Tracker")] or [""])
 attr = f'<p class="muted">Histórico hasta el {esc(fmt(ct_last))}: <a href="https://casptracker.eu" {EXT}>CASP Tracker</a>, licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" {EXT}>CC BY 4.0</a>, datos transformados (normalizados y comparados por LEI). Desde entonces: archivo CASPS.csv de ESMA.</p>' if ct_last else ""
 (S/"cambios.html").write_text(page("Cambios en el registro MiCA · Registro MiCA", "Altas, bajas, retiradas y cambios de acceso a España en el registro MiCA de ESMA, instantánea a instantánea.",
- f'<div class="wrap narrow"><header class="ph"><p class="eyebrow">Historial · {M["snapshots"]} instantáneas</p><h1>Cambios recientes</h1><p class="lede">Lo que se ha movido en el registro MiCA de ESMA entre cada instantánea.</p>{attr}</header><ol class="tl">{tl}</ol>{newsletter()}</div>', 0, "cambios.html", cur="cambios"))
+ f'<div class="wrap narrow"><header class="ph"><p class="eyebrow">Historial · {M["snapshots"]} instantáneas</p><h1>Cambios recientes</h1><p class="lede">Lo que se ha movido en el registro MiCA de ESMA entre cada instantánea.</p>{attr}</header><ol class="tl">{tl}</ol>{newsletter()}</div>', 0, "cambios.html", [crumbs([("Inicio",""),("Cambios","cambios.html")])], cur="cambios"))
 # ---- metodologia
 K = M["k"]; CF = M["conf"]; nb = sum(1 for e in E if e.get("lb")); ne_ = len(E)
 met = f'''<div class="wrap narrow"><header class="ph"><p class="eyebrow">Metodología</p><h1>Cómo clasificamos cada proveedor</h1><p class="lede">El archivo de ESMA mezcla autorizaciones CASP y notificaciones de entidades ya supervisadas. Usamos primero el dato oficial y solo deducimos cuando falta.</p></header>
@@ -328,7 +348,7 @@ met = f'''<div class="wrap narrow"><header class="ph"><p class="eyebrow">Metodol
 <p>Las webs del registro se normalizan (por ejemplo, «https.//» o varias URL en un mismo campo) y solo se enlazan direcciones http/https válidas. Las fechas sin año del registro se muestran tal cual, sin inventar el año.</p></section>
 <section class="card"><h2>Fuentes y licencias</h2><p>Registro MiCA de <a href="{ESMA_URL}" {EXT}>ESMA</a> (CASPS.csv y NCASP.csv), registro MiFID/AIFMD/UCITS de ESMA, lista de IFM del BCE, listado de la <a href="{CNMV_URL}" {EXT}>CNMV</a> y cryptocodes.eu. Histórico hasta el {esc(fmt(ct_last) if ct_last else "—")}: <a href="https://casptracker.eu" {EXT}>CASP Tracker</a>, licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" {EXT}>CC BY 4.0</a>, datos transformados.</p></section>
 <section class="card"><h2>Logotipos</h2><p>Los logotipos se descargan una sola vez del icono público de la web oficial de cada entidad (la que figura en el registro de ESMA o, para marcas sin sociedad en el registro, su dominio oficial comprobado) y se sirven desde esta web: tu navegador no se conecta a terceros para mostrarlos. Si no hay un icono de calidad suficiente, se muestra un monograma con las iniciales. Los logotipos solo identifican a cada entidad y no implican relación ni respaldo.</p></section></div>'''
-(S/"metodologia.html").write_text(page("Metodología · Registro MiCA", "Cómo distinguimos licencias MiCA (Art. 59/63) y notificaciones (Art. 60): dato oficial de ESMA primero, inferencia solo si falta.", met, 0, "metodologia.html", cur="metodologia"))
+(S/"metodologia.html").write_text(page("Metodología · Registro MiCA", "Cómo distinguimos licencias MiCA (Art. 59/63) y notificaciones (Art. 60): dato oficial de ESMA primero, inferencia solo si falta.", met, 0, "metodologia.html", [crumbs([("Inicio",""),("Metodología","metodologia.html")])], cur="metodologia"))
 # ---- legales
 EM = esc(CFG.get("email") or "")
 PH = lambda x: f'<a href="mailto:{x}">{x}</a>' if x else "el formulario de contacto del repositorio"
@@ -360,7 +380,7 @@ priv = f"""<div class="wrap narrow legal"><header class="ph"><p class="eyebrow">
 (S/"privacidad.html").write_text(page("Política de privacidad · Registro MiCA", "Privacidad de Registro MiCA: sin cookies ni recursos de terceros; la newsletter se gestiona en Beehiiv solo si decides abrirla.", priv, 0, "privacidad.html"))
 # ---- brand pages
 CATN = {"exchange":"Exchange","bróker":"Bróker","banco/neobanco/pagos":"Banco, neobanco o pagos","wallet":"Monedero","compra/rampa/app":"App de compra","institucional/custodia":"Institucional / custodia"}
-def faq(qas): return {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in qas]}
+def faq(qas): return {"@context":"https://schema.org","@type":"FAQPage","inLanguage":"es","dateModified":M["date"],"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in qas]}
 def related(b, n=8):
     pool = [x for x in B if x is not b and x["cat"] == b["cat"]] + [x for x in B if x is not b and x["cat"] != b["cat"]]
     return '<div class="grid">' + "".join(bcard(x, "../") for x in pool[:n]) + '</div>'
@@ -406,7 +426,18 @@ for b in B:
         e0q = next((x for x in ents if x["es"]), ents[0])
         qas.append((f"¿Qué sociedad presta el servicio de {bn}?", f'{e0q["l"]}, con sede en {C.get(e0q["h"], e0q["h"])} y supervisada por {e0q["a"]}.' + (f' Tiene España entre {len(e0q["cs"])} países notificados.' if e0q["es"] else "")))
     qas.append((f"¿Cómo compruebo si {bn} está autorizado?", f"Busca el nombre jurídico de la sociedad que te presta el servicio (aparece en los términos legales de la app) en el registro MiCA de ESMA y en el listado de la CNMV, y comprueba que la autorización siga vigente y que España figure entre sus países. Este buscador lo hace por ti con datos a {dt}."))
-    if st not in ("ok", "auto"): qas.append((f"¿Es ilegal usar {bn} desde España?", "Para el usuario no: la obligación de estar autorizado es del proveedor. Pero un proveedor sin autorización para España no ofrece las protecciones de MiCA y puede tener que dejar de prestar servicio."))
+    if st == "ok":
+        qas.insert(1, (f"¿Es legal {bn} en España?", f'Sí. {bn} puede prestar servicios de criptoactivos en España: su sociedad {e0["l"]} figura en el registro MiCA de ESMA a {dt} con autorización vigente y {"España como país de origen" if e0["h"] == "ES" else "España entre sus países notificados"}.'))
+    if ents:
+        e0c = next((x for x in ents if x["es"]), ents[0]); hc = C.get(e0c["h"], e0c["h"])
+        if not e0c.get("active", True): pass
+        elif e0c["h"] == "ES": qas.append((f"¿Está {bn} registrado en la CNMV?", f'Sí. {e0c["l"]} tiene su sede en España y figura en el registro MiCA de ESMA a {dt} con supervisor: {e0c["a"]}.'))
+        elif e0c["es"]: qas.append((f"¿Necesita {bn} una licencia de la CNMV?", f'No una aparte. {e0c["l"]} está autorizada en {hc} ({e0c["a"]}) y España figura entre sus países notificados: una autorización MiCA vale en toda la UE y se extiende a otros países mediante notificación (pasaporte europeo). La CNMV publica en su web un listado de proveedores que incluye también a los que operan en España desde otro país.'))
+        else: qas.append((f"¿Está {bn} registrado en la CNMV?", f'No consta para España. {e0c["l"]} está autorizada en {hc} ({e0c["a"]}), pero España no figura entre sus países notificados en el registro de ESMA a {dt}.'))
+    elif st == "nofig":
+        qas.append((f"¿Está {bn} registrado en la CNMV?", f"No consta. A {dt}, ninguna sociedad de {bn} figura en el registro MiCA de ESMA, que recoge a todos los proveedores autorizados en la UE, también a los autorizados por la CNMV."))
+    if st in ("sin", "ret", "nofig"): qas.insert(1, (f"¿Es legal {bn} en España?", f"No consta que {bn} pueda prestar servicios cripto en España: a {dt} no figura con autorización MiCA vigente para España en el registro de ESMA. Para el usuario no es ilegal usarlo, porque la obligación de estar autorizado es del proveedor, pero un proveedor sin autorización para España no ofrece las protecciones de MiCA y puede tener que dejar de prestar servicio."))
+    elif st == "nocr": qas.append((f"¿Es ilegal usar {bn} desde España?", "Para el usuario no: la obligación de estar autorizado es del proveedor. Pero un proveedor sin autorización para España no ofrece las protecciones de MiCA y puede tener que dejar de prestar servicio."))
     faqh = "".join(f'<details class="faq"{" open" if i==0 else ""}><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for i,(q,a) in enumerate(qas))
     bc = bcolor(b)
     pills = bstatus(b, True)
@@ -418,11 +449,11 @@ for b in B:
 <div class="pills">{pills}</div></div></section>
 {verdict(ver[0], ver[1], vtxt, (('<p class="muted" style="margin-top:.5em">'+esc(b["note"])+'</p>') if b["note"] else "") + warn)}
 {('<section class="card"><h2>Sociedades en el registro <span class="n">'+str(len(ents))+'</span></h2><div class="ent-list">' + entl + '</div></section>') if ents else ''}
-<section class="card"><h2>Preguntas frecuentes</h2>{faqh}</section>
+<section class="card"><h2>Preguntas frecuentes</h2>{faqh}<p class="muted" style="margin-top:14px">Más contexto en la <a href="../guia-mica.html">guía MiCA para España</a> y en la <a href="../proveedores.html">lista completa de proveedores</a>.</p></section>
 <section class="card"><h2>Fuente del mapeo</h2><p>{esc(b["src"])}. Comprobado el {esc(dt)}.</p><p class="muted">Confirma siempre en <a href="{ESMA_URL}" {EXT}>ESMA</a> y en la <a href="{CNMV_URL}" {EXT}>CNMV</a>.</p></section>
 <section class="sec"><div class="sec-h"><h2>Comprueba otras marcas</h2><a href="../marcas.html">Ver todas →</a></div>{related(b)}</section>
 {newsletter("../")}</div>"""
-    title = fit([f"¿Está {bn} autorizado en España? Licencia MiCA", f"¿Está {bn} autorizado en España? MiCA", f"{bn}: ¿autorizado en España? MiCA", f"{bn} · MiCA España"])
+    title = fit([f"¿Está {bn} autorizado en España? MiCA y CNMV", f"¿Está {bn} autorizado en España? Licencia MiCA", f"¿Está {bn} autorizado en España? MiCA", f"{bn}: ¿autorizado en España? MiCA", f"{bn} · MiCA España"])
     LASTMOD[f'marca/{b["slug"]}.html'] = max([x.get("lu") or "" for x in ents] + [""]) or M["date"]
     (S/"marca"/f'{b["slug"]}.html').write_text(page(title, clip(desc), body, 1, f'marca/{b["slug"]}.html', [faq(qas), crumbs([("Inicio",""),("Marcas","marcas.html"),(bn,f'marca/{b["slug"]}.html')])], "article", cur="marcas"))
 # ---- marcas index
@@ -433,7 +464,66 @@ tools = f'''<div class="tools" role="search"><label class="flt"><span class="sr"
 <div class="seg" role="group" aria-label="Filtrar por estado"><button type="button" data-f="all" aria-pressed="true">Todas</button><button type="button" data-f="ok" aria-pressed="false">Pueden operar ({nok})</button><button type="button" data-f="no" aria-pressed="false">Sin permiso ({len(B) - nok - nneu})</button><button type="button" data-f="neu" aria-pressed="false">No aplica ({nneu})</button></div><span class="cnt" id="mc" aria-live="polite"></span></div>'''
 mi = f"""<div class="wrap"><header class="ph"><p class="eyebrow">{len(B)} marcas · registro ESMA a {esc(fmt(M["date"]))}</p><h1>¿Qué plataformas cripto están autorizadas en España?</h1><p class="lede">Exchanges, brókers, neobancos, apps y monederos populares en España, con su estado en el registro MiCA.</p></header>{tools}
 """ + "".join(f'<section class="sec" style="margin:34px 0"><div class="sec-h"><h2>{esc(CATN.get(k, k))} <span class="muted" style="font-weight:600;font-size:.7em">{len(v)}</span></h2></div><div class="grid">' + "".join(bcard(x) for x in sorted(v, key=lambda x: x["b"].lower())) + '</div></section>' for k, v in groups.items()) + newsletter() + "</div>"
-(S/"marcas.html").write_text(page("Exchanges cripto autorizados en España: lista MiCA", clip(f"Estado en el registro MiCA de {len(B)} exchanges, brókers, neobancos y apps cripto populares en España: quién puede operar y quién no. Datos ESMA a {fmt(M['date'])}."), mi, 0, "marcas.html", cur="marcas"))
+(S/"marcas.html").write_text(page("Exchanges cripto autorizados en España: lista MiCA", clip(f"Estado en el registro MiCA de {len(B)} exchanges, brókers, neobancos y apps cripto populares en España: quién puede operar y quién no. Datos ESMA a {fmt(M['date'])}."), mi, 0, "marcas.html", [crumbs([("Inicio",""),("Marcas","marcas.html")])], cur="marcas"))
+# ---- lista completa de proveedores (enlaces rastreables a todas las fichas activas y retiradas)
+def pli(e):
+    c, t, a = kind(e)
+    return f'<li>{elogo(e, "xs")}<span><a href="p/{e["slug"]}.html">{esc(e["n"])}</a>{f" <small class=\"muted\">{esc(e["l"])}</small>" if e["l"] != e["n"] else ""}</span> <span class="pill {c} sm">{esc(a)}</span></li>'
+def bycountry(L):
+    g = {}
+    for e in sorted(L, key=lambda x: x["n"].lower()): g.setdefault(C.get(e["h"], e["h"]), []).append(e)
+    return sorted(g.items(), key=lambda kv: (-len(kv[1]), kv[0]))
+ACT = [e for e in E if e.get("active", True)]
+P_ES = [e for e in ACT if e["es"] and e["h"] == "ES"]; P_PASS = [e for e in ACT if e["es"] and e["h"] != "ES"]; P_NO = [e for e in ACT if not e["es"]]
+def pgroup(L, hid):
+    return "".join(f'<h3 id="{hid}-{slugify(k)}">{esc(k)} <span class="muted" style="font-weight:600">{len(v)}</span></h3><ul class="ent">{"".join(pli(x) for x in v)}</ul>' for k, v in bycountry(L))
+pv = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="index.html">Inicio</a><span>/</span><span>Proveedores</span></nav><header class="ph"><p class="eyebrow">Registro ESMA a {esc(fmt(M["date"]))} · {M["count"]} proveedores activos</p><h1>Lista de proveedores cripto autorizados en España</h1>
+<p class="lede">Los {M["es"]} proveedores de servicios de criptoactivos (CASP) que, según el registro MiCA de ESMA, pueden operar en España: {len(P_ES)} con sede en España y {len(P_PASS)} autorizados en otro país de la UE/EEE con España notificada.</p>
+<p class="muted">Busca por el nombre de la sociedad, que es el que aparece en los términos legales de cada app. Si buscas por marca (Coinbase, Bit2Me, Revolut…), usa la <a href="marcas.html">lista de marcas</a>. Qué significa cada etiqueta: <a href="guia-mica.html">guía MiCA</a>.</p>
+<p class="pills"><a class="pill ok" href="#sede-espana">{ICON["check"]}Sede en España · {len(P_ES)}</a> <a class="pill ok" href="#pasaporte">{ICON["check"]}Con pasaporte a España · {len(P_PASS)}</a> <a class="pill no" href="#sin-espana">{ICON["minus"]}Sin España · {len(P_NO)}</a>{f' <a class="pill no" href="#retiradas">{ICON["x"]}Retiradas · {len(RET)}</a>' if RET else ""}</p></header>
+<section class="card" id="sede-espana"><h2>Con sede en España <span class="n">{len(P_ES)}</span></h2><p class="muted">Autorizados o notificados ante la CNMV, su supervisor según el registro de ESMA.</p><ul class="ent">{"".join(pli(x) for x in sorted(P_ES, key=lambda x: x["n"].lower()))}</ul></section>
+<section class="card" id="pasaporte"><h2>Autorizados en otro país, con España notificada <span class="n">{len(P_PASS)}</span></h2><p class="muted">Una autorización MiCA vale en toda la UE/EEE; para operar en España el proveedor debe incluirla entre sus países notificados (pasaporte europeo). Agrupados por país de origen.</p>{pgroup(P_PASS, "pas")}</section>
+<section class="card" id="sin-espana"><h2>En el registro MiCA, pero sin España <span class="n">{len(P_NO)}</span></h2><p class="muted">Tienen autorización MiCA vigente, pero España no figura entre sus países: no consta que puedan prestar servicios a residentes en España.</p>{pgroup(P_NO, "sin")}</section>
+{f'<section class="card" id="retiradas"><h2>Autorizaciones retiradas <span class="n">{len(RET)}</span></h2><ul class="ent">{"".join(pli(x) for x in sorted(RET, key=lambda x: x["n"].lower()))}</ul></section>' if RET else ""}
+<p class="muted">Fuente: registro provisional MiCA de <a href="{ESMA_URL}" {EXT}>ESMA</a> (CASPS.csv), actualizado el {esc(fmt(M["date"]))}. La base legal (Art. 59 o 60) es el dato oficial de ESMA cuando lo publica; si no, una inferencia explicada en la <a href="metodologia.html">metodología</a>. Confirma siempre en ESMA y en la <a href="{CNMV_URL}" {EXT}>CNMV</a>.</p>
+{newsletter()}</div>"""
+(S/"proveedores.html").write_text(page("Proveedores cripto autorizados en España: lista MiCA (CASP)", clip(f"Lista de los {M['es']} proveedores de criptoactivos (CASP) que pueden operar en España según el registro MiCA de ESMA: {len(P_ES)} con sede en España y {len(P_PASS)} con pasaporte. Datos a {fmt(M['date'])}."),
+    pv, 0, "proveedores.html", [crumbs([("Inicio",""),("Proveedores","proveedores.html")])], cur="proveedores"))
+# ---- guía MiCA (solo hechos verificados en fuentes oficiales citadas; revisada el GUIDE_REV)
+GUIDE_REV = "2026-10-17"
+CNMV_MICA = "https://www.cnmv.es/portal/mica/regulacion-criptoactivos?lang=es"
+CNMV_FAQ = "https://www.cnmv.es/docportal/Legislacion/FAQ/FAQ_MICA.pdf"
+MICA_TXT = "https://eur-lex.europa.eu/eli/reg/2023/1114/oj?locale=es"
+GQ = [("¿Qué es MiCA?", "MiCA es el Reglamento (UE) 2023/1114, de 31 de mayo de 2023, relativo a los mercados de criptoactivos. Regula, entre otras cosas, a los proveedores de servicios de criptoactivos (CASP): custodia, plataformas de negociación, canje, ejecución de órdenes, asesoramiento, gestión de carteras o transferencias."),
+      ("¿Qué diferencia hay entre el artículo 59 y el artículo 60 de MiCA?", "El artículo 59 exige estar autorizado como proveedor de servicios de criptoactivos (la «licencia» CASP). El artículo 60 permite a entidades financieras ya supervisadas, como bancos, empresas de servicios de inversión, entidades de dinero electrónico o gestoras, prestar servicios cripto notificándolo a su supervisor, sin una autorización CASP aparte. En el registro de ESMA las autorizaciones CASP aparecen con la base legal «Article 63», el artículo que regula su concesión."),
+      ("¿Cuándo terminó el periodo transitorio de MiCA en España?", "El artículo 143.3 de MiCA permitía a cada Estado un periodo transitorio de hasta 18 meses. Según la CNMV, en España terminó el 1 de julio de 2026: desde entonces solo pueden operar en España proveedores autorizados por la CNMV o por otra autoridad competente de la UE."),
+      ("¿Quién pudo acogerse al periodo transitorio en España?", "Según la CNMV, quienes ya prestaban servicios con criptoactivos conforme a la normativa española antes de la aplicación de MiCA, en particular los inscritos en el registro del Banco de España a 30 de diciembre de 2024, que pudieron seguir prestando los mismos servicios hasta el 1 de julio de 2026 o hasta que se les denegara la autorización, si era antes."),
+      ("¿Puede operar en España un exchange autorizado en otro país de la UE?", "Sí, si España figura entre sus países notificados. Una autorización MiCA es válida en toda la UE y el proveedor la extiende a otros países mediante notificación a su supervisor (pasaporte europeo). Por eso en este buscador «Puede operar en España» exige autorización vigente y España como país de origen o notificado."),
+      ("¿Qué pasa si mi plataforma no está autorizada?", "La CNMV indicó que los proveedores sin autorización deben tener un plan de migración que permita a los clientes mover sus criptoactivos a otras direcciones y sus fondos a cuentas de efectivo, o aceptar un traspaso a otro proveedor que sí esté autorizado. Los clientes de una entidad no autorizada no cuentan con las protecciones de MiCA."),
+      ("¿Cómo compruebo si un exchange está autorizado en España?", "Mira en los términos legales de la app qué sociedad te presta el servicio y búscala en el registro MiCA de ESMA: debe tener autorización vigente y España como país de origen o entre sus países notificados. La CNMV publica también un listado de proveedores. Este buscador reproduce el registro de ESMA con fecha y lo actualiza cada semana.")]
+gl = [("CASP", "Proveedor de servicios de criptoactivos (crypto-asset service provider): la entidad que te presta el servicio, no la marca de la app."),
+      ("Art. 59 · licencia CASP", "Autorización como proveedor de servicios de criptoactivos concedida por un supervisor de la UE/EEE. En el registro de ESMA aparece como «Article 63»."),
+      ("Art. 60 · notificación", "Vía para entidades financieras ya supervisadas (bancos, empresas de inversión, entidades de dinero electrónico, gestoras…) que añaden servicios cripto notificándolo a su supervisor."),
+      ("Pasaporte europeo", "Extensión de una autorización MiCA a otros países de la UE/EEE mediante notificación. Para operar en España, España debe figurar entre los países notificados."),
+      ("Periodo transitorio", "Plazo en que quienes ya operaban con la normativa nacional podían seguir sin autorización MiCA. En España terminó el 1 de julio de 2026."),
+      ("Registro de ESMA", "Registro provisional MiCA que publica la Autoridad Europea de Valores y Mercados (archivo CASPS.csv), con todos los proveedores autorizados o notificados en la UE/EEE."),
+      ("Entidades no conformes", "Lista de ESMA (NCASP.csv) con entidades que prestan servicios cripto sin autorización, según los supervisores nacionales."),
+      ("LEI", "Código identificador de entidad jurídica (20 caracteres). Es la forma más fiable de distinguir dos sociedades con nombres parecidos.")]
+gu = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="index.html">Inicio</a><span>/</span><span>Guía MiCA</span></nav><header class="ph"><p class="eyebrow">Guía · revisada el {esc(fmt(GUIDE_REV))} · datos ESMA a {esc(fmt(M["date"]))}</p><h1>Guía MiCA en España: licencia CASP, notificación y fin del periodo transitorio</h1>
+<p class="lede">Qué exige MiCA para ofrecer servicios cripto en España, qué significan «Art. 59» y «Art. 60» y cómo comprobar si tu exchange está autorizado.</p></header>
+<section class="card"><h2>En cifras</h2><dl class="kv"><dt>Pueden operar en España</dt><dd><a href="proveedores.html">{M["es"]} proveedores</a> ({len(P_ES)} con sede en España)</dd><dt>Proveedores MiCA activos en la UE/EEE</dt><dd>{M["count"]}</dd><dt>Con licencia CASP (Art. 59)</dt><dd>{M["k"]["art59"]}</dd><dt>Por notificación (Art. 60)</dt><dd>{M["k"]["art60"]}</dd><dt>Vía no determinada</dt><dd>{M["k"]["incierto"]}</dd></dl><p class="muted">Registro de ESMA a {esc(fmt(M["date"]))}. Cómo se clasifica cada proveedor: <a href="metodologia.html">metodología</a>.</p></section>
+{"".join(f'<section class="card"><h2>{esc(q)}</h2><p>{esc(a)}</p></section>' for q, a in GQ)}
+<section class="card"><h2>Glosario</h2><dl class="kv">{"".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in gl)}</dl></section>
+<section class="card"><h2>Fuentes oficiales</h2><ul class="steps"><li><a href="{MICA_TXT}" {EXT}>Reglamento (UE) 2023/1114 (MiCA), texto en EUR-Lex</a></li><li><a href="{CNMV_MICA}" {EXT}>CNMV: MiCA, nueva regulación de criptoactivos</a></li><li><a href="{CNMV_FAQ}" {EXT}>CNMV: preguntas y respuestas sobre el Reglamento MiCA (PDF)</a></li><li><a href="{CNMV_URL}" {EXT}>CNMV: proveedores de servicios de criptoactivos</a></li><li><a href="{ESMA_URL}" {EXT}>ESMA: registro provisional MiCA</a></li></ul><p class="muted">Esta guía resume fuentes públicas y no es asesoramiento jurídico ni financiero.</p></section>
+<section class="sec"><div class="sec-h"><h2>Comprueba las marcas más buscadas</h2><a href="marcas.html">Ver todas →</a></div><div class="grid">{"".join(bcard(b) for b in popular[:8])}</div></section>
+{newsletter()}</div>"""
+(S/"guia-mica.html").write_text(page("Guía MiCA en España: licencia CASP, Art. 60 y transitorio", "Qué exige MiCA para ofrecer servicios cripto en España: licencia CASP (art. 59), notificación (art. 60), pasaporte europeo y fin del periodo transitorio.",
+    gu, 0, "guia-mica.html", [faq(GQ), crumbs([("Inicio",""),("Guía MiCA","guia-mica.html")])], "article"))
+# ---- IndexNow: clave autoalojada (no requiere cuenta); el aviso a buscadores no se envía desde aquí
+INK = CFG.get("indexNowKey") or ""
+for f in S.glob("*.txt"):
+    if f.name != "robots.txt" and f.name != f"{INK}.txt" and re.fullmatch(r"[0-9a-f]{32}\.txt", f.name): f.unlink()
+if re.fullmatch(r"[0-9a-f]{32}", INK): (S/f"{INK}.txt").write_text(INK)
 # ---- 404 (rutas absolutas: funciona a cualquier profundidad)
 nf = f'''<div class="wrap narrow"><section class="nf card"><p class="nf-c" aria-hidden="true">404</p><h1>Esta página no existe</h1><p class="lede">Puede que la ficha haya cambiado de dirección o que la sociedad ya no figure en el registro. Busca la marca o la sociedad:</p>
 <form class="nf-s" action="{BPATH}index.html" method="get" role="search"><label class="sr" for="q404">Buscar marca o sociedad</label><input id="q404" name="q" type="search" maxlength="60" placeholder="Coinbase, Bit2Me, Binance…" autocomplete="off"><button class="btn" type="submit">Buscar</button></form>
@@ -466,7 +556,7 @@ _cn = (R/"deploy/CNAME").read_text().strip() if (R/"deploy/CNAME").exists() else
 if _cn and urllib.parse.urlsplit(BASE).hostname == _cn: (S/"CNAME").write_text(_cn + "\n")
 elif (S/"CNAME").exists(): (S/"CNAME").unlink()
 (S/"robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
-urls = [("", "1.0", "daily", M["date"]), ("marcas.html", "0.9", "weekly", M["date"]), ("cambios.html", "0.8", "weekly", M["date"]), ("metodologia.html", "0.4", "monthly", M["date"]), ("aviso-legal.html", "0.1", "yearly", "2026-10-17"), ("privacidad.html", "0.1", "yearly", "2026-10-17")] \
+urls = [("", "1.0", "daily", M["date"]), ("marcas.html", "0.9", "weekly", M["date"]), ("cambios.html", "0.8", "weekly", M["date"]), ("proveedores.html", "0.9", "weekly", M["date"]), ("guia-mica.html", "0.7", "monthly", max(GUIDE_REV, M["date"])), ("metodologia.html", "0.4", "monthly", M["date"]), ("aviso-legal.html", "0.1", "yearly", "2026-10-17"), ("privacidad.html", "0.1", "yearly", "2026-10-17")] \
      + [(f'marca/{b["slug"]}.html', "0.8", "weekly", LASTMOD.get(f'marca/{b["slug"]}.html', M["date"])) for b in B] + [(f'p/{e["slug"]}.html', "0.6", "weekly", e.get("lu") or M["date"]) for e in E]
 (S/"sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{esc(BASE + u)}</loc><lastmod>{lm}</lastmod><changefreq>{f}</changefreq><priority>{pr}</priority></url>" for u, pr, f, lm in urls) + "</urlset>\n")
 nl = sum(1 for b in B if lgfile(linfo("brands", b["b"]))); ne = sum(1 for e in E if lgfile(linfo("ents", e["slug"])))
