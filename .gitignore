@@ -1,0 +1,6 @@
+screens/
+__pycache__/
+*.pyc
+.venv/
+data/sources/mfi.csv.gz
+data/sources/upreg.json

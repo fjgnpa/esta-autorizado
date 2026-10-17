@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+import json, pathlib, html, shutil, hashlib
+import os
+R = pathlib.Path(__file__).resolve().parent.parent; S = R/"site"
+BASE = os.environ.get("SITE_BASE", "https://fjgnpa.github.io/esta-autorizado/")
+d = json.load(open(R/"data/build.json")); M = d["meta"]; E = d["ents"]; B = d["brands"]; CH = d["changes"]
+bySlug = {e["slug"]: e for e in E}
+for p in [S/"p"]: shutil.rmtree(p, ignore_errors=True); p.mkdir(parents=True)
+for f in S.glob("*.html"): f.unlink()
+esc = lambda s: html.escape(str(s or ""), quote=True)
+C = {"AT":"Austria","BE":"Bélgica","BG":"Bulgaria","CY":"Chipre","CZ":"Chequia","DE":"Alemania","DK":"Dinamarca","EE":"Estonia","ES":"España","FI":"Finlandia","FR":"Francia","GR":"Grecia","EL":"Grecia","HR":"Croacia","HU":"Hungría","IE":"Irlanda","IS":"Islandia","IT":"Italia","LI":"Liechtenstein","LT":"Lituania","LU":"Luxemburgo","LV":"Letonia","MT":"Malta","NL":"Países Bajos","NO":"Noruega","PL":"Polonia","PT":"Portugal","RO":"Rumanía","SE":"Suecia","SI":"Eslovenia","SK":"Eslovaquia"}
+SV = {"a":"Custodia y administración","b":"Gestión de plataforma de negociación","c":"Canje de cripto por fondos","d":"Canje de cripto por cripto","e":"Ejecución de órdenes","f":"Colocación","g":"Recepción y transmisión de órdenes","h":"Asesoramiento","i":"Gestión de carteras","j":"Servicios de transferencia"}
+def kind(e):
+    if e["k"] == "art59": return ("lic", "Licencia MiCA completa", "Art. 59")
+    if e["k"] == "art60" and e["conf"] == "alta": return ("ntf", "Notificación de entidad financiera", "Art. 60")
+    if e["k"] == "art60": return ("ntf", "Probable notificación", "Art. 60 · probable")
+    return ("unk", "Vía no determinada", "59 / 60 ?")
+CONF = {"alta":"Confianza alta","media":"Confianza media","baja":"Confianza baja"}
+def hue(s): return int(hashlib.md5(s.encode()).hexdigest()[:4], 16) % 360
+def initials(s):
+    w = [x for x in s.replace("(", " ").split() if x[:1].isalnum()]; return esc(("".join(x[0] for x in w[:2]) or "?").upper())
+def avatar(name, big=False): return f'<span class="av{" av-lg" if big else ""}" style="--h:{hue(name)}" aria-hidden="true">{initials(name)}</span>'
+ICON = {"check":'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ "x":'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7m0-7l-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+ "search":'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+ "moon":'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z" fill="currentColor"/></svg>'}
+def esb(e): return f'<span class="pill {"ok" if e["es"] else "no"}">{ICON["check"] if e["es"] else ICON["x"]}{"Puede operar en España" if e["es"] else "España no notificada"}</span>'
+def kb(e): c, t, a = kind(e); return f'<span class="pill {c}" title="{esc(e["why"])}">{t}<em>{a}</em></span>'
+def page(title, desc, body, depth=0, canon=""):
+    up = "../" * depth
+    return f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}">
+<meta name="color-scheme" content="light dark"><link rel="stylesheet" href="{up}assets/app.css"><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%2310b981%22/><path d=%22M9 16.5l4.5 4.5L23 11%22 stroke=%22white%22 stroke-width=%223.2%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>">
+<script>try{{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script></head><body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header class="nav"><div class="wrap nav-in"><a class="logo" href="{up}index.html"><span class="logo-mk">{ICON["check"]}</span>¿Está autorizado?</a>
+<nav aria-label="Principal"><a href="{up}index.html#buscar">Buscar</a><a href="{up}cambios.html">Cambios</a><a href="{up}metodologia.html">Metodología</a>
+<button class="theme" type="button" aria-label="Cambiar tema claro/oscuro" onclick="const r=document.documentElement,n=(r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))==='dark'?'light':'dark';r.dataset.theme=n;try{{localStorage.setItem('theme',n)}}catch(e){{}}">{ICON["moon"]}</button></nav></div></header>
+<main id="main">{body}</main>
+<footer class="foot"><div class="wrap"><p><strong>¿Está autorizado?</strong> reproduce, con fecha, el registro provisional MiCA de ESMA (actualizado {esc(M["date"])}). No es asesoramiento financiero ni una determinación oficial. Confirma siempre en <a href="https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/markets-crypto-assets-regulation-mica" rel="noopener">ESMA</a> y en la <a href="https://www.cnmv.es/portal/consultas/proveedores-servicios-criptoactivos?lang=es" rel="noopener">CNMV</a>.</p>
+<p class="muted">Fuentes: ESMA (CASPS.csv, NCASP.csv, registro MiFID), BCE (lista de IFM), CNMV, cryptocodes.eu. Respaldo e histórico: <a href="https://casptracker.eu" rel="noopener">CASP Tracker</a> (CC BY 4.0).</p></div></footer>
+<script src="{up}assets/app.js" defer></script></body></html>'''
+def affslot(label): return f'<aside class="slot" aria-label="Espacio publicitario"><span class="slot-tag">Placeholder afiliado</span><span>{esc(label)}</span><span class="muted">Sin enlace hasta firmar un programa.</span></aside>'
+def newsletter(): return '''<section class="news card"><div><h2>Los cambios del registro, cada lunes</h2><p class="muted">Altas, bajas y quién gana o pierde el permiso para operar en España. Un correo, sin ruido.</p></div>
+<form class="news-f" onsubmit="event.preventDefault();this.querySelector('.news-msg').hidden=false;this.querySelector('button').disabled=true"><label class="sr" for="em">Email</label><input id="em" type="email" required placeholder="tu@email.com" autocomplete="email"><button class="btn">Suscribirme</button><p class="news-msg" role="status" hidden>Formulario de prueba: todavía no hay herramienta de newsletter conectada.</p></form></section>'''
+# ---- home
+popular = [b for b in B if b["cat"] in ("exchange", "bróker", "banco/neobanco/pagos")][:16]
+def bcard(b):
+    if b["status"] == "ok":
+        e = bySlug[b["e"][0]]; return f'<a class="bc" href="p/{e["slug"]}.html">{avatar(b["b"])}<span class="bc-t"><b>{esc(b["b"])}</b><small>{esc(C.get(e["h"], e["h"]))}</small></span><span class="dot {"ok" if e["es"] else "no"}" aria-label="{"Opera en España" if e["es"] else "No notificada en España"}"></span></a>'
+    return f'<a class="bc" href="index.html?q={esc(b["b"])}#buscar">{avatar(b["b"])}<span class="bc-t"><b>{esc(b["b"])}</b><small>No figura</small></span><span class="dot no" aria-label="No figura en el registro"></span></a>'
+home = f'''<section class="hero"><div class="glow" aria-hidden="true"></div><div class="wrap">
+<p class="eyebrow"><span class="live"></span>Registro ESMA · actualizado {esc(M["date"])}</p>
+<h1>¿Tu exchange está <span class="grad">autorizado</span> en España?</h1>
+<p class="lede">Comprueba en segundos si una plataforma cripto tiene licencia MiCA, quién está detrás y si puede operar legalmente aquí.</p>
+<div class="search" id="buscar" role="search"><span class="s-ic">{ICON["search"]}</span>
+<label class="sr" for="q">Buscar marca o sociedad</label>
+<input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Coinbase, Bit2Me, Binance, Revolut…" role="combobox" aria-expanded="false" aria-controls="ac" aria-autocomplete="list">
+<kbd class="k">/</kbd><ul id="ac" class="ac" role="listbox" hidden></ul></div>
+<div class="chips" aria-label="Búsquedas populares">{"".join(f'<button type="button" class="chip" data-q="{esc(x)}">{esc(x)}</button>' for x in ["Binance","Coinbase","Bit2Me","Revolut","Kraken","Trade Republic","BBVA"])}</div>
+<section id="res" class="results" aria-live="polite"></section><dl class="stats"><div><dt>Proveedores MiCA en la UE</dt><dd>{M["count"]}</dd></div><div><dt>Pueden operar en España</dt><dd>{M["es"]}</dd></div><div><dt>Licencia completa (Art. 59)</dt><dd>{M["k"]["art59"]}</dd></div><div><dt>Marcas mapeadas</dt><dd>{M["brands"]}</dd></div></dl>
+</div></section>
+<div class="wrap">
+<section class="sec"><div class="sec-h"><h2>Marcas populares</h2><p class="muted">Punto verde: puede operar en España. Rojo: no figura o no tiene España notificada.</p></div><div class="grid">{"".join(bcard(b) for b in popular)}</div></section>
+{affslot("Exchange autorizado en España patrocinado")}
+<section class="sec how"><div class="sec-h"><h2>Qué significa cada etiqueta</h2></div><div class="grid3">
+<div class="card"><span class="pill lic">Licencia MiCA completa<em>Art. 59</em></span><p>Autorización como proveedor de servicios de criptoactivos (CASP) concedida por un supervisor de la UE.</p></div>
+<div class="card"><span class="pill ntf">Notificación de entidad financiera<em>Art. 60</em></span><p>Bancos, empresas de inversión y gestoras ya supervisados que notifican servicios cripto sin licencia CASP aparte.</p></div>
+<div class="card"><span class="pill ok">{ICON["check"]}Puede operar en España</span><p>La sociedad está autorizada en España o ha notificado España en su pasaporte europeo.</p></div></div>
+<p class="muted center"><a href="metodologia.html">Cómo lo determinamos y con qué confianza →</a></p></section>
+{newsletter()}{affslot("Software fiscal para criptomonedas (modelo 721, IRPF)")}</div>'''
+(S/"index.html").write_text(page("¿Está autorizado? · Comprueba si un exchange cripto tiene licencia MiCA en España", f"Buscador del registro MiCA de ESMA: {M['count']} proveedores autorizados, {M['es']} pueden operar en España. Actualizado {M['date']}.", home))
+# ---- provider pages
+for e in E:
+    c, t, a = kind(e); hs = C.get(e["h"], e["h"])
+    others = ", ".join(C.get(x, x) for x in e["cs"])
+    body = f'''<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../index.html">Inicio</a><span>/</span><span>{esc(e["n"])}</span></nav>
+<section class="phead card">{avatar(e["n"], True)}<div><h1>{esc(e["n"])}</h1><p class="muted">{esc(e["l"])}{f' · marcas: {esc(", ".join(e["brands"]))}' if e["brands"] else ""}</p>
+<div class="pills">{esb(e)}{kb(e)}{'<span class="pill no">Autorización retirada '+esc(e["end"])+'</span>' if e["end"] else ''}</div></div></section>
+<section class="verdict {"v-ok" if e["es"] else "v-no"}"><h2>{"Sí: puede prestar servicios cripto en España" if e["es"] else "No consta que pueda operar en España"}</h2><p>{"Figura en el registro MiCA con España entre sus países de servicio." if e["es"] else "Tiene autorización MiCA, pero España no aparece entre sus países notificados."} Datos del registro ESMA a {esc(M["date"])}.</p></section>
+<section class="card"><h2>Tipo de habilitación</h2><p><span class="pill {c}">{t}<em>{a}</em></span> <span class="conf conf-{e["conf"]}">{CONF[e["conf"]]}</span></p><p>{esc(e["why"])}.</p><p class="muted">Fuente: <a href="{esc(e["srcUrl"])}" rel="noopener">{esc(e["src"])}</a></p></section>
+<section class="card"><h2>Ficha del registro</h2><dl class="kv">
+<dt>Sociedad</dt><dd>{esc(e["l"])}</dd><dt>País de origen</dt><dd>{esc(hs)}</dd><dt>Supervisor</dt><dd>{esc(e["a"])}</dd>
+<dt>En el registro desde</dt><dd>{esc(e["d"] or "—")}</dd><dt>LEI</dt><dd><code>{esc(e["lei"] or "—")}</code></dd><dt>Dirección</dt><dd>{esc(e["addr"] or "—")}</dd>
+<dt>Web</dt><dd>{f'<a href="{esc(e["w"])}" rel="nofollow noopener">{esc(e["w"])}</a>' if e["w"] else "—"}</dd>{f'<dt>Comentarios ESMA</dt><dd>{esc(e["cm"])}</dd>' if e["cm"] else ""}</dl></section>
+<section class="card"><h2>Servicios MiCA autorizados</h2><ul class="svc">{"".join(f'<li><b>{s}</b>{esc(SV.get(s, s))}</li>' for s in e["s"])}</ul></section>
+<section class="card"><h2>Países donde puede operar <span class="muted">({len(e["cs"])})</span></h2><p class="countries">{esc(others or "—")}</p></section>
+{affslot("Alternativa autorizada patrocinada")}</div>'''
+    (S/"p"/f'{e["slug"]}.html').write_text(page(f'{e["n"]}: ¿está autorizado en España? Licencia MiCA', f'{e["l"]} ({hs}). {"Puede" if e["es"] else "No consta que pueda"} operar en España. {t} ({a}). Registro ESMA {M["date"]}.', body, 1))
+# ---- cambios
+def li(x, kind_):
+    nm = f'<a href="p/{x[-1]}.html">{esc(x[0])}</a>' if x[-1] else esc(x[0])
+    return f'<li>{avatar(x[0])}<span>{nm}</span>{"" if kind_!="add" else (" <span class=\"pill ok sm\">España</span>" if x[2] else "")}</li>'
+tl = "".join(f'''<li class="tl-i"><span class="tl-dot" aria-hidden="true"></span><div class="card"><div class="tl-h"><time>{esc(c["to"])}</time><span class="muted">desde {esc(c["from"])} · total {c["total"]}</span>
+<span class="delta"><span class="pill ok sm">+{len(c["added"])}</span><span class="pill no sm">−{len(c["removed"])}</span></span></div>
+{('<h3>Altas</h3><ul class="ent">'+"".join(li(x,"add") for x in c["added"])+'</ul>') if c["added"] else ""}
+{('<h3>Bajas</h3><ul class="ent">'+"".join(li(x+[None],"rem") for x in c["removed"])+'</ul>') if c["removed"] else ""}
+{('<h3>Cambio de pasaporte a España</h3><ul class="ent">'+"".join(f'<li>{avatar(x[0])}<span>{esc(x[0])}</span><span class="pill {"ok" if x[1] else "no"} sm">{"Añade España" if x[1] else "Retira España"}</span></li>' for x in c["es"])+'</ul>') if c["es"] else ""}
+{'' if (c["added"] or c["removed"] or c["es"]) else '<p class="muted">Sin altas ni bajas (puede haber cambios de formato o actualización de fichas).</p>'}</div></li>''' for c in CH)
+(S/"cambios.html").write_text(page("Cambios recientes en el registro MiCA · ¿Está autorizado?", "Altas, bajas y cambios de pasaporte a España en el registro MiCA de ESMA, instantánea a instantánea.",
+ f'<div class="wrap narrow"><header class="ph"><p class="eyebrow">Historial · {M["snapshots"]} instantáneas</p><h1>Cambios recientes</h1><p class="lede">Lo que se ha movido en el registro MiCA de ESMA entre cada instantánea.</p></header><ol class="tl">{tl}</ol>{newsletter()}</div>'))
+# ---- metodologia
+met = f'''<div class="wrap narrow"><header class="ph"><p class="eyebrow">Metodología</p><h1>Cómo clasificamos cada proveedor</h1><p class="lede">ESMA mezcla en el mismo archivo las licencias CASP (Art. 59) y las notificaciones de entidades ya supervisadas (Art. 60) sin una columna que las distinga. Cruzamos fuentes oficiales, por este orden:</p></header>
+<ol class="steps card"><li><b>Comentario del registro ESMA</b> que menciona el artículo 60 → Art. 60, confianza alta.</li>
+<li><b>cryptocodes.eu</b>, que cruzó el registro con las listas de AFM, BaFin, CNMV y CySEC → Art. 60, confianza alta.</li>
+<li><b>Listado de la CNMV</b> (entidades españolas): «Entidad de crédito» → Art. 60; «PSC» → Art. 59. Confianza alta.</li>
+<li><b>Lista de IFM del BCE</b>: si el LEI es una entidad de crédito → Art. 60, confianza alta.</li>
+<li><b>Registro MiFID/AIFMD/UCITS de ESMA</b>: si el LEI es empresa de inversión o gestora → probable Art. 60, confianza media (algunas piden licencia completa).</li>
+<li>Si no es ninguna de las anteriores → solo puede operar con licencia CASP: Art. 59, confianza media.</li>
+<li>Entidades de dinero electrónico u otras IFM → vía no determinada, confianza baja.</li></ol>
+<section class="card"><h2>Resultado actual</h2><dl class="kv"><dt>Art. 59</dt><dd>{M["k"]["art59"]}</dd><dt>Art. 60</dt><dd>{M["k"]["art60"]}</dd><dt>No determinado</dt><dd>{M["k"]["incierto"]}</dd><dt>Confianza alta / media / baja</dt><dd>{M["conf"]["alta"]} / {M["conf"]["media"]} / {M["conf"]["baja"]}</dd><dt>Fuente del registro</dt><dd>{esc(M["source"])}</dd></dl></section></div>'''
+(S/"metodologia.html").write_text(page("Metodología · ¿Está autorizado?", "Cómo distinguimos licencias MiCA (Art. 59) y notificaciones (Art. 60).", met))
+# ---- data for search
+idx = {"m": {"date": M["date"]}, "e": [[e["slug"], e["n"], e["l"], e["h"], int(e["es"]), kind(e)[0], kind(e)[1], kind(e)[2], e["brands"]] for e in E],
+       "b": [[b["b"], b["e"], b["note"], [w["l"] for w in b["warn"]], b["cat"]] for b in B]}
+(S/"assets").mkdir(exist_ok=True); (S/"assets/data.js").write_text("window.DB=" + json.dumps(idx, ensure_ascii=False, separators=(",", ":")) + ";")
+for f in ["data.js", "common.js", "style.css"]: (S/f).unlink(missing_ok=True)
+(S/"sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{BASE}{u}</loc></url>" for u in ["index.html", "cambios.html", "metodologia.html"] + [f'p/{e["slug"]}.html' for e in E]) + "</urlset>")
+print("site:", len(E), "fichas")

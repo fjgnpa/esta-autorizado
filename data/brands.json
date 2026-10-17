@@ -1,0 +1,920 @@
+{
+ "verifiedOn": "2026-10-16",
+ "brands": [
+  {
+   "brand": "Coinbase",
+   "category": "exchange",
+   "legalNames": [
+    "Coinbase Luxembourg S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Kraken",
+   "category": "exchange",
+   "legalNames": [
+    "Payward Europe Solutions Limited",
+    "Payward Global Solutions Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bitvavo",
+   "category": "exchange",
+   "legalNames": [
+    "Bitvavo B.V."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bit2Me",
+   "category": "exchange",
+   "legalNames": [
+    "Bitcoinforme S.L."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Revolut",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "Revolut Digital Assets (Europe) Ltd"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "eToro",
+   "category": "bróker",
+   "legalNames": [
+    "eToro (Europe) Ltd"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bitpanda",
+   "category": "exchange",
+   "legalNames": [
+    "Bitpanda GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Crypto.com",
+   "category": "exchange",
+   "legalNames": [
+    "Foris DAX MT Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "OKX",
+   "category": "exchange",
+   "legalNames": [
+    "OKX Europe Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bybit",
+   "category": "exchange",
+   "legalNames": [
+    "Bybit EU GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "KuCoin",
+   "category": "exchange",
+   "legalNames": [
+    "KuCoin EU Exchange GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Gemini",
+   "category": "exchange",
+   "legalNames": [
+    "Gemini Intergalactic EU Ltd"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bitstamp",
+   "category": "exchange",
+   "legalNames": [
+    "Bitstamp Europe S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Trade Republic",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "Trade Republic Bank GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "BBVA",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "Banco Bilbao Vizcaya Argentaria S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Openbank",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "OPEN BANK S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Renta 4",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "RENTA 4 BANCO S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "CaixaBank",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "CAIXABANK S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Kutxabank",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "KUTXABANK S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Cecabank",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "CECABANK S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Criptan",
+   "category": "exchange",
+   "legalNames": [
+    "CRIPTAN TRADE S.L."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "N26",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "N26 Bank SE"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Binance",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bitget",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "MEXC",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "HTX (Huobi)",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Gate.io",
+   "category": "exchange",
+   "legalNames": [
+    "Gate Technology Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "BingX",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bitunix",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bitfinex",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Uphold",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Blockchain.com",
+   "category": "exchange",
+   "legalNames": [
+    "Blockchain.com Operations (Malta) Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Robinhood",
+   "category": "bróker",
+   "legalNames": [
+    "Robinhood Europe UAB"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Scalable Capital",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "Scalable Capital Bank GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "flatexDEGIRO",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "flatexDEGIRO Bank AG"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Trading 212",
+   "category": "bróker",
+   "legalNames": [
+    "Trading 212 Markets Ltd "
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "XTB",
+   "category": "bróker",
+   "legalNames": [
+    "XTB Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Interactive Brokers",
+   "category": "bróker",
+   "legalNames": [
+    "Interactive Brokers Ireland Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Saxo",
+   "category": "bróker",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Webull",
+   "category": "bróker",
+   "legalNames": [
+    "Webull Securities (Europe) B.V."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Plus500",
+   "category": "bróker",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Vivid Money",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "Vivid Money B.V."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Wise",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "PayPal",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Skrill",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "Paysafe Payment Solutions Limited."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Neteller",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [
+    "Paysafe Payment Solutions Limited."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Lydia / Sumeria",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Nexo",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "SwissBorg",
+   "category": "exchange",
+   "legalNames": [
+    "BLOCKNODES SAS"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Young Platform",
+   "category": "exchange",
+   "legalNames": [
+    "YOUNG PLATFORM S.P.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bitpanda Pro / One Trading",
+   "category": "exchange",
+   "legalNames": [
+    "One Trading Exchange B.V."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bitso",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Luno",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bitcoin Suisse",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "Bitcoin Suisse (Europe) AG"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bison (Börse Stuttgart)",
+   "category": "bróker",
+   "legalNames": [
+    "Boerse Stuttgart Digital Custody GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "21bitcoin",
+   "category": "compra/rampa/app",
+   "legalNames": [
+    "FIOR Digital GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Relai",
+   "category": "compra/rampa/app",
+   "legalNames": [
+    "RELAI EU SASU"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Pocket Bitcoin",
+   "category": "compra/rampa/app",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "No hemos identificado su sociedad en el registro."
+  },
+  {
+   "brand": "Strike",
+   "category": "compra/rampa/app",
+   "legalNames": [
+    "Zap (Strike) Europe Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bitwala / Nuri",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Coinhouse",
+   "category": "exchange",
+   "legalNames": [
+    "COINHOUSE SAS"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Paymium",
+   "category": "exchange",
+   "legalNames": [
+    "PAYMIUM SAS"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Deblock",
+   "category": "exchange",
+   "legalNames": [
+    "DEBLOCK SAS"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Ledger",
+   "category": "wallet",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+  },
+  {
+   "brand": "Trezor",
+   "category": "wallet",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+  },
+  {
+   "brand": "MetaMask (Consensys)",
+   "category": "wallet",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+  },
+  {
+   "brand": "Exodus",
+   "category": "wallet",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+  },
+  {
+   "brand": "Trust Wallet",
+   "category": "wallet",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+  },
+  {
+   "brand": "Phantom",
+   "category": "wallet",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+  },
+  {
+   "brand": "MoonPay",
+   "category": "compra/rampa/app",
+   "legalNames": [
+    "MoonPay Europe B.V."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Ramp",
+   "category": "compra/rampa/app",
+   "legalNames": [
+    "Ramp Swaps (Ireland) Limited"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Transak",
+   "category": "compra/rampa/app",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Mercuryo",
+   "category": "compra/rampa/app",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Banxa",
+   "category": "compra/rampa/app",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Circle",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "CIRCLE INTERNET FINANCIAL EUROPE SAS"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Paxos",
+   "category": "institucional/custodia",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Anchorage",
+   "category": "institucional/custodia",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Zodia",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "Zodia Custody (Europe) S.A."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Fireblocks",
+   "category": "institucional/custodia",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "BitGo",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "BitGo Europe GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bitkub",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bitmart",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bitstack",
+   "category": "compra/rampa/app",
+   "legalNames": [
+    "BITSTACK DIGITAL ASSETS SAS"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "StackinSat",
+   "category": "compra/rampa/app",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Venga",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Expansión (01/07/2026) informa de autorización CNMV, pero no aparece en el CSV de ESMA con ese nombre: pendiente de verificar su sociedad."
+  },
+  {
+   "brand": "Prosegur Crypto",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "PROSEGUR CUSTODIA DE ACTIVOS DIGITALES S.L.U."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Minos",
+   "category": "exchange",
+   "legalNames": [
+    "MINOS GLOBAL S.L."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Fazil",
+   "category": "exchange",
+   "legalNames": [
+    "BASQUE PAY S.L."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Crossmint",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "CROSSMINT EUROPE S.L."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Due Network",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "DUE NETWORK S.L."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Iqana",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "IQANA TECHNOLOGIES S.L."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Sabadell",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bankinter",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "ING",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "MyInvestor",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Sociedad no identificada en el registro."
+  },
+  {
+   "brand": "Inversis",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Unicaja",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Ibercaja",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Abanca",
+   "category": "banco/neobanco/pagos",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Deutsche Börse / Crypto Finance",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "Crypto Finance (Deutschland) GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Sygnum",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "Sygnum Europe AG"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "AMINA",
+   "category": "institucional/custodia",
+   "legalNames": [
+    "AMINA (Austria) AG"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bullish",
+   "category": "exchange",
+   "legalNames": [
+    "Bullish Europe GmbH"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Coinmetro",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bitcoin.de",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Bitonic",
+   "category": "exchange",
+   "legalNames": [
+    "Bitonic B.V."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "LiteBit",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Finst",
+   "category": "exchange",
+   "legalNames": [
+    "Finst B.V."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Amdax",
+   "category": "exchange",
+   "legalNames": [
+    "Amdax B.V."
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Bitladon",
+   "category": "exchange",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": ""
+  },
+  {
+   "brand": "Kriptomat",
+   "category": "exchange",
+   "legalNames": [
+    "Bitblock Ltd. for Services"
+   ],
+   "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "Zengo",
+   "category": "wallet",
+   "legalNames": [],
+   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
+   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+  }
+ ]
+}
