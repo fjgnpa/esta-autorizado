@@ -23,5 +23,5 @@ Información divulgativa, no asesoramiento financiero. Confirma siempre en ESMA 
 ## Newsletter (Beehiiv) y datos legales
 Edita `data/config.json`:
 - `beehiivEmbedUrl`: URL del iframe del formulario de Beehiiv (Grow → Subscribe Forms → Embed). Con `null` se muestra el formulario de prueba.
-- `titular`, `nif`, `domicilio`, `email`: rellenan el Aviso legal y la Política de privacidad (ahora placeholders).
+- `email`: contacto del proyecto que aparece en Aviso legal y Privacidad (ahora `[EMAIL]`). No se publican datos personales del titular.
 Haz push a `main`: el workflow regenera y publica.
