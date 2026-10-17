@@ -4,3 +4,4 @@ __pycache__/
 .venv/
 data/sources/mfi.csv.gz
 data/sources/upreg.json
+scripts/_og.html

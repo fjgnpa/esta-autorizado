@@ -147,4 +147,8 @@ meta = {"date": date, "count": len(ents), "es": sum(x["es"] for x in ents), "sou
         "brands": len(brands), "brandsOk": sum(b["status"] == "ok" for b in brands), "snapshots": len(snaps), "nc": len(nc)}
 json.dump({"meta": meta, "ents": ents, "brands": brands, "changes": changes}, open(D/"build.json", "w"), ensure_ascii=False)
 print(json.dumps(meta, ensure_ascii=False))
+# ---------- 5. Logos (solo dominios nuevos o fallidos hace >30 días; nunca rompe el build) ----------
+if not OFF:
+    try: subprocess.run([sys.executable, str(R/"scripts/logos.py")], check=False, timeout=1200)
+    except Exception as ex: print("aviso: logos", ex)
 subprocess.run([sys.executable, str(R/"scripts/build_site.py")], check=True)

@@ -1,0 +1,66 @@
+{
+ "_ayuda": "Dominios oficiales de marcas que NO tienen web en el registro ESMA (o cuya web en el registro es ilegible). scripts/logos.py solo los usa si la portada del dominio se identifica como la marca (título u og:site_name contienen la marca). Las marcas con sociedad en el registro usan la web del registro. Si la portada bloquea robots (Cloudflare, 403), se puede anotar {\"domain\": ..., \"verifiedManual\": \"fecha y título visto en navegador\"}; entonces el logo se obtiene de los servicios de favicons.",
+ "Binance": {
+  "domain": "binance.com",
+  "verifiedManual": "2026-10-17, navegador: https://www.binance.com/es → «Exchange de criptomonedas de Binance: compra y vende Bitcoin…»"
+ },
+ "Bitget": "bitget.com",
+ "MEXC": {
+  "domain": "mexc.com",
+  "verifiedManual": "2026-10-17, navegador: https://www.mexc.com/es/ → «MEXC Exchange: Accede con 0 tarifas…»"
+ },
+ "HTX (Huobi)": "htx.com",
+ "Bitunix": "bitunix.com",
+ "Bitfinex": "bitfinex.com",
+ "Uphold": "uphold.com",
+ "Trading 212": {
+  "domain": "trading212.com",
+  "verifiedManual": "2026-10-17, navegador: https://www.trading212.com/ → «Commission-free investing for everyone | Trading 212»"
+ },
+ "Saxo": "home.saxo",
+ "Plus500": {
+  "domain": "plus500.com",
+  "verifiedManual": "2026-10-17, navegador: https://www.plus500.com/es-es/ → «Trading en línea y mercados financieros | Plus500»"
+ },
+ "Wise": "wise.com",
+ "PayPal": "paypal.com",
+ "Lydia / Sumeria": "sumeria.eu",
+ "Nexo": "nexo.com",
+ "Bitso": "bitso.com",
+ "Luno": "luno.com",
+ "Pocket Bitcoin": {
+  "domain": "pocketbitcoin.com",
+  "verifiedManual": "2026-10-17, navegador: https://pocketbitcoin.com/ → «Pocket Bitcoin – Buy Bitcoin Into Your Own Wallet»"
+ },
+ "Ledger": "ledger.com",
+ "Trezor": "trezor.io",
+ "MetaMask (Consensys)": "metamask.io",
+ "Exodus": "exodus.com",
+ "Trust Wallet": "trustwallet.com",
+ "Phantom": "phantom.com",
+ "Transak": "transak.com",
+ "Mercuryo": "mercuryo.io",
+ "Banxa": "banxa.com",
+ "Paxos": "paxos.com",
+ "Anchorage": "anchorage.com",
+ "Fireblocks": "fireblocks.com",
+ "Bitkub": "bitkub.com",
+ "Bitmart": "bitmart.com",
+ "StackinSat": "stackinsat.com",
+ "Sabadell": "bancsabadell.com",
+ "Bankinter": "bankinter.com",
+ "ING": "ing.es",
+ "MyInvestor": "myinvestor.es",
+ "Inversis": "inversis.com",
+ "Unicaja": "unicajabanco.es",
+ "Ibercaja": "ibercaja.es",
+ "Abanca": "abanca.com",
+ "Coinmetro": "coinmetro.com",
+ "Bitcoin.de": "bitcoin.de",
+ "Zengo": {
+  "domain": "zengo.com",
+  "verifiedManual": "2026-10-17, navegador: https://zengo.com/ → «Zengo Crypto Wallet: Secure by default»"
+ },
+ "N26": "n26.com",
+ "Bitwala / Nuri": "bitwala.com"
+}

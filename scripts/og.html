@@ -1,14 +1,28 @@
 <!doctype html><html><head><meta charset="utf-8"><style>
-body{margin:0;width:1200px;height:630px;font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#0a0d12;color:#eef2f7;position:relative;overflow:hidden}
-.g{position:absolute;inset:0;background:radial-gradient(700px 380px at 20% 10%,rgba(16,185,129,.35),transparent 70%),radial-gradient(600px 360px at 85% 20%,rgba(14,165,233,.3),transparent 70%)}
-.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px}
-.c{position:relative;padding:72px 80px}.logo{display:flex;align-items:center;gap:16px;font-size:30px;font-weight:700}
-.mk{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#10b981,#0ea5e9);display:grid;place-items:center}
-h1{font-size:78px;line-height:1.02;letter-spacing:-.04em;margin:56px 0 24px;font-weight:800}.gr{background:linear-gradient(100deg,#34d399,#38bdf8);-webkit-background-clip:text;color:transparent}
-p{font-size:28px;color:#b4bfcd;margin:0}.pills{display:flex;gap:14px;margin-top:40px}.p{font-size:22px;font-weight:650;padding:10px 20px;border-radius:99px}
-.ok{background:#0f2a1c;color:#4ade80}.no{background:#2d1218;color:#fb7185}.lic{background:#141f3a;color:#93b4ff}
-</style></head><body><div class="g"></div><div class="grid"></div><div class="c">
-<div class="logo"><span class="mk"><svg width="30" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Registro MiCA</div>
-<h1>¿Tu exchange está<br><span class="gr">autorizado</span> en España?</h1>
+@font-face{font-family:IV;src:url(../site/assets/fonts/inter-var.woff2) format("woff2");font-weight:100 900}
+*{box-sizing:border-box}body{margin:0;width:1200px;height:630px;font-family:IV,Inter,sans-serif;background:#06090e;color:#eef2f7;position:relative;overflow:hidden;letter-spacing:-.02em}
+.a{position:absolute;border-radius:50%;filter:blur(80px)}.a1{width:620px;height:460px;left:-160px;top:-180px;background:#10b981;opacity:.45}.a2{width:560px;height:420px;right:-120px;top:-120px;background:#0ea5e9;opacity:.35}.a3{width:520px;height:360px;right:120px;bottom:-260px;background:#8b5cf6;opacity:.25}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse 80% 80% at 30% 20%,#000 30%,transparent 80%)}
+.c{position:relative;padding:64px 72px;height:100%;display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:16px;font-size:30px;font-weight:720;letter-spacing:-.03em}.logo img{width:54px;height:54px;border-radius:15px;box-shadow:0 10px 30px -8px rgba(16,185,129,.7)}
+.logo b{font-weight:820;background:linear-gradient(100deg,#34d399,#38bdf8);-webkit-background-clip:text;color:transparent}
+h1{font-size:72px;line-height:1;letter-spacing:-.05em;margin:44px 0 18px;font-weight:820;max-width:600px}
+.gr{background:linear-gradient(100deg,#34d399,#5eead4 35%,#38bdf8 75%,#a5b4fc);-webkit-background-clip:text;color:transparent}
+p{font-size:25px;color:#b3bfcf;margin:0;max-width:600px;line-height:1.4;letter-spacing:-.015em}
+.panel{position:absolute;right:56px;top:160px;width:480px}
+.sb{display:flex;align-items:center;gap:14px;height:68px;border-radius:20px;background:#0d131b;border:1.5px solid rgba(52,211,153,.55);padding:0 22px;font-size:24px;font-weight:550;box-shadow:0 30px 60px -20px rgba(0,0,0,.8),0 0 0 6px rgba(52,211,153,.12)}
+.sb svg{width:24px;color:#94a1b5}.cur{width:2px;height:28px;background:#34d399;margin-left:-10px}
+.rc{margin-top:16px;display:flex;gap:16px;align-items:center;background:#0d131b;border:1px solid #1b2330;border-radius:20px;padding:18px;box-shadow:0 30px 60px -24px rgba(0,0,0,.9)}
+.rc .v{width:6px;align-self:stretch;border-radius:6px;background:linear-gradient(#34d399,#059669)}
+.rc img{width:58px;height:58px;border-radius:16px;background:#fff}.rc h3{margin:0;font-size:24px;letter-spacing:-.025em}.rc small{display:block;color:#94a1b5;font-size:16px;margin:2px 0 10px}
+.pill{display:inline-flex;white-space:nowrap;align-items:center;gap:6px;font-size:15px;font-weight:650;padding:5px 12px;border-radius:99px;margin-right:6px}.ok{background:#0b2619;color:#4ade80;border:1px solid #14532d}.lic{background:#121c38;color:#a5b8ff;border:1px solid #26366b}
+.rc2{opacity:.55;transform:scale(.96);transform-origin:top}.no{background:#2a0f17;color:#fb7185;border:1px solid #5b1a2a}
+.foot{margin-top:auto;display:flex;gap:28px;font-size:19px;color:#94a1b5;font-weight:550}.foot b{color:#eef2f7;font-weight:750;font-size:26px;display:block;letter-spacing:-.04em}
+</style></head><body><div class="a a1"></div><div class="a a2"></div><div class="a a3"></div><div class="grid"></div><div class="c">
+<div class="logo"><img src="../site/assets/brand/mark.svg"><span>Registro <b>MiCA</b></span></div>
+<h1>¿Tu exchange está <span class="gr">autorizado</span> en España?</h1>
 <p>El registro MiCA de ESMA, en español y actualizado cada semana. Proyecto independiente.</p>
-<div class="pills"><span class="p ok">✓ Puede operar en España</span><span class="p no">✗ No figura</span><span class="p lic">Licencia MiCA · Art. 59</span></div></div></body></html>
+<div class="foot"><div><b>{{ES}}</b>pueden operar en España</div><div><b>{{N}}</b>proveedores MiCA</div><div><b>{{B}}</b>marcas revisadas</div></div></div>
+<div class="panel"><div class="sb"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Bit2Me<span class="cur"></span></div>
+<div class="rc"><span class="v"></span><img src="../site/assets/logos/{{LOGO}}"><div><h3>Bit2Me</h3><small>Bitcoinforme S.L. · España</small><span class="pill ok">✓ Puede operar en España</span><span class="pill lic">Art. 59</span></div></div>
+</div></body></html>

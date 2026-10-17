@@ -22,6 +22,9 @@ jobs:
           python-version: "3.12"
       - name: Instalar poppler (lectura del PDF de la CNMV)
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: Pillow (normalizar logos nuevos)
+        if: github.event_name != 'push'
+        run: pip install pillow || echo "sin Pillow: se mantienen los logos en caché"
       - name: Refrescar datos (ESMA, BCE, CNMV) y generar sitio
         if: github.event_name != 'push'
         run: python3 scripts/refresh.py
