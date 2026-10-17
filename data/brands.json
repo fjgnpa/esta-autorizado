@@ -1,5 +1,5 @@
 {
- "verifiedOn": "2026-10-16",
+ "verifiedOn": "2026-10-17",
  "brands": [
   {
    "brand": "Coinbase",
@@ -240,9 +240,11 @@
   {
    "brand": "BingX",
    "category": "exchange",
-   "legalNames": [],
-   "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
-   "note": ""
+   "legalNames": [
+    "MEGE zweite GmbH"
+   ],
+   "source": "ESMA CASPS.csv 16/10/2026: ae_commercial_name «BingX EU», revisada a mano",
+   "note": "Autorizada en Austria; España no figura entre sus países notificados a 16/10/2026."
   },
   {
    "brand": "Bitunix",
@@ -915,6 +917,24 @@
    "legalNames": [],
    "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
    "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+  },
+  {
+   "brand": "YouHodler",
+   "category": "exchange",
+   "legalNames": [
+    "YOUHODLER ITALY S.R.L."
+   ],
+   "source": "ESMA CASPS.csv 16/10/2026: ae_commercial_name «YouHodler», revisada a mano",
+   "note": ""
+  },
+  {
+   "brand": "GOIN",
+   "category": "compra/rampa/app",
+   "legalNames": [
+    "PRAKMA MARKETS S.L."
+   ],
+   "source": "ESMA CASPS.csv 16/10/2026: ae_commercial_name «GOIN CRYPTO», revisada a mano",
+   "note": ""
   }
  ]
 }
