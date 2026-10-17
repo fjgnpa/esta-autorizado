@@ -1,0 +1,12 @@
+{
+  "_doc": "Correcciones manuales verificadas. Solo se aplican cuando ESMA deja vacío ac_legal_basis; el dato oficial siempre prevalece. Cada entrada exige fuente pública y fecha de comprobación.",
+  "items": {
+    "984500F14CA4571AAC11": {
+      "legalName": "Coinbase Luxembourg S.A.",
+      "k": "art59",
+      "why": "Verificado: la CSSF concedió a Coinbase Luxembourg S.A. una autorización CASP MiCA (20/06/2025), según el comunicado de Coinbase y de su despacho asesor; la sociedad no es banco ni empresa de inversión, por lo que no puede operar por notificación (Art. 60)",
+      "url": "https://www.arendt.com/news-insights/news/arendt-advised-coinbase-with-the-successful-license-application-for-a-casp-license-under-mica/",
+      "checked": "2026-10-17"
+    }
+  }
+}

@@ -8,7 +8,10 @@
     "Coinbase Luxembourg S.A."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "coinbase.com"
+   ]
   },
   {
    "brand": "Kraken",
@@ -18,7 +21,11 @@
     "Payward Global Solutions Limited"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "payward",
+    "kraken.com"
+   ]
   },
   {
    "brand": "Bitvavo",
@@ -36,7 +43,11 @@
     "Bitcoinforme S.L."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "bit 2 me",
+    "bit2me.com"
+   ]
   },
   {
    "brand": "Revolut",
@@ -72,7 +83,12 @@
     "Foris DAX MT Limited"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "cdc",
+    "crypto com",
+    "foris"
+   ]
   },
   {
    "brand": "OKX",
@@ -81,7 +97,10 @@
     "OKX Europe Limited"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "okex"
+   ]
   },
   {
    "brand": "Bybit",
@@ -126,7 +145,11 @@
     "Trade Republic Bank GmbH"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "traderepublic",
+    "tr"
+   ]
   },
   {
    "brand": "BBVA",
@@ -135,7 +158,11 @@
     "Banco Bilbao Vizcaya Argentaria S.A."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "banco bilbao",
+    "bilbao vizcaya"
+   ]
   },
   {
    "brand": "Openbank",
@@ -144,7 +171,11 @@
     "OPEN BANK S.A."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "open bank",
+    "santander openbank"
+   ]
   },
   {
    "brand": "Renta 4",
@@ -153,7 +184,10 @@
     "RENTA 4 BANCO S.A."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "renta4"
+   ]
   },
   {
    "brand": "CaixaBank",
@@ -162,7 +196,11 @@
     "CAIXABANK S.A."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "la caixa",
+    "caixa"
+   ]
   },
   {
    "brand": "Kutxabank",
@@ -205,7 +243,10 @@
    "category": "exchange",
    "legalNames": [],
    "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "binance.com"
+   ]
   },
   {
    "brand": "Bitget",
@@ -226,7 +267,11 @@
    "category": "exchange",
    "legalNames": [],
    "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "huobi",
+    "htx"
+   ]
   },
   {
    "brand": "Gate.io",
@@ -235,7 +280,11 @@
     "Gate Technology Limited"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "gate",
+    "gateio"
+   ]
   },
   {
    "brand": "BingX",
@@ -274,7 +323,10 @@
     "Blockchain.com Operations (Malta) Limited"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "blockchain"
+   ]
   },
   {
    "brand": "Robinhood",
@@ -292,7 +344,10 @@
     "Scalable Capital Bank GmbH"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "scalable"
+   ]
   },
   {
    "brand": "flatexDEGIRO",
@@ -301,7 +356,11 @@
     "flatexDEGIRO Bank AG"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "degiro",
+    "flatex"
+   ]
   },
   {
    "brand": "Trading 212",
@@ -310,7 +369,11 @@
     "Trading 212 Markets Ltd "
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "trading212",
+    "t212"
+   ]
   },
   {
    "brand": "XTB",
@@ -328,14 +391,20 @@
     "Interactive Brokers Ireland Limited"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "ibkr"
+   ]
   },
   {
    "brand": "Saxo",
    "category": "bróker",
    "legalNames": [],
    "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "saxo bank"
+   ]
   },
   {
    "brand": "Webull",
@@ -360,7 +429,10 @@
     "Vivid Money B.V."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "vivid"
+   ]
   },
   {
    "brand": "Wise",
@@ -399,7 +471,11 @@
    "category": "banco/neobanco/pagos",
    "legalNames": [],
    "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "lydia",
+    "sumeria"
+   ]
   },
   {
    "brand": "Nexo",
@@ -424,7 +500,10 @@
     "YOUNG PLATFORM S.P.A."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "youngplatform"
+   ]
   },
   {
    "brand": "Bitpanda Pro / One Trading",
@@ -433,7 +512,11 @@
     "One Trading Exchange B.V."
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "one trading",
+    "bitpanda pro"
+   ]
   },
   {
    "brand": "Bitso",
@@ -465,7 +548,11 @@
     "Boerse Stuttgart Digital Custody GmbH"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "bison",
+    "boerse stuttgart"
+   ]
   },
   {
    "brand": "21bitcoin",
@@ -506,7 +593,11 @@
    "category": "exchange",
    "legalNames": [],
    "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "bitwala",
+    "nuri"
+   ]
   },
   {
    "brand": "Coinhouse",
@@ -554,7 +645,11 @@
    "category": "wallet",
    "legalNames": [],
    "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
-   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro."
+   "note": "Monedero de autocustodia: el software de autocustodia no suele requerir licencia CASP. No figura en el registro.",
+   "aliases": [
+    "metamask",
+    "consensys"
+   ]
   },
   {
    "brand": "Exodus",
@@ -760,7 +855,10 @@
    "category": "banco/neobanco/pagos",
    "legalNames": [],
    "source": "Búsqueda en ESMA CASPS.csv sin coincidencia",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "banco sabadell"
+   ]
   },
   {
    "brand": "Bankinter",
@@ -818,7 +916,11 @@
     "Crypto Finance (Deutschland) GmbH"
    ],
    "source": "ESMA CASPS.csv: coincidencia del nombre comercial (ae_commercial_name) o legal (ae_lei_name), revisada a mano",
-   "note": ""
+   "note": "",
+   "aliases": [
+    "crypto finance",
+    "deutsche boerse"
+   ]
   },
   {
    "brand": "Sygnum",

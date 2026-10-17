@@ -1,6 +1,8 @@
 {
-  "_ayuda": "Newsletter Beehiiv: beehiivFormId = id del formulario v3 (data-beehiiv-form); beehiivSubscribeUrl = página pública de suscripción (respaldo si el script se bloquea). email: contacto del proyecto.",
-  "email": "frang@mail.grokbot.com",
-  "beehiivFormId": "4b9c34d2-16ff-4d57-962c-c98a0426b7a5",
-  "beehiivSubscribeUrl": "https://estaautorizado.beehiiv.com/subscribe"
+ "_ayuda": "email: contacto del proyecto. beehiivSubscribeUrl: página pública de suscripción (se abre en pestaña nueva; la web no carga nada de Beehiiv). Dominio: useCustomDomain=false usa siteBaseGithub; true usa siteBaseCustom. La variable de entorno SITE_BASE (variable de repositorio en Actions) tiene prioridad.",
+ "email": "frang@mail.grokbot.com",
+ "beehiivSubscribeUrl": "https://estaautorizado.beehiiv.com/subscribe",
+ "useCustomDomain": false,
+ "siteBaseGithub": "https://fjgnpa.github.io/esta-autorizado/",
+ "siteBaseCustom": "https://registromica.es/"
 }

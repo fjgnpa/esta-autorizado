@@ -1,54 +1,99 @@
 name: Actualizar registro y publicar
 on:
   schedule:
-    - cron: "0 6 * * 1"   # lunes 06:00 UTC
+    - cron: "0 6 * * 1"   # lunes 06:00 UTC = 08:00 Madrid en verano (CEST); 07:00 Madrid desde el 25/10 (CET)
   workflow_dispatch:
+    inputs:
+      offline:
+        description: "Reconstruir sin descargar nada (usa la última instantánea)"
+        type: boolean
+        default: false
+      force:
+        description: "Publicar aunque fallen los controles de cordura (revisa antes los datos)"
+        type: boolean
+        default: false
   push:
     branches: [main]
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+# Mínimo privilegio: nada por defecto; cada job pide solo lo que usa.
+permissions: {}
 concurrency:
   group: pages
   cancel-in-progress: false
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    env:
+      SITE_BASE: ${{ vars.SITE_BASE }}   # vacío = data/config.json (github.io mientras useCustomDomain sea false)
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
-      - name: Instalar poppler (lectura del PDF de la CNMV)
-        run: sudo apt-get update && sudo apt-get install -y poppler-utils
-      - name: Pillow (normalizar logos nuevos)
+      - name: Instalar poppler (lectura del PDF de la CNMV) y Pillow (logos)
         if: github.event_name != 'push'
-        run: pip install pillow || echo "sin Pillow: se mantienen los logos en caché"
-      - name: Refrescar datos (ESMA, BCE, CNMV) y generar sitio
+        run: |
+          sudo apt-get update && sudo apt-get install -y poppler-utils
+          pip install --only-binary=:all: "pillow>=11,<13" || echo "sin Pillow: se mantienen los logos en caché"
+      - name: Refrescar datos (ESMA, BCE, CNMV), validar y generar sitio
         if: github.event_name != 'push'
-        run: python3 scripts/refresh.py
-      - name: Generar sitio con datos existentes
+        run: python3 scripts/refresh.py ${{ inputs.offline && '--offline' || '' }} ${{ inputs.force && '--force' || '' }}
+      - name: Generar sitio con los datos del repositorio
         if: github.event_name == 'push'
         run: python3 scripts/build_site.py
-      - name: Guardar nueva instantánea en el repo
+      - name: Pasar datos y sitio al job de commit
         if: github.event_name != 'push'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: data-site
+          path: |
+            data
+            site
+          include-hidden-files: true
+          retention-days: 3
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+  commit:
+    needs: build
+    if: github.event_name != 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Sustituir data/ y site/ por lo generado
+        run: rm -rf data site
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: data-site
+          path: .
+      - name: Guardar nueva instantánea en el repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data site
-          git diff --cached --quiet || git commit -m "Refresco semanal del registro MiCA ($(date -u +%F))"
-          git push
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
+          git add -A data site
+          if git diff --cached --quiet; then echo "sin cambios"; exit 0; fi
+          git commit -m "Refresco semanal del registro MiCA ($(date -u +%F))"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
+    needs: [build, commit]
+    if: always() && needs.build.result == 'success' && (needs.commit.result == 'success' || needs.commit.result == 'skipped')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

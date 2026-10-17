@@ -17,6 +17,7 @@ SZ, MIN, LOW = 128, 32, 48  # salida 128 px (2x para 64 px CSS); 32-47 px -> «l
 RETRY_DAYS = 30
 try:
     from PIL import Image, ImageStat
+    Image.MAX_IMAGE_PIXELS = 4_000_000   # contra bombas de descompresión
 except Exception:
     Image = None
 TODAY = datetime.date.today().isoformat()
@@ -48,7 +49,7 @@ def pick_host(w, brand=None):
             if t and t in h.replace("-", ""): return h
     return hs[0] if hs else None
 
-def fetch(url, t=12, limit=3_000_000):
+def fetch(url, t=12, limit=2_000_000):
     ctx = ssl.create_default_context()
     r = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=t, context=ctx)
     return r.read(limit), r.geturl(), r.headers.get("Content-Type", "")
@@ -106,8 +107,8 @@ def clean_svg(raw):
     """SVG servido como <img> (sin scripts). Lo saneamos igualmente y descartamos los que cambian con el tema del sistema."""
     t = raw.decode("utf-8", "ignore")
     if "prefers-color-scheme" in t or "<image" in t or not re.search(r"<(path|rect|circle|polygon|ellipse|g)\b", t): return None
-    t = re.sub(r"<script\b.*?</script>", "", t, flags=re.S | re.I); t = re.sub(r"\son\w+\s*=\s*(\"[^\"]*\"|'[^']*')", "", t)
-    t = re.sub(r"<foreignObject\b.*?</foreignObject>", "", t, flags=re.S | re.I)
+    # rechazo (no limpieza) de cualquier contenido activo o externo: el fichero se sirve desde nuestro dominio
+    if re.search(r"<script|<foreignObject|<iframe|<embed|<object|javascript:|data:text|@import|\son\w+\s*=|<!ENTITY|href\s*=\s*(?![\"']?#)", t, re.I): return None
     if len(t) > 60_000: return None
     return t
 def load_img(raw, url):
