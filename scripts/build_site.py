@@ -461,6 +461,10 @@ idx = {"m": {"date": M["date"], "checked": CHECKED}, "pal": PAL,
 for f in ["data.js", "common.js", "style.css"]: (S/f).unlink(missing_ok=True)
 (S/"meta.json").write_text(json.dumps({"lastSuccessfulRefresh": CHECKED, "esmaFileDate": M["date"], "source": M["source"], "active": M["count"], "withdrawn": M.get("inactive", 0),
     "canOperateInSpain": M["es"], "art59": M["k"]["art59"], "art60": M["k"]["art60"], "undetermined": M["k"]["incierto"], "built": TODAY.isoformat()}, ensure_ascii=False, indent=1))
+# dominio propio: deploy/CNAME entra en el artefacto de Pages solo si coincide con la URL base (si no, se retira)
+_cn = (R/"deploy/CNAME").read_text().strip() if (R/"deploy/CNAME").exists() else ""
+if _cn and urllib.parse.urlsplit(BASE).hostname == _cn: (S/"CNAME").write_text(_cn + "\n")
+elif (S/"CNAME").exists(): (S/"CNAME").unlink()
 (S/"robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
 urls = [("", "1.0", "daily", M["date"]), ("marcas.html", "0.9", "weekly", M["date"]), ("cambios.html", "0.8", "weekly", M["date"]), ("metodologia.html", "0.4", "monthly", M["date"]), ("aviso-legal.html", "0.1", "yearly", "2026-10-17"), ("privacidad.html", "0.1", "yearly", "2026-10-17")] \
      + [(f'marca/{b["slug"]}.html', "0.8", "weekly", LASTMOD.get(f'marca/{b["slug"]}.html', M["date"])) for b in B] + [(f'p/{e["slug"]}.html', "0.6", "weekly", e.get("lu") or M["date"]) for e in E]
