@@ -2,7 +2,9 @@
 """Registro MiCA — ingesta + clasificación + generación del sitio estático.
 Fuentes: ESMA CASPS.csv (oficial, primaria) -> CASP Tracker JSON (respaldo); ECB MFI list; ESMA registro MiFID/AIFM/UCITS;
 CNMV listado PDF; cryptocodes.eu. Uso: python3 scripts/refresh.py [--offline] [--force] [--allow-fallback]
---force acepta cambios que los controles de cordura bloquean; --allow-fallback publica datos de CASP Tracker si ESMA falla."""
+--force acepta cambios que los controles de cordura bloquean; --allow-fallback publica datos de CASP Tracker si ESMA falla.
+Las fuentes de clasificación (BCE MFI, registro ESMA MiFID/AIFM/UCITS, CNMV) son obligatorias: si faltan o no se leen, incluso en
+--offline se intenta descargarlas una vez y, si no se puede, se aborta antes de escribir nada (nunca se publica una clasificación degradada)."""
 import csv, io, json, re, sys, gzip, urllib.request, urllib.parse, email.utils, datetime, pathlib, subprocess, html, shutil, hashlib
 R = pathlib.Path(__file__).resolve().parent.parent
 D, SRC, SNAP, SITE = R/"data", R/"data/sources", R/"data/snapshots", R/"site"
@@ -23,6 +25,9 @@ REQ_COLS = {"ae_competentAuthority","ae_homeMemberState","ae_lei_name","ae_lei",
             "ac_authorisationEndDate","ac_serviceCode","ac_serviceCode_cou","ac_comments","ac_lastupdate","ac_legal_basis"}
 ANCHORS = ["bitcoinforme s.l.", "bitpanda gmbh", "coinbase luxembourg s.a.", "payward europe solutions limited", "banco bilbao vizcaya argentaria s.a."]
 FLOOR, MAXDROP, MAXGROW = 250, 0.15, 0.30
+# deriva de la clasificación no oficial (inferida/verificada) frente a la última publicada: aborta si cambian > max(KDRIFT_MIN, KDRIFT·común)
+KDRIFT, KDRIFT_MIN = 0.05, 10
+MIN_MFI, MIN_UPREG = 1000, 1000   # entradas mínimas para dar por buena cada fuente (hoy ~4.700 LEI BCE y ~12.600 docs ESMA)
 FORCE, ALLOW_FB = "--force" in sys.argv, "--allow-fallback" in sys.argv
 try:
     from zoneinfo import ZoneInfo; TODAY = datetime.datetime.now(ZoneInfo("Europe/Madrid")).date()
@@ -155,6 +160,7 @@ def validate(items, prev, cols=None):
         if len(gone_es) > 3: errs.append(f"desaparecen {len(gone_es)} entidades con España")
         if len(lost_es) > 10: errs.append(f"{len(lost_es)} entidades pierden España")
     return errs
+PENDING = None
 def abort(msg):
     print("ABORTADO (no se escribe instantánea ni se publica):\n  - " + msg.replace("\n", "\n  - ")); sys.exit(1)
 snaps = sorted(SNAP.glob("*.json"))
@@ -180,36 +186,54 @@ else:
     if snaps and snaps[-1].stem == date and len(snaps) > 1: prev = json.loads(snaps[-2].read_text())["items"]
     errs = validate(items, [sanitize(x) for x in prev] if prev else None, COLS if raw_csv else None)
     if errs and not FORCE: abort("\n".join(errs))
-    if raw_csv: (SRC/"CASPS.csv").write_bytes(raw_csv); csv_items = items
-    (SNAP/f"{date}.json").write_text(json.dumps({"lastDataUpdate": date, "sourceUsed": source_used, "items": items}, ensure_ascii=False))
-    snaps = sorted(SNAP.glob("*.json"))
+    if raw_csv: csv_items = items
+    # la escritura de CASPS.csv y de la instantánea se aplaza hasta pasar todos los controles (ver write_snapshot)
+    PENDING = (raw_csv, f"{date}.json", json.dumps({"lastDataUpdate": date, "sourceUsed": source_used, "items": items}, ensure_ascii=False))
 # base legal oficial también para filas sin ella (p. ej. respaldo): por LEI desde el último CASPS.csv
 LB = {keyof(x): x["legalBasis"] for x in csv_items if x.get("legalBasis")}
 for x in items:
     if not x.get("legalBasis"): x["legalBasis"] = LB.get(keyof(x), "")
 # ---------- 2. Fuentes para Art.59/60 ----------
-def cached(name, fetch):
+TMP = {}   # descargas aún no escritas en data/sources (se guardan solo si todo el run pasa los controles)
+def cached(name, fetch, required=False):
+    """Online: descarga (si falla, usa la copia local). Offline: copia local; si una fuente obligatoria falta, se descarga una vez.
+    Nada se escribe en data/sources hasta write_snapshot()."""
     p = SRC/name
-    if not OFF:
-        try: p.write_bytes(fetch())
-        except Exception as ex: print("aviso:", name, ex)
+    if not OFF or (required and not (p.exists() and p.stat().st_size)):
+        if OFF: print(f"aviso (offline): falta data/sources/{name}; se descarga porque es obligatoria para clasificar")
+        for i in range(3 if required else 1):   # las obligatorias se reintentan (p. ej. 504 puntuales del registro ESMA)
+            try: TMP[name] = fetch(); break
+            except Exception as ex:
+                print(f"aviso: {name} (intento {i+1}):", ex)
+                if required and i < 2: import time; time.sleep(15 * (i + 1))
+    if name in TMP: return TMP[name]
     return p.read_bytes() if p.exists() else b""
+def need(ok, name, why):
+    if not ok: abort(f"fuente obligatoria data/sources/{name} no disponible o ilegible ({why}): la clasificación Art. 59/60 empeoraría. "
+                     "Comprueba la red o restaura la caché; no se ha escrito nada.")
 def ecb():
     page, _ = get(ECB_PAGE); m = re.search(rb'href="([^"]*mfi_csv_\d+\.csv\.gz)"', page); return get("https://www.ecb.europa.eu" + m.group(1).decode())[0]
 mfi = {}
-raw = cached("mfi.csv.gz", ecb)
-if raw:
+raw = cached("mfi.csv.gz", ecb, required=True)
+try:
     for x in csv.DictReader(io.StringIO(gzip.decompress(raw).decode("utf-16")), delimiter="\t"):
         if x["LEI"]: mfi[x["LEI"]] = x["CATEGORY"]
+except Exception as ex: mfi = {}; print("aviso: mfi.csv.gz ilegible:", ex)
+need(len(mfi) >= MIN_MFI, "mfi.csv.gz", f"{len(mfi)} LEI, mínimo {MIN_MFI}")
 upreg = {}
-raw = cached("upreg.json", lambda: get(UPREG, 180)[0])
-if raw:
-    for x in json.loads(raw)["response"]["docs"]:
+raw = cached("upreg.json", lambda: get(UPREG, 180)[0], required=True)
+try:
+    docs = json.loads(raw)["response"]["docs"]
+    for x in docs:
         if x.get("ae_lei") and x.get("ae_status") == "Active" and x.get("ae_officeType", "Head office") == "Head office": upreg.setdefault(x["ae_lei"], x["ae_entityTypeLabel"])
+except Exception as ex: docs = []; print("aviso: upreg.json ilegible:", ex)
+need(len(docs) >= MIN_UPREG, "upreg.json", f"{len(docs)} registros, mínimo {MIN_UPREG}")
 cnmv_txt = ""
-raw = cached("cnmv.pdf", lambda: get(CNMV_PDF)[0])
+raw = cached("cnmv.pdf", lambda: get(CNMV_PDF)[0], required=True)
 if raw:
-    cnmv_txt = subprocess.run(["pdftotext", "-layout", str(SRC/"cnmv.pdf"), "-"], capture_output=True, text=True).stdout
+    try: cnmv_txt = subprocess.run(["pdftotext", "-layout", "-", "-"], input=raw, capture_output=True).stdout.decode("utf-8", "ignore")
+    except FileNotFoundError: abort("falta pdftotext (poppler-utils): sin él no se lee el listado CNMV y la clasificación empeoraría")
+need("PROVEEDORES" in cnmv_txt.upper() or len(cnmv_txt) > 5000, "cnmv.pdf", f"texto extraído: {len(cnmv_txt)} caracteres")
 def cnmv_type(legal):
     w = re.sub(r"[^A-Z0-9 ]", "", legal.upper()).split()[:2]
     if not w: return None
@@ -299,12 +323,13 @@ for b in json.loads((D/"brands.json").read_text())["brands"]:
     brands.append({"b": b["brand"], "cat": b["category"], "e": [h["slug"] for h in hits], "status": st, "aliases": b.get("aliases", []),
                    "src": b["source"], "note": b["note"], "warn": warn[:3]})
 # ---------- 4. Cambios (clave: LEI) y fichas dadas de baja ----------
-snaps = sorted(SNAP.glob("*.json")); changes = []
+snaps = sorted(set(SNAP.glob("*.json")) | ({SNAP/PENDING[1]} if PENDING else set())); changes = []   # incluye la instantánea aún no escrita
+def rd(p): return PENDING[2] if PENDING and p == SNAP/PENDING[1] else p.read_text()
 cur_keys = {keyof(x) for x in items}; bySlugKey = {keyof(x): slug_for(x) for x in items}
 gone = {}
 def es(x): return es_of(x)
 for a, b in zip(snaps, snaps[1:]):
-    A = {keyof(x): x for x in json.loads(a.read_text())["items"]}; B = {keyof(x): x for x in json.loads(b.read_text())["items"]}
+    A = {keyof(x): x for x in json.loads(rd(a))["items"]}; B = {keyof(x): x for x in json.loads(rd(b))["items"]}
     if b == snaps[-1]: B = {keyof(x): x for x in items}
     for k in A:
         if k not in B and k not in cur_keys:
@@ -327,6 +352,30 @@ meta = {"date": date, "count": len(act), "countAll": len(ents), "inactive": len(
         "official": sum(1 for x in act if x["conf"] == "oficial"),
         "brands": len(brands), "brandsOk": sum(b["status"] == "ok" for b in brands), "snapshots": len(snaps), "nc": len(nc),
         "built": TODAY.isoformat(), "checked": checked, "corrections": corrections, "approxDates": STATS["approxDates"], "badDates": STATS["badDates"][:20]}
+# ---------- control de deriva de la clasificación frente a la última versión publicada (data/build.json) ----------
+def ekey(x): return (x.get("lei") or "").upper() or re.sub(r"\s+", " ", x.get("l", "")).lower()
+try: prev_ents = {ekey(x): x for x in json.loads((D/"build.json").read_text())["ents"] if x.get("active")}
+except Exception: prev_ents = {}
+if prev_ents:
+    common = [(prev_ents[ekey(x)], x) for x in act if ekey(x) in prev_ents]
+    moved = [(a, b) for a, b in common if a["k"] != b["k"]]
+    off_moved = [(a, b) for a, b in moved if b["conf"] == "oficial"]           # el campo oficial de ESMA manda: se acepta
+    inf_moved = [(a, b) for a, b in moved if b["conf"] != "oficial"]
+    lim = max(KDRIFT_MIN, int(KDRIFT * len(common)))
+    print(f"deriva de clasificación: {len(moved)} de {len(common)} cambian ({len(off_moved)} por base legal oficial, {len(inf_moved)} inferidas; límite {lim})")
+    if len(inf_moved) > lim:
+        ej = "; ".join(f'{b["l"]}: {a["k"]}→{b["k"]}' for a, b in inf_moved[:8])
+        msg = (f"{len(inf_moved)} clasificaciones no oficiales cambian frente a la versión publicada (límite {lim}). "
+               f"Antes {prev_meta.get('k')}, ahora {meta['k']}. Ejemplos: {ej}")
+        if FORCE: print("aviso (--force):", msg)
+        else: abort(msg + "\nSi el cambio es legítimo, revísalo y repite con --force.")
+def write_snapshot():
+    for name, b in TMP.items(): (SRC/name).write_bytes(b)
+    if PENDING:
+        raw_csv, fn, js = PENDING
+        if raw_csv: (SRC/"CASPS.csv").write_bytes(raw_csv)
+        (SNAP/fn).write_text(js)
+write_snapshot()
 SLUGS.write_text(json.dumps(dict(sorted(slugmap.items())), ensure_ascii=False, indent=0))
 json.dump({"meta": meta, "ents": ents, "brands": brands, "changes": changes, "gone": sorted(gone.values(), key=lambda x: x["removed"], reverse=True)}, open(D/"build.json", "w"), ensure_ascii=False)
 print(json.dumps({k: v for k, v in meta.items() if k not in ("corrections", "approxDates", "badDates")}, ensure_ascii=False))
