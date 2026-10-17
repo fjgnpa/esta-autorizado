@@ -19,3 +19,9 @@ Web: https://fjgnpa.github.io/esta-autorizado/
 - **CASP Tracker** (https://casptracker.eu) — fuente de respaldo e histórico de instantáneas, datos bajo licencia **CC BY 4.0**: "Source: CASP Tracker (casptracker.eu), based on the ESMA MiCA interim registers." https://creativecommons.org/licenses/by/4.0/
 
 Información divulgativa, no asesoramiento financiero. Confirma siempre en ESMA y CNMV.
+
+## Newsletter (Beehiiv) y datos legales
+Edita `data/config.json`:
+- `beehiivEmbedUrl`: URL del iframe del formulario de Beehiiv (Grow → Subscribe Forms → Embed). Con `null` se muestra el formulario de prueba.
+- `titular`, `nif`, `domicilio`, `email`: rellenan el Aviso legal y la Política de privacidad (ahora placeholders).
+Haz push a `main`: el workflow regenera y publica.

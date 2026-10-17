@@ -1,0 +1,8 @@
+{
+  "_ayuda": "Newsletter Beehiiv: pega en beehiivEmbedUrl la URL del iframe de tu formulario (Beehiiv > Grow > Subscribe Forms > Embed, p. ej. https://embeds.beehiiv.com/XXXX). Mientras sea null se muestra el formulario de prueba.",
+  "beehiivEmbedUrl": null,
+  "titular": "[TITULAR]",
+  "nif": "[NIF]",
+  "domicilio": "[DOMICILIO]",
+  "email": "[EMAIL]"
+}

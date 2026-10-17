@@ -87,3 +87,8 @@ a.rc:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:var(--l
 .hero .results{max-width:640px;margin:20px auto 0;text-align:left}.hero:has(.results:not(:empty)) .stats{display:none}
 @media (max-width:560px){.logo{font-size:15px}.nav nav a{padding:8px 7px}.hero .chips{display:none}.hero:has(.results:empty) .chips{display:flex}}
 .conf{display:inline-block;white-space:nowrap;margin-top:6px}
+.disc{font-size:13px;color:var(--tx2);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.flinks{display:flex;gap:16px;flex-wrap:wrap}.flinks a{font-weight:600}
+.news-legal{flex-basis:100%;font-size:12.5px;color:var(--tx3);margin:6px 0 0}
+.ph-mark{background:var(--ntfbg);color:var(--ntf);padding:1px 6px;border-radius:5px;font-weight:600}
+.legal .card h2{font-size:1.05rem}.legal .card p{line-height:1.65}

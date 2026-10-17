@@ -3,6 +3,7 @@ import json, pathlib, html, shutil, hashlib
 import os
 R = pathlib.Path(__file__).resolve().parent.parent; S = R/"site"
 BASE = os.environ.get("SITE_BASE", "https://fjgnpa.github.io/esta-autorizado/")
+CFG = json.load(open(R/"data/config.json"))
 d = json.load(open(R/"data/build.json")); M = d["meta"]; E = d["ents"]; B = d["brands"]; CH = d["changes"]
 bySlug = {e["slug"]: e for e in E}
 for p in [S/"p"]: shutil.rmtree(p, ignore_errors=True); p.mkdir(parents=True)
@@ -38,11 +39,18 @@ def page(title, desc, body, depth=0, canon=""):
 <button class="theme" type="button" aria-label="Cambiar tema claro/oscuro" onclick="const r=document.documentElement,n=(r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))==='dark'?'light':'dark';r.dataset.theme=n;try{{localStorage.setItem('theme',n)}}catch(e){{}}">{ICON["moon"]}</button></nav></div></header>
 <main id="main">{body}</main>
 <footer class="foot"><div class="wrap"><p><strong>¿Está autorizado?</strong> reproduce, con fecha, el registro provisional MiCA de ESMA (actualizado {esc(M["date"])}). No es asesoramiento financiero ni una determinación oficial. Confirma siempre en <a href="https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/markets-crypto-assets-regulation-mica" rel="noopener">ESMA</a> y en la <a href="https://www.cnmv.es/portal/consultas/proveedores-servicios-criptoactivos?lang=es" rel="noopener">CNMV</a>.</p>
+<p class="disc"><strong>Aviso:</strong> web informativa. Nada de lo publicado es asesoramiento financiero, fiscal ni jurídico, ni recomendación de inversión. Los criptoactivos son de alto riesgo y puedes perder todo lo invertido.</p>
+<p class="flinks"><a href="{up}aviso-legal.html">Aviso legal</a><a href="{up}privacidad.html">Política de privacidad</a><a href="{up}metodologia.html">Metodología</a></p>
 <p class="muted">Fuentes: ESMA (CASPS.csv, NCASP.csv, registro MiFID), BCE (lista de IFM), CNMV, cryptocodes.eu. Respaldo e histórico: <a href="https://casptracker.eu" rel="noopener">CASP Tracker</a> (CC BY 4.0).</p></div></footer>
 <script src="{up}assets/app.js" defer></script></body></html>'''
 def affslot(label): return f'<aside class="slot" aria-label="Espacio publicitario"><span class="slot-tag">Placeholder afiliado</span><span>{esc(label)}</span><span class="muted">Sin enlace hasta firmar un programa.</span></aside>'
-def newsletter(): return '''<section class="news card"><div><h2>Los cambios del registro, cada lunes</h2><p class="muted">Altas, bajas y quién gana o pierde el permiso para operar en España. Un correo, sin ruido.</p></div>
-<form class="news-f" onsubmit="event.preventDefault();this.querySelector('.news-msg').hidden=false;this.querySelector('button').disabled=true"><label class="sr" for="em">Email</label><input id="em" type="email" required placeholder="tu@email.com" autocomplete="email"><button class="btn">Suscribirme</button><p class="news-msg" role="status" hidden>Formulario de prueba: todavía no hay herramienta de newsletter conectada.</p></form></section>'''
+def newsletter(up=""):
+    head = '<div><h2>Los cambios del registro, cada lunes</h2><p class="muted">Altas, bajas y quién gana o pierde el permiso para operar en España. Un correo, sin ruido.</p></div>'
+    legal = f'<p class="news-legal">Al suscribirte aceptas recibir la newsletter. Tus datos los gestiona Beehiiv como encargado del tratamiento. Más información en la <a href="{up}privacidad.html">política de privacidad</a>. Puedes darte de baja en cualquier momento.</p>'
+    if CFG.get("beehiivEmbedUrl"):
+        return f'<section class="news card">{head}<div><iframe src="{esc(CFG["beehiivEmbedUrl"])}" title="Formulario de suscripción (Beehiiv)" loading="lazy" style="width:100%;height:120px;border:0;background:transparent"></iframe>{legal}</div></section>'
+    return f'''<section class="news card">{head}
+<form class="news-f" data-beehiiv-slot onsubmit="event.preventDefault();this.querySelector('.news-msg').hidden=false;this.querySelector('button').disabled=true"><label class="sr" for="em">Email</label><input id="em" type="email" required placeholder="tu@email.com" autocomplete="email"><button class="btn">Suscribirme</button><p class="news-msg" role="status" hidden>Formulario de prueba: todavía no hay herramienta de newsletter conectada.</p>{legal}</form></section>'''
 # ---- home
 popular = [b for b in B if b["cat"] in ("exchange", "bróker", "banco/neobanco/pagos")][:16]
 def bcard(b):
@@ -110,10 +118,41 @@ met = f'''<div class="wrap narrow"><header class="ph"><p class="eyebrow">Metodol
 <li>Entidades de dinero electrónico u otras IFM → vía no determinada, confianza baja.</li></ol>
 <section class="card"><h2>Resultado actual</h2><dl class="kv"><dt>Art. 59</dt><dd>{M["k"]["art59"]}</dd><dt>Art. 60</dt><dd>{M["k"]["art60"]}</dd><dt>No determinado</dt><dd>{M["k"]["incierto"]}</dd><dt>Confianza alta / media / baja</dt><dd>{M["conf"]["alta"]} / {M["conf"]["media"]} / {M["conf"]["baja"]}</dd><dt>Fuente del registro</dt><dd>{esc(M["source"])}</dd></dl></section></div>'''
 (S/"metodologia.html").write_text(page("Metodología · ¿Está autorizado?", "Cómo distinguimos licencias MiCA (Art. 59) y notificaciones (Art. 60).", met))
+
+# ---- legales
+T, NIF, DOM, EM = (esc(CFG.get(k)) for k in ("titular", "nif", "domicilio", "email"))
+PH = lambda x: f'<mark class="ph-mark">{x}</mark>'
+aviso = f'''<div class="wrap narrow legal"><header class="ph"><p class="eyebrow">Legal</p><h1>Aviso legal</h1><p class="muted">Última actualización: 17/10/2026</p></header>
+<section class="card"><h2>1. Datos del titular</h2><p>En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa:</p>
+<dl class="kv"><dt>Titular</dt><dd>{PH(T)}</dd><dt>NIF</dt><dd>{PH(NIF)}</dd><dt>Domicilio</dt><dd>{PH(DOM)}</dd><dt>Contacto</dt><dd>{PH(EM)}</dd><dt>Sitio web</dt><dd>https://fjgnpa.github.io/esta-autorizado/</dd></dl></section>
+<section class="card"><h2>2. Objeto</h2><p>«¿Está autorizado?» es una web <strong>exclusivamente informativa</strong> que reproduce y ordena, con fecha, información pública de registros oficiales (ESMA, CNMV, BCE) sobre proveedores de servicios de criptoactivos bajo el Reglamento (UE) 2023/1114 (MiCA).</p></section>
+<section class="card"><h2>3. No es asesoramiento</h2><p>Los contenidos no constituyen asesoramiento financiero, de inversión, fiscal ni jurídico, ni una recomendación para contratar con ninguna entidad. El titular no es una entidad supervisada ni presta servicios de inversión. La clasificación entre licencia (art. 59 MiCA) y notificación (art. 60 MiCA) es una <strong>inferencia</strong> a partir de fuentes públicas y puede contener errores. La información oficial y vinculante es la de los registros de <a href="https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/markets-crypto-assets-regulation-mica" rel="noopener">ESMA</a> y la <a href="https://www.cnmv.es/portal/consultas/proveedores-servicios-criptoactivos?lang=es" rel="noopener">CNMV</a>; compruébala siempre antes de tomar decisiones.</p>
+<p>Los criptoactivos son productos complejos y de alto riesgo: puedes perder todo el capital invertido.</p></section>
+<section class="card"><h2>4. Responsabilidad</h2><p>Los datos se actualizan periódicamente, pero pueden estar desfasados respecto a los registros oficiales. El titular no se responsabiliza de decisiones tomadas a partir de esta web ni de los contenidos de sitios de terceros enlazados.</p></section>
+<section class="card"><h2>5. Enlaces de afiliado y publicidad</h2><p>La web puede incluir en el futuro espacios patrocinados o enlaces de afiliado, que se identificarán claramente como tales. Solo se enlazarán entidades que figuren en el registro MiCA con España entre sus países de servicio. Su presencia no altera los datos del registro.</p></section>
+<section class="card"><h2>6. Propiedad intelectual y fuentes</h2><p>El diseño y los textos propios pertenecen al titular. Los datos proceden de fuentes públicas (ESMA, CNMV, BCE) y de <a href="https://casptracker.eu" rel="noopener">CASP Tracker</a> (licencia <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>). Las marcas citadas pertenecen a sus titulares y se mencionan solo para identificarlas.</p></section>
+<section class="card"><h2>7. Legislación aplicable</h2><p>Este aviso se rige por la legislación española. Para cualquier controversia, las partes se someten a los juzgados y tribunales que correspondan conforme a la normativa vigente, en particular la de consumidores y usuarios cuando resulte aplicable.</p></section>
+<p class="muted">Texto orientativo pendiente de revisión por el titular; no sustituye a un asesoramiento jurídico.</p></div>'''
+(S/"aviso-legal.html").write_text(page("Aviso legal · ¿Está autorizado?", "Aviso legal de ¿Está autorizado?, web informativa sobre el registro MiCA.", aviso))
+priv = f'''<div class="wrap narrow legal"><header class="ph"><p class="eyebrow">Legal</p><h1>Política de privacidad</h1><p class="muted">Última actualización: 17/10/2026</p></header>
+<section class="card"><h2>1. Responsable del tratamiento</h2><dl class="kv"><dt>Responsable</dt><dd>{PH(T)}</dd><dt>NIF</dt><dd>{PH(NIF)}</dd><dt>Domicilio</dt><dd>{PH(DOM)}</dd><dt>Contacto</dt><dd>{PH(EM)}</dd></dl></section>
+<section class="card"><h2>2. Qué datos tratamos y para qué</h2>
+<p><strong>Newsletter.</strong> Si te suscribes, tratamos tu dirección de correo electrónico (y, en su caso, los datos técnicos de apertura y clics que genera la plataforma de envío) para enviarte la newsletter sobre cambios en el registro MiCA. <em>Base jurídica:</em> tu consentimiento (art. 6.1.a RGPD y art. 21 LSSI-CE), que puedes retirar en cualquier momento con el enlace de baja de cada correo o escribiendo a {PH(EM)}.</p>
+<p><strong>Navegación.</strong> Esta web no usa formularios propios que guarden datos, no tiene registro de usuarios y no instala cookies de análisis ni de publicidad. El buscador funciona íntegramente en tu navegador.</p></section>
+<section class="card"><h2>3. Cookies y almacenamiento local</h2><p>No usamos cookies. Si eliges manualmente el tema claro u oscuro, tu navegador guarda esa preferencia en su almacenamiento local (<code>localStorage</code>, clave «theme»). Es un ajuste solicitado por ti, no se envía a ningún servidor y puedes borrarlo desde tu navegador. Si en el futuro se añaden cookies no necesarias (p. ej. analítica), se pedirá tu consentimiento previo.</p></section>
+<section class="card"><h2>4. Encargados del tratamiento y destinatarios</h2>
+<p><strong>Beehiiv, Inc.</strong> (EE. UU.): plataforma de envío de la newsletter, actúa como encargado del tratamiento. Las transferencias internacionales se amparan en las garantías que ofrezca el proveedor (Marco de Privacidad de Datos UE-EE. UU. si está adherido, o cláusulas contractuales tipo). Consulta su <a href="https://www.beehiiv.com/privacy" rel="noopener">política de privacidad</a>.</p>
+<p><strong>GitHub, Inc.</strong> (EE. UU.): alojamiento de la web mediante GitHub Pages. Al visitar la web, GitHub puede registrar tu dirección IP con fines técnicos y de seguridad. Consulta la <a href="https://docs.github.com/es/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">declaración de privacidad de GitHub</a>.</p>
+<p>No cedemos datos a terceros salvo obligación legal.</p></section>
+<section class="card"><h2>5. Conservación</h2><p>Conservamos tu correo mientras sigas suscrito. Al darte de baja, se elimina o bloquea durante el plazo necesario para atender posibles responsabilidades legales.</p></section>
+<section class="card"><h2>6. Tus derechos</h2><p>Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad escribiendo a {PH(EM)}. Si consideras que no hemos atendido correctamente tu solicitud, puedes reclamar ante la <a href="https://www.aepd.es" rel="noopener">Agencia Española de Protección de Datos</a>.</p></section>
+<section class="card"><h2>7. Menores</h2><p>La newsletter no está dirigida a menores de 14 años.</p></section>
+<p class="muted">Texto orientativo pendiente de revisión por el titular; no sustituye a un asesoramiento jurídico.</p></div>'''
+(S/"privacidad.html").write_text(page("Política de privacidad · ¿Está autorizado?", "Política de privacidad y cookies de ¿Está autorizado?.", priv))
 # ---- data for search
 idx = {"m": {"date": M["date"]}, "e": [[e["slug"], e["n"], e["l"], e["h"], int(e["es"]), kind(e)[0], kind(e)[1], kind(e)[2], e["brands"]] for e in E],
        "b": [[b["b"], b["e"], b["note"], [w["l"] for w in b["warn"]], b["cat"]] for b in B]}
 (S/"assets").mkdir(exist_ok=True); (S/"assets/data.js").write_text("window.DB=" + json.dumps(idx, ensure_ascii=False, separators=(",", ":")) + ";")
 for f in ["data.js", "common.js", "style.css"]: (S/f).unlink(missing_ok=True)
-(S/"sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{BASE}{u}</loc></url>" for u in ["index.html", "cambios.html", "metodologia.html"] + [f'p/{e["slug"]}.html' for e in E]) + "</urlset>")
+(S/"sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{BASE}{u}</loc></url>" for u in ["index.html", "cambios.html", "metodologia.html", "aviso-legal.html", "privacidad.html"] + [f'p/{e["slug"]}.html' for e in E]) + "</urlset>")
 print("site:", len(E), "fichas")
