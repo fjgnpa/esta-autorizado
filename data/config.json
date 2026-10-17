@@ -1,7 +1,7 @@
 {
  "_ayuda": "email: contacto del proyecto. beehiivSubscribeUrl: página pública de suscripción (se abre en pestaña nueva; la web no carga nada de Beehiiv). Dominio: useCustomDomain=false usa siteBaseGithub; true usa siteBaseCustom. La variable de entorno SITE_BASE (variable de repositorio en Actions) tiene prioridad.",
  "email": "frang@mail.grokbot.com",
- "beehiivSubscribeUrl": "https://estaautorizado.beehiiv.com/subscribe",
+ "beehiivSubscribeUrl": "https://registromica.beehiiv.com/subscribe",
  "useCustomDomain": false,
  "siteBaseGithub": "https://fjgnpa.github.io/esta-autorizado/",
  "siteBaseCustom": "https://registromica.es/"
