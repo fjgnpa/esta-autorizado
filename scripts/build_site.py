@@ -218,11 +218,20 @@ home = f'''<section class="hero"><div class="aurora" aria-hidden="true"><i></i><
 <p class="muted center" style="margin-top:22px"><a href="proveedores.html">Lista completa de proveedores</a> · <a href="guia-mica.html">Guía MiCA: licencia, notificación y periodo transitorio</a> · <a href="metodologia.html">Cómo lo determinamos →</a></p></section>
 {newsletter()}</div>'''
 ORG = {"@context":"https://schema.org","@type":"Organization","name":"Registro MiCA","url":BASE,"logo":BASE+"assets/brand/icon-512.png"}
+ESMA_LEGAL = "https://www.esma.europa.eu/about-esma/legal-notice-and-data-protection"
+ESMA_REG_LEGAL = "https://registers.esma.europa.eu/publication/legalNoticePage"
+SNAPD = sorted(f.stem for f in (R/"data/snapshots").glob("*.json"))
 DATASET = {"@context":"https://schema.org","@type":"Dataset","name":"Proveedores de servicios de criptoactivos MiCA con acceso a España",
     "description":"Copia fechada y clasificada del registro provisional MiCA de ESMA: autorizaciones CASP (Art. 59/63), notificaciones (Art. 60), países notificados y retiradas.",
-    "url":BASE,"inLanguage":"es","dateModified":M["date"],"creator":ORG,
-    "isBasedOn":[ESMA_URL,"https://casptracker.eu"],"creditText":"ESMA; histórico hasta 06/10/2026: CASP Tracker (CC BY 4.0), datos transformados",
-    "distribution":[{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":BASE+"meta.json"}]}
+    "url":BASE,"inLanguage":"es","dateModified":M["date"],"creator":ORG,"publisher":ORG,"isAccessibleForFree":True,
+    # sin licencia propia: reutilización según las condiciones de cada fuente (ESMA: citar la fuente e indicar la transformación), explicadas aquí
+    "license":BASE+"metodologia.html#licencia",
+    "keywords":["MiCA","CASP","criptoactivos","proveedores de servicios de criptoactivos","registro MiCA","ESMA","CNMV","España","exchanges autorizados","Art. 59","Art. 60"],
+    "spatialCoverage":{"@type":"Place","name":"Unión Europea y Espacio Económico Europeo (UE/EEE), con el acceso a España"},
+    "isBasedOn":[ESMA_URL,"https://casptracker.eu"],"creditText":"Fuente: ESMA (registro provisional MiCA), datos transformados; histórico hasta 06/10/2026: CASP Tracker (CC BY 4.0), datos transformados",
+    "distribution":[{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":BASE+"datos/proveedores.json"},
+                    {"@type":"DataDownload","encodingFormat":"text/csv","contentUrl":BASE+"datos/proveedores.csv"}]}
+if SNAPD: DATASET["temporalCoverage"] = f"{SNAPD[0]}/{M['date']}"
 (S/"index.html").write_text(page("Registro MiCA · ¿Exchange cripto autorizado en España?", clip(f"Buscador del registro MiCA de ESMA: {M['count']} proveedores activos en la UE/EEE, {M['es']} pueden operar en España. Datos a {fmt(M['date'])}."), home, 0, "",
     [{"@context":"https://schema.org","@type":"WebSite","name":"Registro MiCA","url":BASE,"inLanguage":"es"}, ORG, DATASET], cur="buscar"))
 def crumbs(items): return {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":i+1,"name":n,"item":BASE+u} for i,(n,u) in enumerate(items)]}
@@ -347,6 +356,12 @@ met = f'''<div class="wrap narrow"><header class="ph"><p class="eyebrow">Metodol
 <section class="card"><h2>Calidad de los datos</h2><p>Antes de publicar, cada actualización pasa controles automáticos: columnas obligatorias, un mínimo de proveedores, variaciones bruscas respecto a la semana anterior (más de un 15 % menos o un 30 % más), entidades de referencia que deben seguir presentes y nombres con caracteres sospechosos. Si algo falla, no se publica nada y se mantiene la versión anterior. Si los datos tienen más de 10 días, la web muestra un aviso.</p>
 <p>Las webs del registro se normalizan (por ejemplo, «https.//» o varias URL en un mismo campo) y solo se enlazan direcciones http/https válidas. Las fechas sin año del registro se muestran tal cual, sin inventar el año.</p></section>
 <section class="card"><h2>Fuentes y licencias</h2><p>Registro MiCA de <a href="{ESMA_URL}" {EXT}>ESMA</a> (CASPS.csv y NCASP.csv), registro MiFID/AIFMD/UCITS de ESMA, lista de IFM del BCE, listado de la <a href="{CNMV_URL}" {EXT}>CNMV</a> y cryptocodes.eu. Histórico hasta el {esc(fmt(ct_last) if ct_last else "—")}: <a href="https://casptracker.eu" {EXT}>CASP Tracker</a>, licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" {EXT}>CC BY 4.0</a>, datos transformados.</p></section>
+<section class="card" id="licencia"><h2>Licencia y reutilización</h2><p>Esta web no aplica una licencia propia a los datos: se reutilizan en las condiciones de cada fuente.</p><ul class="steps">
+<li><b>Registro MiCA de ESMA</b> (CASPS.csv, NCASP.csv) y registro MiFID/AIFMD/UCITS: ESMA autoriza su reproducción siempre que se cite la fuente y, si se transforman, se indique expresamente. Condiciones en el <a href="{ESMA_LEGAL}" {EXT}>aviso legal de la web de ESMA</a> y en el <a href="{ESMA_REG_LEGAL}" {EXT}>aviso legal de sus registros</a>.</li>
+<li><b>Histórico hasta el {esc(fmt(ct_last) if ct_last else "06/10/2026")}</b>: <a href="https://casptracker.eu" {EXT}>CASP Tracker</a>, licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" {EXT}>CC BY 4.0</a>.</li>
+<li><b>Clasificación Art. 59/60</b>: se apoya además en la lista de IFM del BCE, el listado de la CNMV y cryptocodes.eu, según las condiciones de cada uno.</li></ul>
+<p>Esta web se ha elaborado con material descargado de la web de ESMA, transformado (normalizado, clasificado, traducido y comparado entre fechas). ESMA no respalda esta publicación y no es responsable de infracciones de derechos de autor u otros derechos de propiedad intelectual ni de los daños causados a terceros por esta publicación.</p>
+<p>Si reutilizas estos datos, cita la fuente original (ESMA y, para el histórico, CASP Tracker) e indica que están transformados. Descarga: <a href="datos/proveedores.json">JSON</a> · <a href="datos/proveedores.csv">CSV</a>.</p></section>
 <section class="card"><h2>Logotipos</h2><p>Los logotipos se descargan una sola vez del icono público de la web oficial de cada entidad (la que figura en el registro de ESMA o, para marcas sin sociedad en el registro, su dominio oficial comprobado) y se sirven desde esta web: tu navegador no se conecta a terceros para mostrarlos. Si no hay un icono de calidad suficiente, se muestra un monograma con las iniciales. Los logotipos solo identifican a cada entidad y no implican relación ni respaldo.</p></section></div>'''
 (S/"metodologia.html").write_text(page("Metodología · Registro MiCA", "Cómo distinguimos licencias MiCA (Art. 59/63) y notificaciones (Art. 60): dato oficial de ESMA primero, inferencia solo si falta.", met, 0, "metodologia.html", [crumbs([("Inicio",""),("Metodología","metodologia.html")])], cur="metodologia"))
 # ---- legales
@@ -549,6 +564,16 @@ idx = {"m": {"date": M["date"], "checked": CHECKED}, "pal": PAL,
        "b": [[b["b"], b["e"], b["note"], [w["l"] for w in b["warn"]], b["cat"], b["slug"], blg(b), b["st"], b.get("aliases", [])] for b in B]}
 (S/"assets").mkdir(exist_ok=True); (S/"assets/data.js").write_text("window.DB=" + json.dumps(idx, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c") + ";")
 for f in ["data.js", "common.js", "style.css"]: (S/f).unlink(missing_ok=True)
+# ---- descargas del conjunto de datos (enlazadas desde metodología y el JSON-LD Dataset)
+import csv as _csv, io as _io
+DL_F = ["slug", "nombre", "sociedad", "lei", "pais_origen", "supervisor", "activo", "fin_autorizacion", "puede_operar_en_espana", "via", "base_legal_esma", "confianza", "paises", "servicios", "en_registro_desde", "ficha"]
+def dlrow(e): return [e["slug"], e["n"], e["l"], e["lei"], e["h"], e["a"], e.get("active", True), e.get("end") or "", e["es"], {"art59": "Art. 59", "art60": "Art. 60"}.get(e["k"], "no determinada"),
+                      e.get("lb") or "", e["conf"], " ".join(e["cs"]), " ".join(e["s"]), e.get("d") or "", BASE + f'p/{e["slug"]}.html']
+(S/"datos").mkdir(exist_ok=True)
+DL_NOTE = "Fuente: ESMA, registro provisional MiCA (CASPS.csv), datos transformados por Registro MiCA. ESMA no respalda esta publicación. Histórico hasta 06/10/2026: CASP Tracker (CC BY 4.0). Condiciones: " + BASE + "metodologia.html#licencia"
+(S/"datos/proveedores.json").write_text(json.dumps({"fuente": DL_NOTE, "registroEsma": M["date"], "comprobado": CHECKED, "campos": DL_F, "proveedores": [dict(zip(DL_F, dlrow(e))) for e in E]}, ensure_ascii=False, indent=0))
+_b = _io.StringIO(); _w = _csv.writer(_b); _w.writerow(DL_F); [_w.writerow(dlrow(e)) for e in E]
+(S/"datos/proveedores.csv").write_text(_b.getvalue(), encoding="utf-8")
 (S/"meta.json").write_text(json.dumps({"lastSuccessfulRefresh": CHECKED, "esmaFileDate": M["date"], "source": M["source"], "active": M["count"], "withdrawn": M.get("inactive", 0),
     "canOperateInSpain": M["es"], "art59": M["k"]["art59"], "art60": M["k"]["art60"], "undetermined": M["k"]["incierto"], "built": TODAY.isoformat()}, ensure_ascii=False, indent=1))
 # dominio propio: deploy/CNAME entra en el artefacto de Pages solo si coincide con la URL base (si no, se retira)
