@@ -1,7 +1,7 @@
 {
 "fuente": "Fuente: ESMA, registro provisional MiCA (CASPS.csv), datos transformados por Registro MiCA. ESMA no respalda esta publicación. Histórico hasta 06/10/2026: CASP Tracker (CC BY 4.0). Condiciones: https://registromica.es/metodologia.html#licencia",
 "registroEsma": "2026-10-16",
-"comprobado": "2026-10-16",
+"comprobado": "2026-10-19",
 "campos": [
 "slug",
 "nombre",

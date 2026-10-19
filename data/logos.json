@@ -1,6 +1,6 @@
 {
  "_ayuda": "Generado por scripts/logos.py. 'domains' es la caché por dominio (se reintenta a los 30 días si falló). 'overrides': {\"marca o slug\": null} para forzar monograma.",
- "updated": "2026-10-17",
+ "updated": "2026-10-19",
  "overrides": {},
  "brands": {
   "Coinbase": {
@@ -454,13 +454,13 @@
    "status": "ok"
   },
   "Neteller": {
-   "domain": "neteller.com",
+   "domain": "skrill.com",
    "from": "registro ESMA (web de Paysafe Payment Solutions Limited.)",
-   "logo": "neteller-com.png",
+   "logo": "skrill-com.png",
    "mode": "full",
    "lowres": false,
    "light": false,
-   "color": "#2a6216",
+   "color": "#940d93",
    "status": "ok"
   },
   "Lydia / Sumeria": {
@@ -1686,14 +1686,14 @@
    "status": "ok"
   },
   "altlift-s-r-o": {
-   "domain": "altlift.cz",
-   "from": "registro ESMA (web)",
+   "domain": null,
+   "from": null,
    "logo": null,
    "mode": null,
    "lowres": null,
    "light": null,
    "color": null,
-   "status": "monogram"
+   "status": "sin dominio"
   },
   "partners-banka-a-s": {
    "domain": "partnersbanka.cz",
@@ -5089,16 +5089,6 @@
    "color": "#22c5eb",
    "light": false,
    "lowres": false
-  },
-  "altlift.cz": {
-   "domain": "altlift.cz",
-   "checked": "2026-10-17",
-   "home": "https://altlift.cz/",
-   "ids": [
-    "Altlift — Partner pro krypto OTC, poradenství a tokenomiku"
-   ],
-   "status": "monogram",
-   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
   },
   "amdax.com": {
    "domain": "amdax.com",
@@ -9890,28 +9880,6 @@
    ],
    "mode": "full",
    "color": "#bcea5d",
-   "light": false,
-   "lowres": false
-  },
-  "neteller.com": {
-   "domain": "neteller.com",
-   "checked": "2026-10-17",
-   "home": "https://www.neteller.com/es/",
-   "ids": [
-    "Inicio - Neteller",
-    "Neteller",
-    "Neteller - Cartera digital para todos"
-   ],
-   "status": "ok",
-   "file": "neteller-com.png",
-   "src": "apple-touch-icon",
-   "url": "https://www.neteller.com/typo3conf/ext/theme/Resources/Public/images/icons/favicon/apple-touch-icon.png",
-   "orig": [
-    180,
-    180
-   ],
-   "mode": "full",
-   "color": "#2a6216",
    "light": false,
    "lowres": false
   },
