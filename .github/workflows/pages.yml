@@ -1,7 +1,7 @@
 name: Actualizar registro y publicar
 on:
   schedule:
-    - cron: "0 6 * * 1"   # lunes 06:00 UTC = 08:00 Madrid en verano (CEST); 07:00 Madrid desde el 25/10 (CET)
+    - cron: "0 6 * * 1,4" # lunes y jueves 06:00 UTC (ESMA publica entre semana) = 08:00 Madrid en verano (CEST); 07:00 Madrid desde el 25/10 (CET)
   workflow_dispatch:
     inputs:
       offline:
