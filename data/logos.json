@@ -1,6 +1,6 @@
 {
  "_ayuda": "Generado por scripts/logos.py. 'domains' es la caché por dominio (se reintenta a los 30 días si falló). 'overrides': {\"marca o slug\": null} para forzar monograma.",
- "updated": "2026-10-19",
+ "updated": "2026-10-24",
  "overrides": {},
  "brands": {
   "Coinbase": {
@@ -2763,6 +2763,96 @@
    "lowres": false,
    "light": true,
    "color": "#5b729a",
+   "status": "ok"
+  },
+  "volksbank-in-der-region-eg": {
+   "domain": "vbidr.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
+  "volksbank-mittlerer-neckar-eg": {
+   "domain": "v-mn.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
+  "sparda-bank-baden-wrttemberg-eg": {
+   "domain": "sparda-bw.de",
+   "from": "registro ESMA (web)",
+   "logo": "sparda-bw-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": "#386491",
+   "status": "ok"
+  },
+  "raiffeisenbank-eifel-eg": {
+   "domain": "rb-eifel.de",
+   "from": "registro ESMA (web)",
+   "logo": "rb-eifel-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#5a7fa3",
+   "status": "ok"
+  },
+  "volksbank-niederrhein-eg": {
+   "domain": "volksbank-niederrhein.de",
+   "from": "registro ESMA (web)",
+   "logo": "volksbank-niederrhein-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#577d9f",
+   "status": "ok"
+  },
+  "volksbank-in-ostwestfalen-eg": {
+   "domain": "volksbankinostwestfalen.de",
+   "from": "registro ESMA (web)",
+   "logo": "volksbankinostwestfalen-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#577d9f",
+   "status": "ok"
+  },
+  "volksbank-oberberg-eg": {
+   "domain": "vb-oberberg.de",
+   "from": "registro ESMA (web)",
+   "logo": "vb-oberberg-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#577d9f",
+   "status": "ok"
+  },
+  "volksbank-in-der-hohen-mark-eg": {
+   "domain": "vb-hm.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
+  "penning-financial-services-aps": {
+   "domain": "penning.io",
+   "from": "registro ESMA (web)",
+   "logo": "penning-io.svg",
+   "mode": "pad",
+   "lowres": false,
+   "light": false,
+   "color": null,
    "status": "ok"
   },
   "lunar-block-a-s": {
@@ -10503,6 +10593,25 @@
    "light": true,
    "lowres": false
   },
+  "penning.io": {
+   "domain": "penning.io",
+   "checked": "2026-10-24",
+   "home": "https://www.penning.io/",
+   "ids": [
+    "Penning | Denmark's Regulated Crypto Platform",
+    "Penning",
+    "Penning | Denmark's Regulated Crypto Platform"
+   ],
+   "status": "ok",
+   "file": "penning-io.svg",
+   "src": "apple-touch-icon (svg)",
+   "url": "https://www.penning.io/favicon.svg",
+   "orig": "svg",
+   "mode": "pad",
+   "color": null,
+   "light": false,
+   "lowres": false
+  },
   "phantom.com": {
    "domain": "phantom.com",
    "checked": "2026-10-17",
@@ -10798,6 +10907,24 @@
    ],
    "mode": "full",
    "color": "#577d9f",
+   "light": true,
+   "lowres": false
+  },
+  "rb-eifel.de": {
+   "domain": "rb-eifel.de",
+   "checked": "2026-10-24",
+   "home": null,
+   "ids": [],
+   "status": "ok",
+   "file": "rb-eifel-de.png",
+   "src": "duckduckgo",
+   "url": "https://icons.duckduckgo.com/ip3/rb-eifel.de.ico",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#5a7fa3",
    "light": true,
    "lowres": false
   },
@@ -11465,6 +11592,27 @@
    "light": false,
    "lowres": false
   },
+  "sparda-bw.de": {
+   "domain": "sparda-bw.de",
+   "checked": "2026-10-24",
+   "home": "https://www.sparda-bw.de/",
+   "ids": [
+    "Sparda-Bank Baden-Württemberg: Digital & persönlich",
+    "Sparda-Bank Baden-Württemberg: Digital & persönlich "
+   ],
+   "status": "ok",
+   "file": "sparda-bw-de.png",
+   "src": "manifest",
+   "url": "https://www.sparda-bw.de/icons/android-chrome-192x192.png",
+   "orig": [
+    192,
+    192
+   ],
+   "mode": "full",
+   "color": "#386491",
+   "light": false,
+   "lowres": false
+  },
   "stablemint.io": {
    "domain": "stablemint.io",
    "checked": "2026-10-17",
@@ -12088,6 +12236,17 @@
    "light": false,
    "lowres": false
   },
+  "v-mn.de": {
+   "domain": "v-mn.de",
+   "checked": "2026-10-24",
+   "home": "https://www.v-mn.de/startseite.html",
+   "ids": [
+    "Startseite - Volksbank Mittlerer Neckar eG",
+    "Startseite"
+   ],
+   "status": "monogram",
+   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
+  },
   "validvent.com": {
    "domain": "validvent.com",
    "checked": "2026-10-17",
@@ -12153,6 +12312,38 @@
    "light": true,
    "lowres": false
   },
+  "vb-hm.de": {
+   "domain": "vb-hm.de",
+   "checked": "2026-10-24",
+   "home": "https://www.vb-hm.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Volksbank in der Hohen Mark eG - Volksbank in der Hohen Mark eG in Reken, Lembeck, Gemen und Rhade",
+    "Füreinander da sein"
+   ],
+   "status": "monogram",
+   "why": "icon: diminuto (24x24); apple-touch-icon: HTTPError; favicon.ico: diminuto (24x24); google-s2: diminuto (24x24); duckduckgo: diminuto (24x24)"
+  },
+  "vb-oberberg.de": {
+   "domain": "vb-oberberg.de",
+   "checked": "2026-10-24",
+   "home": "https://www.vb-oberberg.de/startseite.html",
+   "ids": [
+    "Die Bank für Oberberg - Volksbank Oberberg eG",
+    "Füreinander da sein"
+   ],
+   "status": "ok",
+   "file": "vb-oberberg-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/apple-touch-icon-144x144-2",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#577d9f",
+   "light": true,
+   "lowres": false
+  },
   "vb-sauerland.de": {
    "domain": "vb-sauerland.de",
    "checked": "2026-10-17",
@@ -12184,6 +12375,17 @@
    "color": "#577d9f",
    "light": true,
    "lowres": false
+  },
+  "vbidr.de": {
+   "domain": "vbidr.de",
+   "checked": "2026-10-24",
+   "home": "https://www.vbidr.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Volksbank in der Region eG - Volksbank in der Region",
+    "Füreinander da sein"
+   ],
+   "status": "monogram",
+   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
   },
   "vbsdn.de": {
    "domain": "vbsdn.de",
@@ -12426,6 +12628,27 @@
    "status": "monogram",
    "why": "icon: no cuadrado (196x134): suele ser un recorte del logotipo; apple-touch-icon: HTTPError; favicon.ico: no cuadrado (196x134): suele ser un recorte del logotipo; google-s2: no cuadrado (196x134): suele ser un recorte del logotipo; duckduckgo: no cuadrado (196x134): suele ser un recorte del logotipo"
   },
+  "volksbank-niederrhein.de": {
+   "domain": "volksbank-niederrhein.de",
+   "checked": "2026-10-24",
+   "home": "https://www.volksbank-niederrhein.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Volksbank Niederrhein eG - Volksbank Niederrhein",
+    "Füreinander da sein"
+   ],
+   "status": "ok",
+   "file": "volksbank-niederrhein-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/favicon-9",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#577d9f",
+   "light": true,
+   "lowres": false
+  },
   "volksbank-zollernalb.de": {
    "domain": "volksbank-zollernalb.de",
    "checked": "2026-10-17",
@@ -12444,6 +12667,27 @@
    ],
    "mode": "full",
    "color": "#4c80a5",
+   "light": true,
+   "lowres": false
+  },
+  "volksbankinostwestfalen.de": {
+   "domain": "volksbankinostwestfalen.de",
+   "checked": "2026-10-24",
+   "home": "https://www.volksbankinostwestfalen.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Volksbank in Ostwestfalen eG - Volksbank in Ostwestfalen eG",
+    "Füreinander da sein"
+   ],
+   "status": "ok",
+   "file": "volksbankinostwestfalen-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/favicon-9",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#577d9f",
    "light": true,
    "lowres": false
   },

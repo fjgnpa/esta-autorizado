@@ -1,7 +1,7 @@
 {
 "fuente": "Fuente: ESMA, registro provisional MiCA (CASPS.csv), datos transformados por Registro MiCA. ESMA no respalda esta publicación. Histórico hasta 06/10/2026: CASP Tracker (CC BY 4.0). Condiciones: https://registromica.es/metodologia.html#licencia",
-"registroEsma": "2026-10-16",
-"comprobado": "2026-10-19",
+"registroEsma": "2026-10-22",
+"comprobado": "2026-10-24",
 "campos": [
 "slug",
 "nombre",
@@ -2861,7 +2861,7 @@
 "base_legal_esma": "Article 60",
 "confianza": "oficial",
 "paises": "DE",
-"servicios": "g",
+"servicios": "g i",
 "en_registro_desde": "2026-10-07",
 "ficha": "https://registromica.es/p/ksw-vermgensverwaltung-ag.html"
 },
@@ -2936,6 +2936,168 @@
 "servicios": "e",
 "en_registro_desde": "2026-11-13",
 "ficha": "https://registromica.es/p/vr-bank-lahn-dill-eg.html"
+},
+{
+"slug": "volksbank-in-der-region-eg",
+"nombre": "Volksbank in der Region eG",
+"sociedad": "Volksbank in der Region eG",
+"lei": "5299006E6UGNN6YEPU72",
+"pais_origen": "DE",
+"supervisor": "Federal Financial Supervisory Authority (BaFin)",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": false,
+"via": "Art. 60",
+"base_legal_esma": "Article 60",
+"confianza": "oficial",
+"paises": "DE",
+"servicios": "e",
+"en_registro_desde": "2026-08-27",
+"ficha": "https://registromica.es/p/volksbank-in-der-region-eg.html"
+},
+{
+"slug": "volksbank-mittlerer-neckar-eg",
+"nombre": "Volksbank Mittlerer Neckar eG",
+"sociedad": "Volksbank Mittlerer Neckar eG",
+"lei": "529900HHCMGEXXJAGA76",
+"pais_origen": "DE",
+"supervisor": "Federal Financial Supervisory Authority (BaFin)",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": false,
+"via": "Art. 60",
+"base_legal_esma": "Article 60",
+"confianza": "oficial",
+"paises": "DE",
+"servicios": "e",
+"en_registro_desde": "2026-08-27",
+"ficha": "https://registromica.es/p/volksbank-mittlerer-neckar-eg.html"
+},
+{
+"slug": "sparda-bank-baden-wrttemberg-eg",
+"nombre": "Sparda-Bank Baden-Württemberg eG",
+"sociedad": "Sparda-Bank Baden-Württemberg eG",
+"lei": "5299004HBAECUACNWN98",
+"pais_origen": "DE",
+"supervisor": "Federal Financial Supervisory Authority (BaFin)",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": false,
+"via": "Art. 60",
+"base_legal_esma": "Article 60",
+"confianza": "oficial",
+"paises": "DE",
+"servicios": "e",
+"en_registro_desde": "2026-10-19",
+"ficha": "https://registromica.es/p/sparda-bank-baden-wrttemberg-eg.html"
+},
+{
+"slug": "raiffeisenbank-eifel-eg",
+"nombre": "Raiffeisenbank Eifel eG",
+"sociedad": "Raiffeisenbank Eifel eG",
+"lei": "5299007Y7UJE5QV9QD03",
+"pais_origen": "DE",
+"supervisor": "Federal Financial Supervisory Authority (BaFin)",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": false,
+"via": "Art. 60",
+"base_legal_esma": "Article 60",
+"confianza": "oficial",
+"paises": "DE",
+"servicios": "e",
+"en_registro_desde": "2026-10-19",
+"ficha": "https://registromica.es/p/raiffeisenbank-eifel-eg.html"
+},
+{
+"slug": "volksbank-niederrhein-eg",
+"nombre": "Volksbank Niederrhein eG",
+"sociedad": "Volksbank Niederrhein eG",
+"lei": "529900SH7SAVJN3TFQ06",
+"pais_origen": "DE",
+"supervisor": "Federal Financial Supervisory Authority (BaFin)",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": false,
+"via": "Art. 60",
+"base_legal_esma": "Article 60",
+"confianza": "oficial",
+"paises": "DE",
+"servicios": "e",
+"en_registro_desde": "2026-10-22",
+"ficha": "https://registromica.es/p/volksbank-niederrhein-eg.html"
+},
+{
+"slug": "volksbank-in-ostwestfalen-eg",
+"nombre": "Volksbank in Ostwestfalen eG",
+"sociedad": "Volksbank in Ostwestfalen eG",
+"lei": "529900PUK9IU39VCWK54",
+"pais_origen": "DE",
+"supervisor": "Federal Financial Supervisory Authority (BaFin)",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": false,
+"via": "Art. 60",
+"base_legal_esma": "Article 60",
+"confianza": "oficial",
+"paises": "DE",
+"servicios": "e",
+"en_registro_desde": "2026-11-18",
+"ficha": "https://registromica.es/p/volksbank-in-ostwestfalen-eg.html"
+},
+{
+"slug": "volksbank-oberberg-eg",
+"nombre": "Volksbank Oberberg eG",
+"sociedad": "Volksbank Oberberg eG",
+"lei": "529900OSV01JOCMF4Z23",
+"pais_origen": "DE",
+"supervisor": "Federal Financial Supervisory Authority (BaFin)",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": false,
+"via": "Art. 60",
+"base_legal_esma": "Article 60",
+"confianza": "oficial",
+"paises": "DE",
+"servicios": "e",
+"en_registro_desde": "2026-11-19",
+"ficha": "https://registromica.es/p/volksbank-oberberg-eg.html"
+},
+{
+"slug": "volksbank-in-der-hohen-mark-eg",
+"nombre": "Volksbank in der Hohen Mark eG",
+"sociedad": "Volksbank in der Hohen Mark eG",
+"lei": "529900NK7TIIGQEJ6L07",
+"pais_origen": "DE",
+"supervisor": "Federal Financial Supervisory Authority (BaFin)",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": false,
+"via": "Art. 60",
+"base_legal_esma": "Article 60",
+"confianza": "oficial",
+"paises": "DE",
+"servicios": "e",
+"en_registro_desde": "2026-10-30",
+"ficha": "https://registromica.es/p/volksbank-in-der-hohen-mark-eg.html"
+},
+{
+"slug": "penning-financial-services-aps",
+"nombre": "Penning",
+"sociedad": "Penning Financial Services ApS",
+"lei": "9845000E4A7414709361",
+"pais_origen": "DK",
+"supervisor": "Finanstilsynet",
+"activo": true,
+"fin_autorizacion": "",
+"puede_operar_en_espana": true,
+"via": "Art. 59",
+"base_legal_esma": "",
+"confianza": "media",
+"paises": "AT BE BG CY CZ DE DK EE ES FI FR GR HR HU IE IS IT LI LT LU LV MT NL NO PL PT RO SE SI SK",
+"servicios": "a c d e g i j",
+"en_registro_desde": "2026-01-15",
+"ficha": "https://registromica.es/p/penning-financial-services-aps.html"
 },
 {
 "slug": "lunar-block-a-s",
@@ -4554,7 +4716,7 @@
 "confianza": "media",
 "paises": "IT",
 "servicios": "a c d e j",
-"en_registro_desde": "",
+"en_registro_desde": "2026-05-06",
 "ficha": "https://registromica.es/p/checksig-s-r-l-societ-benefit.html"
 },
 {
@@ -4572,7 +4734,7 @@
 "confianza": "media",
 "paises": "IT",
 "servicios": "c",
-"en_registro_desde": "",
+"en_registro_desde": "2026-06-04",
 "ficha": "https://registromica.es/p/olliv-italia-s-r-l.html"
 },
 {
@@ -4590,7 +4752,7 @@
 "confianza": "media",
 "paises": "IT",
 "servicios": "c d f",
-"en_registro_desde": "",
+"en_registro_desde": "2026-06-10",
 "ficha": "https://registromica.es/p/riv-digital-s-r-l.html"
 },
 {
@@ -4608,7 +4770,7 @@
 "confianza": "media",
 "paises": "IT",
 "servicios": "a c d e f j",
-"en_registro_desde": "",
+"en_registro_desde": "2026-06-16",
 "ficha": "https://registromica.es/p/conio-s-r-l.html"
 },
 {
@@ -4626,7 +4788,7 @@
 "confianza": "alta",
 "paises": "IT",
 "servicios": "a j",
-"en_registro_desde": "",
+"en_registro_desde": "2026-04-27",
 "ficha": "https://registromica.es/p/banca-sella.html"
 },
 {
@@ -4644,7 +4806,7 @@
 "confianza": "media",
 "paises": "IT",
 "servicios": "a c d e f j",
-"en_registro_desde": "",
+"en_registro_desde": "2026-06-24",
 "ficha": "https://registromica.es/p/cryptosmart-s-p-a.html"
 },
 {
@@ -4662,7 +4824,7 @@
 "confianza": "media",
 "paises": "FR IT",
 "servicios": "a c d e f h i j",
-"en_registro_desde": "",
+"en_registro_desde": "2026-06-30",
 "ficha": "https://registromica.es/p/young-platform-s-p-a.html"
 },
 {
@@ -4680,7 +4842,7 @@
 "confianza": "media",
 "paises": "AT CY CZ DE EE ES FR GR IE IT LI LT LU MT NL PL PT",
 "servicios": "a i",
-"en_registro_desde": "",
+"en_registro_desde": "2026-06-30",
 "ficha": "https://registromica.es/p/hodlie-s-r-l.html"
 },
 {
@@ -4698,7 +4860,7 @@
 "confianza": "baja",
 "paises": "AT BE BG CY CZ DE DK EE ES FI FR GR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK",
 "servicios": "a c d j",
-"en_registro_desde": "",
+"en_registro_desde": "2026-06-30",
 "ficha": "https://registromica.es/p/hercle-s-r-l.html"
 },
 {
@@ -4716,7 +4878,7 @@
 "confianza": "media",
 "paises": "AT BE BG CY CZ DE DK EE ES FI FR GR HR HU IE IT LT LU LV MT NL PL PT RO SE SI SK",
 "servicios": "a c d e j",
-"en_registro_desde": "",
+"en_registro_desde": "2026-10-08",
 "ficha": "https://registromica.es/p/youhodler-italy-s-r-l.html"
 },
 {
