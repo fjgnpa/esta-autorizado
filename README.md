@@ -31,6 +31,7 @@ Web: https://fjgnpa.github.io/esta-autorizado/
 - `python3 scripts/logos.py` — descarga una vez el icono oficial de cada dominio (portada: apple-touch-icon/icon/manifest; respaldo: favicon.ico, favicons de DuckDuckGo y Google), lo normaliza a PNG 128×128 en `site/assets/logos/` y guarda el mapa marca/ficha → dominio → logo en `data/logos.json`. Detecta iconos genéricos, vacíos, marcadores de posición o diminutos (<32 px) y deja monograma. Solo baja dominios nuevos (o fallidos hace >30 días; `--retry` fuerza, `--only=dominio,...` rehace). Lo llama `refresh.py` y nunca rompe el build.
 - Dominios: los de la web del registro ESMA; para marcas sin web en el registro, `data/brand_domains.json` (verificados en su portada o anotados con `verifiedManual`). Para forzar monograma: `"overrides": {"Marca o slug": null}` en `data/logos.json`.
 - La web no enlaza a terceros para logos ni tipografía (Inter, SIL OFL, en `site/assets/fonts/`).
+- Analítica: GoatCounter sin cookies (`registromica.goatcounter.com`), script versionado `count.v5.js` con SRI y CSP limitada a `gc.zgo.at` (script) y `registromica.goatcounter.com` (connect/img). Constantes `GC_*` en `scripts/build_site.py`.
 - Marca y favicons: `/tmp/pwv/bin/python scripts/brand_assets.py`; imagen OG: `/tmp/pwv/bin/python scripts/og.py` (necesitan Playwright, se ejecutan a mano).
 - Capturas: `/tmp/pwv/bin/python scripts/screens.py` con el sitio servido en `localhost:8765` → `screens/v3-*.png`.
 
