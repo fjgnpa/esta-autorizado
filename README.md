@@ -19,7 +19,8 @@ Web: https://fjgnpa.github.io/esta-autorizado/
 ## Clasificación (resumen; detalle en metodologia.html)
 1. `ac_legal_basis` de ESMA: «Article 63» → licencia CASP (Art. 59); «Article 60» → notificación (Art. 60). Prevalece siempre.
 2. Si está vacío: `data/overrides.json` (correcciones verificadas con fuente) y después la inferencia (comentarios ESMA, cryptocodes.eu, CNMV, BCE, registro MiFID).
-3. «Puede operar en España» exige autorización vigente (sin fecha de fin pasada) y España como origen o país notificado.
+3. «Puede operar en España» exige autorización vigente (sin fecha de fin pasada), ya iniciada (fecha de inicio de ESMA alcanzada; si es futura: «autorizado, empieza el dd/mm», fuera de los activos y de las descargas como `activo`, con `inicio_pendiente`) y España como origen o país notificado. `build_site.py` recalcula este estado con la fecha del build.
+- `data/editorial.json`: fichas editoriales de las marcas más buscadas (solo hechos con fuente primaria y fecha; el estado MiCA, el supervisor y la fecha salen de ESMA). Revisa `reviewed` al editarlas.
 4. Marcas sin sociedad: monederos de autocustodia → «No aplica»; bancos/pagos → «Sin servicios cripto MiCA en el registro»; resto → «No figura».
 - `data/slugs.json` fija la URL de cada ficha por LEI (o nombre legal): no cambia aunque cambie el orden del registro. Las sociedades que desaparecen conservan su ficha («ya no figura», `noindex`).
 

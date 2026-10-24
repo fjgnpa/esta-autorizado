@@ -25,7 +25,22 @@ def fit(cands, n=60):
         if len(c) <= n: return c
     c = cands[-1]; return c[:n-1].rsplit(" ", 1)[0] + "…"
 def clip(s, n=160): return s if len(s) <= n else s[:n-1].rsplit(" ", 1)[0].rstrip(",.;:") + "…"
-TODAY = datetime.date.today()
+try:
+    from zoneinfo import ZoneInfo; TODAY = datetime.datetime.now(ZoneInfo("Europe/Madrid")).date()
+except Exception: TODAY = datetime.date.today()
+# Estado a la fecha del build (no solo del refresco): retirada si la fecha de fin ya pasó; «pendiente» si la autorización
+# empieza en el futuro (autorizada, pero aún no puede operar). Así un build posterior activa a los pendientes sin refrescar.
+_TD = TODAY.isoformat()
+for _e in E:
+    _e["active"] = not (_e.get("end") and _e["end"] <= _TD)
+    _e["pending"] = _e["active"] and bool(_e.get("d")) and _e["d"] > _TD
+    _e["es"] = _e["active"] and not _e["pending"] and ("ES" in (_e.get("cs") or []) or _e["h"] == "ES")
+_op = [x for x in E if x["active"] and not x["pending"]]
+M.update({"count": len(_op), "pending": sum(x["pending"] for x in E), "inactive": sum(not x["active"] for x in E), "es": sum(x["es"] for x in E),
+          "k": {k: sum(x["k"] == k for x in _op) for k in ("art59", "art60", "incierto")},
+          "conf": {c: sum(x["conf"] == c for x in _op) for c in ("oficial", "verificado", "alta", "media", "baja")},
+          "official": sum(x["conf"] == "oficial" for x in _op)})
+assert not any(x["es"] and (x["pending"] or not x["active"]) for x in E)
 CHECKED = M.get("checked") or M["date"]
 STALE_DAYS = (TODAY - datetime.date.fromisoformat(CHECKED)).days
 C = {"AT":"Austria","BE":"Bélgica","BG":"Bulgaria","CY":"Chipre","CZ":"Chequia","DE":"Alemania","DK":"Dinamarca","EE":"Estonia","ES":"España","FI":"Finlandia","FR":"Francia","GR":"Grecia","EL":"Grecia","HR":"Croacia","HU":"Hungría","IE":"Irlanda","IS":"Islandia","IT":"Italia","LI":"Liechtenstein","LT":"Lituania","LU":"Luxemburgo","LV":"Letonia","MT":"Malta","NL":"Países Bajos","NO":"Noruega","PL":"Polonia","PT":"Portugal","RO":"Rumanía","SE":"Suecia","SI":"Eslovenia","SK":"Eslovaquia"}
@@ -83,19 +98,23 @@ ICON = {"check":'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3
  "bank":'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5L12 4l8.5 5.5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3.5 20.5h17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
  "es":'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="currentColor"/></svg>',
  "mail":'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M4 7.5l8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>'}
+ICON["clock"] = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 4.8V8l2.2 1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 ICON["ext"] = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7.5 8.5M11.5 9.5V13h-8.5V4.5H7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 # ---- estados (nunca solo por color: siempre icono + texto)
 def est(e):
     if not e.get("active", True): return "ret"
+    if e.get("pending"): return "pend"
     return "ok" if e["es"] else "no"
 def esb(e):
     s = est(e)
     if s == "ret": return f'<span class="pill no">{ICON["x"]}Autorización retirada{(" · " + esc(fmt(e["end"]))) if e.get("end") else ""}</span>'
+    if s == "pend": return f'<span class="pill pend">{ICON["clock"]}Autorizado, empieza el {esc(fmt(e["d"]))}</span>'
     return f'<span class="pill {"ok" if e["es"] else "no"}">{ICON["check"] if e["es"] else ICON["x"]}{"Puede operar en España" if e["es"] else "España no notificada"}</span>'
 def kb(e): c, t, a = kind(e); return f'<span class="pill {c}" title="{esc(e["why"])}">{t}<em>{a}</em></span>'
 BST = {"ok": ("ok", "check", "Puede operar en España", "Puede operar en España"),
        "sin": ("no", "minus", "España no notificada", "Sin España notificada"),
        "ret": ("no", "x", "Autorización retirada", "Autorización retirada"),
+       "pend": ("pend", "clock", "Autorizado, aún no empieza", "Empieza más adelante"),
        "nofig": ("no", "x", "No figura en el registro MiCA", "No figura"),
        "auto": ("neu", "minus", "No aplica · monedero de autocustodia", "No aplica · autocustodia"),
        "nocr": ("neu", "minus", "Sin servicios cripto MiCA en el registro", "Sin servicios cripto MiCA")}
@@ -147,6 +166,7 @@ for b in B:
     b["es"] = any(x["es"] for x in ents_)
     if b["es"]: b["st"] = "ok"
     elif ents_ and not any(x.get("active", True) for x in ents_): b["st"] = "ret"
+    elif any(x.get("pending") for x in ents_): b["st"] = "pend"
     elif ents_: b["st"] = "sin"
     else: b["st"] = STMAP.get(b.get("status"), "nofig")
 brandsOf = {}
@@ -163,6 +183,7 @@ def bsub(b):
     if not b["e"]: return {"auto": "No custodia tus fondos", "nocr": "Sin sociedad cripto en el registro"}.get(b["st"], "Sin sociedad en el registro")
     e = bySlug[next((x for x in b["e"] if bySlug[x]["es"]), b["e"][0])]
     if not e.get("active", True): return f'{C.get(e["h"], e["h"])} · retirada {fmt(e["end"])}'
+    if e.get("pending"): return f'{C.get(e["h"], e["h"])} · empieza el {fmt(e["d"])}'
     return f'{C.get(e["h"], e["h"])} · {kind(e)[2] if not kind(e)[0].startswith("unk") else "vía por confirmar"}'
 def bcard(b, up="", eager=False):
     return f'<a class="bc" href="{up}marca/{b["slug"]}.html" data-st="{b["st"]}" data-n="{esc(slugify(b["b"]) + " " + " ".join(b.get("aliases", [])))}">{blogo(b, "md", up, eager)}<span class="bc-t"><b>{esc(b["b"])}</b><small>{esc(bsub(b))}</small>{bstatus(b)}</span></a>'
@@ -184,6 +205,7 @@ def stsmall(e):
     s = est(e)
     if s == "ok": return f'<span class="st ok">{ICON["check"]}Puede operar en España</span>'
     if s == "ret": return f'<span class="st no">{ICON["x"]}Autorización retirada</span>'
+    if s == "pend": return f'<span class="st pend">{ICON["clock"]}Autorizado, empieza el {esc(fmt(e["d"]))}</span>'
     return f'<span class="st no">{ICON["minus"]}Sin España notificada</span>'
 def chg_teaser():
     if not last: return ""
@@ -214,7 +236,7 @@ home = f'''<section class="hero"><div class="aurora" aria-hidden="true"><i></i><
 <section class="sec how"><div class="sec-h"><div><span class="kick">Guía rápida</span><h2>Qué significa cada etiqueta</h2></div></div><div class="grid3">
 <div class="card"><span class="ic lic">{ICON["shield"]}</span><h3>Licencia MiCA completa</h3><p>Autorización como proveedor de servicios de criptoactivos (CASP) concedida por un supervisor de la UE/EEE. Si ESMA no publica la base legal y la deducimos, se marca como «inferida».</p><p><span class="pill lic">Licencia MiCA completa<em>Art. 59</em></span></p></div>
 <div class="card"><span class="ic ntf">{ICON["bank"]}</span><h3>Notificación de entidad financiera</h3><p>Bancos, empresas de inversión y gestoras ya supervisados que notifican servicios cripto sin licencia CASP aparte.</p><p><span class="pill ntf">Notificación de entidad financiera<em>Art. 60</em></span></p></div>
-<div class="card"><span class="ic ok">{ICON["es"]}</span><h3>Puede operar en España</h3><p>Autorización vigente y España como país de origen o entre los países notificados. Una autorización retirada nunca cuenta.</p><p><span class="pill ok">{ICON["check"]}Puede operar en España</span></p></div></div>
+<div class="card"><span class="ic ok">{ICON["es"]}</span><h3>Puede operar en España</h3><p>Autorización vigente y España como país de origen o entre los países notificados. Una autorización retirada o que aún no ha empezado nunca cuenta.</p><p><span class="pill ok">{ICON["check"]}Puede operar en España</span></p></div></div>
 <p class="muted center" style="margin-top:22px"><a href="proveedores.html">Lista completa de proveedores</a> · <a href="guia-mica.html">Guía MiCA: licencia, notificación y periodo transitorio</a> · <a href="metodologia.html">Cómo lo determinamos →</a></p></section>
 {newsletter()}</div>'''
 ORG = {"@context":"https://schema.org","@type":"Organization","name":"Registro MiCA","url":BASE,"logo":BASE+"assets/brand/icon-512.png"}
@@ -262,7 +284,7 @@ def entld(e, title, desc):
     if e.get("addr"): org["address"] = e["addr"]
     w = safe_url(e.get("w") or "")
     if w: org["url"] = w
-    if e.get("active", True) and e["cs"]: org["areaServed"] = [C.get(x, x) for x in e["cs"]]
+    if e.get("active", True) and not e.get("pending") and e["cs"]: org["areaServed"] = [C.get(x, x) for x in e["cs"]]
     return {"@context": "https://schema.org", "@type": "WebPage", "name": title, "description": desc, "url": BASE + f'p/{e["slug"]}.html', "inLanguage": "es",
             "dateModified": M["date"], "isPartOf": {"@type": "WebSite", "name": "Registro MiCA", "url": BASE}, "about": org}
 for e in E:
@@ -274,6 +296,9 @@ for e in E:
         cm = f' Comentario de ESMA: «{esc(e["cm"])}».' if e.get("cm") else ""
         vd = verdict("v-no", f'Autorización retirada el {esc(fmt(e["end"]))}: ya no puede operar', f'El registro de ESMA indica que su autorización terminó el {esc(fmt(e["end"]))}.{cm} Desde esa fecha no puede prestar servicios cripto con esta autorización, tampoco en España. Datos del registro ESMA a {esc(fmt(M["date"]))}.')
         meta_d = f'Autorización MiCA retirada el {fmt(e["end"])}: ya no puede operar.'
+    elif e.get("pending"):
+        vd = verdict("v-neu", f'Autorizado, empieza el {esc(fmt(e["d"]))}: aún no puede operar', f'El registro de ESMA indica que su autorización empieza a aplicarse el {esc(fmt(e["d"]))}. Hasta esa fecha no cuenta como proveedor activo ni puede prestar servicios cripto con esta autorización{"" if not ("ES" in e["cs"] or e["h"] == "ES") else ", tampoco en España"}. Datos del registro ESMA a {esc(fmt(M["date"]))}.')
+        meta_d = f'Autorizado, empieza el {fmt(e["d"])}: aún no puede operar.'
     elif e["es"]:
         vd = verdict("v-ok", "Sí: puede prestar servicios cripto en España", ("Su país de origen es España." if e["h"] == "ES" else "Figura en el registro MiCA con España entre sus países de servicio.") + f' Datos del registro ESMA a {esc(fmt(M["date"]))}.')
         meta_d = "Puede operar en España."
@@ -291,7 +316,7 @@ for e in E:
 <section class="phead card"{f' style="--brand:{bc}"' if bc else ""}>{elogo(e, "lg", "../", True)}<div><h1>{esc(e["n"])}</h1><p class="muted">{esc(e["l"])}{f' · marcas: {esc(", ".join(e["brands"]))}' if e["brands"] else ""}</p>
 <div class="pills">{esb(e)}{kb(e)}</div></div></section>
 {vd}
-<dl class="facts"><div><dt>País de origen</dt><dd>{esc(hs)}</dd></div><div><dt>{"Autorización hasta" if not act else "En el registro desde"}</dt><dd>{esc(fmt(e["end"])) if not act else since}</dd></div><div><dt>Servicios MiCA</dt><dd>{len(e["s"])}</dd></div><div><dt>Países donde opera</dt><dd>{0 if not act else len(e["cs"])}</dd></div></dl>
+<dl class="facts"><div><dt>País de origen</dt><dd>{esc(hs)}</dd></div><div><dt>{"Autorización hasta" if not act else ("Empieza el" if e.get("pending") else "En el registro desde")}</dt><dd>{esc(fmt(e["end"])) if not act else since}</dd></div><div><dt>Servicios MiCA</dt><dd>{len(e["s"])}</dd></div><div><dt>Países donde opera</dt><dd>{0 if not act else len(e["cs"])}</dd></div></dl>
 <section class="card"><h2>Tipo de habilitación</h2><p><span class="pill {c}">{t}<em>{a}</em></span> <span class="conf conf-{esc(e["conf"])}">{CONF.get(e["conf"], e["conf"])}</span></p><p>{esc(e["why"])}.</p><p class="muted">Fuente: {f'<a href="{esc(srcu)}" {EXT}>{esc(SRCN.get(e["src"], e["src"]))}</a>' if srcu else esc(SRCN.get(e["src"], e["src"]))}</p></section>
 <section class="card"><h2>Ficha del registro</h2><dl class="kv">
 <dt>Sociedad</dt><dd>{esc(e["l"])}</dd><dt>País de origen</dt><dd>{esc(hs)}</dd><dt>Supervisor</dt><dd>{esc(e["a"])}</dd>
@@ -346,12 +371,12 @@ met = f'''<div class="wrap narrow"><header class="ph"><p class="eyebrow">Metodol
 <li><b>Registro MiFID/AIFMD/UCITS de ESMA</b>: si el LEI es empresa de inversión o gestora → probable Art. 60, confianza media.</li>
 <li>Si no es ninguna de las anteriores → <span class="pill lic inf">Licencia MiCA (inferida)<em>Art. 59 · inferido</em></span>, confianza media.</li>
 <li>Entidades de dinero electrónico u otras IFM → vía no determinada, confianza baja.</li></ol></section>
-<section class="card"><h2>3. ¿Puede operar en España?</h2><p>Solo si la autorización está <b>vigente</b> (sin fecha de fin, o con fecha de fin futura) y España es su país de origen o figura entre sus países notificados. Una entidad con fecha de fin pasada aparece como <span class="pill no">{ICON["x"]}Autorización retirada</span> y no cuenta en ningún total. Si el registro no indica países, se entiende que solo opera en su país de origen.</p></section>
+<section class="card"><h2>3. ¿Puede operar en España?</h2><p>Solo si la autorización está <b>vigente</b> (sin fecha de fin, o con fecha de fin futura), <b>ya ha empezado</b> (si ESMA indica una fecha de inicio futura, se muestra «autorizado, empieza el dd/mm» y no cuenta como activo hasta ese día) y España es su país de origen o figura entre sus países notificados. Una entidad con fecha de fin pasada aparece como <span class="pill no">{ICON["x"]}Autorización retirada</span> y no cuenta en ningún total. Si el registro no indica países, se entiende que solo opera en su país de origen.</p></section>
 <section class="card"><h2>4. Marcas sin sociedad en el registro</h2><p>Una marca sin sociedad en el registro aparece como <span class="pill no">{ICON["x"]}No figura en el registro MiCA</span>, salvo dos casos neutros:</p><ul class="steps">
 <li><b>Monederos de autocustodia</b> (Ledger, Trezor, MetaMask…): <span class="pill neu">{ICON["minus"]}No aplica · monedero de autocustodia</span>. El software o hardware que no custodia tus fondos no es un servicio cripto de MiCA; las compras o canjes dentro de la app los presta un tercero, que sí debe figurar.</li>
 <li><b>Bancos y servicios de pago</b> sin entidad en el registro: <span class="pill neu">{ICON["minus"]}Sin servicios cripto MiCA en el registro</span>. Es un hecho del registro, no un juicio: si te ofrecen cripto, ese servicio no está autorizado bajo MiCA.</li></ul>
 <p>El aviso de la lista de entidades no conformes de ESMA solo se muestra si el nombre comercial o legal coincide exactamente, o si la coincidencia se ha revisado a mano.</p></section>
-<section class="card"><h2>Resultado actual</h2><dl class="kv"><dt>Proveedores activos</dt><dd>{M["count"]} (más {M.get("inactive", 0)} con autorización retirada)</dd><dt>Pueden operar en España</dt><dd>{M["es"]}</dd><dt>Art. 59</dt><dd>{K["art59"]}</dd><dt>Art. 60</dt><dd>{K["art60"]}</dd><dt>No determinado</dt><dd>{K["incierto"]}</dd>
+<section class="card"><h2>Resultado actual</h2><dl class="kv"><dt>Proveedores activos</dt><dd>{M["count"]} (más {M.get("pending", 0)} autorizados que empiezan más adelante y {M.get("inactive", 0)} con autorización retirada)</dd><dt>Pueden operar en España</dt><dd>{M["es"]}</dd><dt>Art. 59</dt><dd>{K["art59"]}</dd><dt>Art. 60</dt><dd>{K["art60"]}</dd><dt>No determinado</dt><dd>{K["incierto"]}</dd>
 <dt>Dato oficial / verificado</dt><dd>{CF.get("oficial", 0)} / {CF.get("verificado", 0)}</dd><dt>Inferencia alta / media / baja</dt><dd>{CF["alta"]} / {CF["media"]} / {CF["baja"]}</dd><dt>Fuente del registro</dt><dd>{esc(M["source"])}</dd><dt>Última comprobación</dt><dd>{esc(fmt(CHECKED))}</dd></dl></section>
 <section class="card"><h2>Calidad de los datos</h2><p>Antes de publicar, cada actualización pasa controles automáticos: columnas obligatorias, un mínimo de proveedores, variaciones bruscas respecto a la semana anterior (más de un 15 % menos o un 30 % más), entidades de referencia que deben seguir presentes y nombres con caracteres sospechosos. Si algo falla, no se publica nada y se mantiene la versión anterior. Si los datos tienen más de 10 días, la web muestra un aviso.</p>
 <p>Las webs del registro se normalizan (por ejemplo, «https.//» o varias URL en un mismo campo) y solo se enlazan direcciones http/https válidas. Las fechas sin año del registro se muestran tal cual, sin inventar el año.</p></section>
@@ -395,10 +420,62 @@ priv = f"""<div class="wrap narrow legal"><header class="ph"><p class="eyebrow">
 (S/"privacidad.html").write_text(page("Política de privacidad · Registro MiCA", "Privacidad de Registro MiCA: sin cookies ni recursos de terceros; la newsletter se gestiona en Beehiiv solo si decides abrirla.", priv, 0, "privacidad.html"))
 # ---- brand pages
 CATN = {"exchange":"Exchange","bróker":"Bróker","banco/neobanco/pagos":"Banco, neobanco o pagos","wallet":"Monedero","compra/rampa/app":"App de compra","institucional/custodia":"Institucional / custodia"}
-def faq(qas): return {"@context":"https://schema.org","@type":"FAQPage","inLanguage":"es","dateModified":M["date"],"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in qas]}
+def faq(qas, dm=None): return {"@context":"https://schema.org","@type":"FAQPage","inLanguage":"es","dateModified":dm or M["date"],"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in qas]}
 def related(b, n=8):
     pool = [x for x in B if x is not b and x["cat"] == b["cat"]] + [x for x in B if x is not b and x["cat"] != b["cat"]]
     return '<div class="grid">' + "".join(bcard(x, "../") for x in pool[:n]) + '</div>'
+# ---- fichas editoriales (data/editorial.json): solo hechos con fuente primaria; estado, fecha y supervisor salen de ESMA
+try: ED = json.load(open(R/"data/editorial.json"))
+except Exception: ED = {"brands": {}}
+try: CNMV_TXT = (R/"data/sources/cnmv.txt").read_text(encoding="utf-8", errors="ignore").upper()
+except Exception: CNMV_TXT = ""
+CNMV_PDF = "https://www.cnmv.es/Docportal/Proveedores-Servicios-Criptoactivos/Listado_ProveedoresCriptoactivos.pdf"
+CNMV_WARN = "https://www.cnmv.es/portal/advertencias?lang=es"
+EDK = {"datos": "datos del", "doc": "documento del", "consulta": "consultado el"}
+def editorial(b, ents):
+    x = (ED.get("brands") or {}).get(b["b"])
+    if not x: return "", None
+    rev = ED.get("reviewed") or M["date"]
+    src = {"esma": {"t": "ESMA: registro provisional MiCA (CASPS.csv)", "u": ESMA_URL, "d": M["date"], "k": "datos"},
+           "cnmv": {"t": "CNMV: relación de proveedores de servicios de criptoactivos (PDF)", "u": CNMV_PDF, "d": ED.get("cnmvListDate") or CHECKED, "k": "doc"},
+           **(x.get("sources") or {})}
+    order = []
+    def cite(ids):
+        out = []
+        for i in ids:
+            if i not in src: raise SystemExit(f"editorial.json: fuente desconocida {i} en {b['b']}")
+            if i not in order: order.append(i)
+            n = order.index(i) + 1; out.append(f'<a href="#f-{b["slug"]}-{n}" aria-label="Fuente {n}">{n}</a>')
+        return f'<sup class="cite">{",".join(out)}</sup>' if out else ""
+    e0 = next((e for e in ents if e["es"]), None) or next((e for e in ents if e.get("active", True)), None) or (ents[0] if ents else None)
+    if e0:
+        f_ent = f'<b>{esc(e0["l"])}</b>{cite(["esma"])}<small>LEI <code>{esc(e0["lei"] or "—")}</code></small>'
+        f_sup = f'{esc(e0["a"])}{cite(["esma"])}<small>{esc(C.get(e0["h"], e0["h"]))}</small>'
+        c, t, a = kind(e0)
+        base = {"Article 63": "base legal ESMA: Art. 63", "Article 60": "base legal ESMA: Art. 60"}.get(e0.get("lb"), "ESMA no publica la base legal · " + CONF.get(e0["conf"], e0["conf"]).lower())
+        f_st = f'{esb(e0)}{cite(["esma"])}<small>{esc(t)} ({esc(a)}) · en el registro desde {esc(fmt(e0["d"])) if e0.get("d") else "—"} · {esc(base)}</small>'
+    else:
+        f_ent = f'<b>Ninguna en el registro</b>{cite(["esma"])}<small>Ninguna sociedad de la marca figura en el registro MiCA</small>'
+        f_sup = f'—<small>Sin sociedad en el registro</small>'
+        f_st = f'<span class="pill no">{ICON["x"]}No figura en el registro MiCA</span>{cite(["esma"])}<small>Registro de ESMA a {esc(fmt(M["date"]))}</small>'
+    cn = x.get("cnmv")
+    if cn and cn.get("key", "").upper() not in CNMV_TXT:
+        print(f"aviso editorial: {b['b']} ya no aparece en el listado CNMV descargado ({cn.get('key')}); se muestra como «no figura»"); cn = None
+        src["cnmv"]["d"] = CHECKED; src["cnmv"]["k"] = "consulta"
+    if cn: f_cn = f'<span class="pill ok">{ICON["check"]}Figura</span>{cite(["cnmv"])}<small>Como «{esc(cn["name"])}» · {esc(cn["type"])} · puede prestar servicios desde el {esc(fmt(cn["from"]))}</small>'
+    else: f_cn = f'<span class="pill no">{ICON["x"]}No figura</span>{cite(["cnmv"])}<small>Relación de proveedores de la CNMV del {esc(fmt(src["cnmv"]["d"]))}</small>'
+    con = x.get("contract") or {}
+    note = x.get("note")
+    checks = "".join(f"<li>{esc(t)}{cite(x.get('checkSrc') or []) if i == 0 else ''}</li>" for i, t in enumerate(x.get("check") or []))
+    checks += f'<li>Si una web o un intermediario te ofrece la marca con otro nombre, búscalo en las <a href="{CNMV_WARN}" {EXT}>advertencias de la CNMV sobre entidades no autorizadas</a> («chiringuitos»).</li>'
+    srcs = "".join(f'<li id="f-{b["slug"]}-{n}"><a href="{esc(src[i]["u"])}" {EXT}>{esc(src[i]["t"])}</a> <span class="muted">· {EDK.get(src[i].get("k"), "consultado el")} {esc(fmt(src[i]["d"]))}</span></li>' for n, i in enumerate(order, 1))
+    h = f"""<section class="ed card" aria-labelledby="ed-{b["slug"]}"><div class="ed-h"><span class="ed-ic">{ICON["shield"]}</span><div><p class="kick">Ficha editorial · revisada el <time datetime="{esc(rev)}">{esc(fmt(rev))}</time></p><h2 id="ed-{b["slug"]}">{esc(b["b"])} en España: quién presta el servicio</h2></div></div>
+<dl class="ed-g"><div><dt>Sociedad para la UE y España</dt><dd>{f_ent}</dd></div><div><dt>Supervisor de origen</dt><dd>{f_sup}</dd></div><div><dt>Estado MiCA</dt><dd>{f_st}</dd></div><div><dt>Listado de la CNMV</dt><dd>{f_cn}</dd></div></dl>
+{f'<p class="ed-p">{esc(con["t"])}{cite(con.get("src") or [])}</p>' if con.get("t") else ""}{f'<p class="ed-note">{esc(note["t"])}{cite(note.get("src") or [])}</p>' if note else ""}
+<div class="ed-chk"><h3>{ICON["search"]}Qué comprobar si usas {esc(b["b"])} desde España</h3><ul>{checks}</ul><p class="ed-cta"><a class="btn btn-ghost" href="{CNMV_WARN}" {EXT}>Advertencias de la CNMV (chiringuitos){ICON["ext"]}</a> <a class="btn btn-ghost" href="{CNMV_PDF}" {EXT}>Listado de proveedores de la CNMV{ICON["ext"]}</a></p></div>
+<details class="ed-src" open><summary>Fuentes <span class="n">{len(order)}</span></summary><ol>{srcs}</ol></details>
+<p class="ed-disc">Información objetiva sobre el registro, no asesoramiento de inversión ni recomendación de ninguna plataforma. Si un dato no se ha podido comprobar en una fuente oficial o en la propia empresa, no aparece.</p></section>"""
+    return h, {"rev": rev, "contract": con.get("t")}
 LASTMOD = {}
 for b in B:
     nm = esc(b["b"]); ents = [bySlug[x] for x in b["e"]]; dt = fmt(M["date"]); bn = b["b"]; st = b["st"]
@@ -414,6 +491,11 @@ for b in B:
         vtxt = f'Su sociedad <b>{esc(e0["l"])}</b> ({esc(C.get(e0["h"], e0["h"]))}) tuvo autorización MiCA, pero el registro de ESMA indica que terminó el <b>{esc(fmt(e0["end"]))}</b>.{cm} Ya no puede prestar servicios cripto con esa autorización, tampoco en España.'
         a1 = f'No. La autorización MiCA de {e0["l"]} terminó el {fmt(e0["end"])} según el registro de ESMA a {dt}: ya no puede prestar servicios cripto con ella en España.'
         desc = f'No: la autorización MiCA de {bn} ({e0["l"]}) fue retirada el {fmt(e0["end"])} según ESMA. Ya no puede operar en España. Datos a {dt}.'
+    elif st == "pend":
+        e0 = min((x for x in ents if x.get("pending")), key=lambda x: x["d"]); ver = ("v-neu", f"{nm} está autorizado, pero aún no puede operar: empieza el {esc(fmt(e0['d']))}")
+        vtxt = f'Su sociedad <b>{esc(e0["l"])}</b> ({esc(C.get(e0["h"], e0["h"]))}) figura en el registro MiCA de ESMA con una autorización que empieza a aplicarse el <b>{esc(fmt(e0["d"]))}</b>. Hasta entonces no cuenta como proveedor activo.'
+        a1 = f'Todavía no. {e0["l"]} figura en el registro MiCA de ESMA a {dt} con una autorización que empieza el {fmt(e0["d"])}; hasta esa fecha no puede prestar servicios cripto con ella.'
+        desc = f'{bn} ({e0["l"]}) está autorizado en el registro MiCA de ESMA, pero su autorización empieza el {fmt(e0["d"])}. Datos a {dt}.'
     elif st == "sin":
         e0 = act[0] if act else ents[0]; ver = ("v-no", f"{nm} tiene autorización MiCA, pero no consta para España")
         vtxt = f'Su sociedad <b>{esc(e0["l"])}</b> ({esc(C.get(e0["h"], e0["h"]))}) figura en el registro MiCA, pero España no aparece entre sus países notificados.'
@@ -445,7 +527,7 @@ for b in B:
         qas.insert(1, (f"¿Es legal {bn} en España?", f'Sí. {bn} puede prestar servicios de criptoactivos en España: su sociedad {e0["l"]} figura en el registro MiCA de ESMA a {dt} con autorización vigente y {"España como país de origen" if e0["h"] == "ES" else "España entre sus países notificados"}.'))
     if ents:
         e0c = next((x for x in ents if x["es"]), ents[0]); hc = C.get(e0c["h"], e0c["h"])
-        if not e0c.get("active", True): pass
+        if not e0c.get("active", True) or e0c.get("pending"): pass
         elif e0c["h"] == "ES": qas.append((f"¿Está {bn} registrado en la CNMV?", f'Sí. {e0c["l"]} tiene su sede en España y figura en el registro MiCA de ESMA a {dt} con supervisor: {e0c["a"]}.'))
         elif e0c["es"]: qas.append((f"¿Necesita {bn} una licencia de la CNMV?", f'No una aparte. {e0c["l"]} está autorizada en {hc} ({e0c["a"]}) y España figura entre sus países notificados: una autorización MiCA vale en toda la UE y se extiende a otros países mediante notificación (pasaporte europeo). La CNMV publica en su web un listado de proveedores que incluye también a los que operan en España desde otro país.'))
         else: qas.append((f"¿Está {bn} registrado en la CNMV?", f'No consta para España. {e0c["l"]} está autorizada en {hc} ({e0c["a"]}), pero España no figura entre sus países notificados en el registro de ESMA a {dt}.'))
@@ -453,6 +535,8 @@ for b in B:
         qas.append((f"¿Está {bn} registrado en la CNMV?", f"No consta. A {dt}, ninguna sociedad de {bn} figura en el registro MiCA de ESMA, que recoge a todos los proveedores autorizados en la UE, también a los autorizados por la CNMV."))
     if st in ("sin", "ret", "nofig"): qas.insert(1, (f"¿Es legal {bn} en España?", f"No consta que {bn} pueda prestar servicios cripto en España: a {dt} no figura con autorización MiCA vigente para España en el registro de ESMA. Para el usuario no es ilegal usarlo, porque la obligación de estar autorizado es del proveedor, pero un proveedor sin autorización para España no ofrece las protecciones de MiCA y puede tener que dejar de prestar servicio."))
     elif st == "nocr": qas.append((f"¿Es ilegal usar {bn} desde España?", "Para el usuario no: la obligación de estar autorizado es del proveedor. Pero un proveedor sin autorización para España no ofrece las protecciones de MiCA y puede tener que dejar de prestar servicio."))
+    edh, edm = editorial(b, ents)
+    if edm and edm["contract"] and ents: qas.insert(2, (f"¿Con qué sociedad contrato si uso {bn} en España?", edm["contract"]))
     faqh = "".join(f'<details class="faq"{" open" if i==0 else ""}><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for i,(q,a) in enumerate(qas))
     bc = bcolor(b)
     pills = bstatus(b, True)
@@ -460,17 +544,18 @@ for b in B:
         e0k = next((x for x in ents if x["es"]), ents[0]); pills += kb(e0k)
     entl = "".join(f'<a class="rc" href="../p/{x["slug"]}.html"><span class="rc-v {"ok" if x["es"] else "no"}" aria-hidden="true"></span>{elogo(x, "md", "../")}<div class="b"><h3>{esc(x["l"])}</h3><div class="sub">{esc(C.get(x["h"], x["h"]))} · {esc(x["a"])}</div><div class="pills">{esb(x)}{kb(x)}</div></div><span class="go" aria-hidden="true">→</span></a>' for x in ents)
     body = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../index.html">Inicio</a><span>/</span><a href="../marcas.html">Marcas</a><span>/</span><span>{nm}</span></nav>
-<section class="phead card"{f' style="--brand:{bc}"' if bc else ""}>{blogo(b, "lg", "../", True)}<div><p class="eyebrow">{esc(CATN.get(b["cat"], b["cat"]))} · registro ESMA a {esc(dt)}</p><h1>¿Está {nm} autorizado en España?</h1>
+<section class="phead card"{f' style="--brand:{bc}"' if bc else ""}>{blogo(b, "lg", "../", True)}<div><p class="eyebrow">{esc(CATN.get(b["cat"], b["cat"]))} · registro ESMA a {esc(dt)}{f' · revisado el <time datetime="{esc(edm["rev"])}">{esc(fmt(edm["rev"]))}</time>' if edm else ""}</p><h1>¿Está {nm} autorizado en España?</h1>
 <div class="pills">{pills}</div></div></section>
 {verdict(ver[0], ver[1], vtxt, (('<p class="muted" style="margin-top:.5em">'+esc(b["note"])+'</p>') if b["note"] else "") + warn)}
+{edh}
 {('<section class="card"><h2>Sociedades en el registro <span class="n">'+str(len(ents))+'</span></h2><div class="ent-list">' + entl + '</div></section>') if ents else ''}
 <section class="card"><h2>Preguntas frecuentes</h2>{faqh}<p class="muted" style="margin-top:14px">Más contexto en la <a href="../guia-mica.html">guía MiCA para España</a> y en la <a href="../proveedores.html">lista completa de proveedores</a>.</p></section>
-<section class="card"><h2>Fuente del mapeo</h2><p>{esc(b["src"])}. Comprobado el {esc(dt)}.</p><p class="muted">Confirma siempre en <a href="{ESMA_URL}" {EXT}>ESMA</a> y en la <a href="{CNMV_URL}" {EXT}>CNMV</a>.</p></section>
+<section class="card"><h2>Fuente del mapeo</h2><p>{esc(b["src"])}. Registro de ESMA a {esc(dt)}, comprobado el {esc(fmt(CHECKED))}.</p><p class="muted">Confirma siempre en <a href="{ESMA_URL}" {EXT}>ESMA</a> y en la <a href="{CNMV_URL}" {EXT}>CNMV</a>.</p></section>
 <section class="sec"><div class="sec-h"><h2>Comprueba otras marcas</h2><a href="../marcas.html">Ver todas →</a></div>{related(b)}</section>
 {newsletter("../")}</div>"""
     title = fit([f"¿Está {bn} autorizado en España? MiCA y CNMV", f"¿Está {bn} autorizado en España? Licencia MiCA", f"¿Está {bn} autorizado en España? MiCA", f"{bn}: ¿autorizado en España? MiCA", f"{bn} · MiCA España"])
-    LASTMOD[f'marca/{b["slug"]}.html'] = max([x.get("lu") or "" for x in ents] + [""]) or M["date"]
-    (S/"marca"/f'{b["slug"]}.html').write_text(page(title, clip(desc), body, 1, f'marca/{b["slug"]}.html', [faq(qas), crumbs([("Inicio",""),("Marcas","marcas.html"),(bn,f'marca/{b["slug"]}.html')])], "article", cur="marcas"))
+    LASTMOD[f'marca/{b["slug"]}.html'] = max([x.get("lu") or "" for x in ents] + [edm["rev"] if edm else ""]) or M["date"]
+    (S/"marca"/f'{b["slug"]}.html').write_text(page(title, clip(desc), body, 1, f'marca/{b["slug"]}.html', [faq(qas, max(M["date"], edm["rev"]) if edm else None), crumbs([("Inicio",""),("Marcas","marcas.html"),(bn,f'marca/{b["slug"]}.html')])], "article", cur="marcas"))
 # ---- marcas index
 groups = {}
 for b in B: groups.setdefault(b["cat"], []).append(b)
@@ -488,17 +573,19 @@ def bycountry(L):
     g = {}
     for e in sorted(L, key=lambda x: x["n"].lower()): g.setdefault(C.get(e["h"], e["h"]), []).append(e)
     return sorted(g.items(), key=lambda kv: (-len(kv[1]), kv[0]))
-ACT = [e for e in E if e.get("active", True)]
+ACT = [e for e in E if e.get("active", True) and not e.get("pending")]
+PEND = sorted([e for e in E if e.get("pending")], key=lambda x: (x["d"], x["n"].lower()))
 P_ES = [e for e in ACT if e["es"] and e["h"] == "ES"]; P_PASS = [e for e in ACT if e["es"] and e["h"] != "ES"]; P_NO = [e for e in ACT if not e["es"]]
 def pgroup(L, hid):
     return "".join(f'<h3 id="{hid}-{slugify(k)}">{esc(k)} <span class="muted" style="font-weight:600">{len(v)}</span></h3><ul class="ent">{"".join(pli(x) for x in v)}</ul>' for k, v in bycountry(L))
 pv = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="index.html">Inicio</a><span>/</span><span>Proveedores</span></nav><header class="ph"><p class="eyebrow">Registro ESMA a {esc(fmt(M["date"]))} · {M["count"]} proveedores activos</p><h1>Lista de proveedores cripto autorizados en España</h1>
 <p class="lede">Los {M["es"]} proveedores de servicios de criptoactivos (CASP) que, según el registro MiCA de ESMA, pueden operar en España: {len(P_ES)} con sede en España y {len(P_PASS)} autorizados en otro país de la UE/EEE con España notificada.</p>
 <p class="muted">Busca por el nombre de la sociedad, que es el que aparece en los términos legales de cada app. Si buscas por marca (Coinbase, Bit2Me, Revolut…), usa la <a href="marcas.html">lista de marcas</a>. Qué significa cada etiqueta: <a href="guia-mica.html">guía MiCA</a>.</p>
-<p class="pills"><a class="pill ok" href="#sede-espana">{ICON["check"]}Sede en España · {len(P_ES)}</a> <a class="pill ok" href="#pasaporte">{ICON["check"]}Con pasaporte a España · {len(P_PASS)}</a> <a class="pill no" href="#sin-espana">{ICON["minus"]}Sin España · {len(P_NO)}</a>{f' <a class="pill no" href="#retiradas">{ICON["x"]}Retiradas · {len(RET)}</a>' if RET else ""}</p></header>
+<p class="pills"><a class="pill ok" href="#sede-espana">{ICON["check"]}Sede en España · {len(P_ES)}</a> <a class="pill ok" href="#pasaporte">{ICON["check"]}Con pasaporte a España · {len(P_PASS)}</a> <a class="pill no" href="#sin-espana">{ICON["minus"]}Sin España · {len(P_NO)}</a>{f' <a class="pill pend" href="#empiezan">{ICON["clock"]}Empiezan más adelante · {len(PEND)}</a>' if PEND else ""}{f' <a class="pill no" href="#retiradas">{ICON["x"]}Retiradas · {len(RET)}</a>' if RET else ""}</p></header>
 <section class="card" id="sede-espana"><h2>Con sede en España <span class="n">{len(P_ES)}</span></h2><p class="muted">Autorizados o notificados ante la CNMV, su supervisor según el registro de ESMA.</p><ul class="ent">{"".join(pli(x) for x in sorted(P_ES, key=lambda x: x["n"].lower()))}</ul></section>
 <section class="card" id="pasaporte"><h2>Autorizados en otro país, con España notificada <span class="n">{len(P_PASS)}</span></h2><p class="muted">Una autorización MiCA vale en toda la UE/EEE; para operar en España el proveedor debe incluirla entre sus países notificados (pasaporte europeo). Agrupados por país de origen.</p>{pgroup(P_PASS, "pas")}</section>
 <section class="card" id="sin-espana"><h2>En el registro MiCA, pero sin España <span class="n">{len(P_NO)}</span></h2><p class="muted">Tienen autorización MiCA vigente, pero España no figura entre sus países: no consta que puedan prestar servicios a residentes en España.</p>{pgroup(P_NO, "sin")}</section>
+{f'<section class="card" id="empiezan"><h2>Autorizados que empiezan más adelante <span class="n">{len(PEND)}</span></h2><p class="muted">Figuran en el registro de ESMA con una fecha de inicio futura: hasta ese día no cuentan como activos ni pueden operar.</p><ul class="ent">{"".join(pli(x).replace("</li>", f' <span class="pill pend sm">{ICON["clock"]}empieza el {esc(fmt(x["d"]))}</span></li>') for x in PEND)}</ul></section>' if PEND else ""}
 {f'<section class="card" id="retiradas"><h2>Autorizaciones retiradas <span class="n">{len(RET)}</span></h2><ul class="ent">{"".join(pli(x) for x in sorted(RET, key=lambda x: x["n"].lower()))}</ul></section>' if RET else ""}
 <p class="muted">Fuente: registro provisional MiCA de <a href="{ESMA_URL}" {EXT}>ESMA</a> (CASPS.csv), actualizado el {esc(fmt(M["date"]))}. La base legal (Art. 59 o 60) es el dato oficial de ESMA cuando lo publica; si no, una inferencia explicada en la <a href="metodologia.html">metodología</a>. Confirma siempre en ESMA y en la <a href="{CNMV_URL}" {EXT}>CNMV</a>.</p>
 {newsletter()}</div>"""
@@ -560,21 +647,21 @@ def blg(b):
     if not lgfile(info) and b["e"]: info = linfo("ents", b["e"][0])
     return lgref(info, b["b"])
 idx = {"m": {"date": M["date"], "checked": CHECKED}, "pal": PAL,
-       "e": [[e["slug"], e["n"], e["l"], e["h"], int(e["es"]), kind(e)[0], kind(e)[1], kind(e)[2], e["brands"], elg(e), est(e), fmt(e.get("end")) if e.get("end") else ""] for e in E],
+       "e": [[e["slug"], e["n"], e["l"], e["h"], int(e["es"]), kind(e)[0], kind(e)[1], kind(e)[2], e["brands"], elg(e), est(e), fmt(e["d"]) if e.get("pending") else (fmt(e.get("end")) if e.get("end") else "")] for e in E],
        "b": [[b["b"], b["e"], b["note"], [w["l"] for w in b["warn"]], b["cat"], b["slug"], blg(b), b["st"], b.get("aliases", [])] for b in B]}
 (S/"assets").mkdir(exist_ok=True); (S/"assets/data.js").write_text("window.DB=" + json.dumps(idx, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c") + ";")
 for f in ["data.js", "common.js", "style.css"]: (S/f).unlink(missing_ok=True)
 # ---- descargas del conjunto de datos (enlazadas desde metodología y el JSON-LD Dataset)
 import csv as _csv, io as _io
-DL_F = ["slug", "nombre", "sociedad", "lei", "pais_origen", "supervisor", "activo", "fin_autorizacion", "puede_operar_en_espana", "via", "base_legal_esma", "confianza", "paises", "servicios", "en_registro_desde", "ficha"]
-def dlrow(e): return [e["slug"], e["n"], e["l"], e["lei"], e["h"], e["a"], e.get("active", True), e.get("end") or "", e["es"], {"art59": "Art. 59", "art60": "Art. 60"}.get(e["k"], "no determinada"),
+DL_F = ["slug", "nombre", "sociedad", "lei", "pais_origen", "supervisor", "activo", "inicio_pendiente", "fin_autorizacion", "puede_operar_en_espana", "via", "base_legal_esma", "confianza", "paises", "servicios", "en_registro_desde", "ficha"]
+def dlrow(e): return [e["slug"], e["n"], e["l"], e["lei"], e["h"], e["a"], e.get("active", True) and not e.get("pending"), bool(e.get("pending")), e.get("end") or "", e["es"], {"art59": "Art. 59", "art60": "Art. 60"}.get(e["k"], "no determinada"),
                       e.get("lb") or "", e["conf"], " ".join(e["cs"]), " ".join(e["s"]), e.get("d") or "", BASE + f'p/{e["slug"]}.html']
 (S/"datos").mkdir(exist_ok=True)
 DL_NOTE = "Fuente: ESMA, registro provisional MiCA (CASPS.csv), datos transformados por Registro MiCA. ESMA no respalda esta publicación. Histórico hasta 06/10/2026: CASP Tracker (CC BY 4.0). Condiciones: " + BASE + "metodologia.html#licencia"
 (S/"datos/proveedores.json").write_text(json.dumps({"fuente": DL_NOTE, "registroEsma": M["date"], "comprobado": CHECKED, "campos": DL_F, "proveedores": [dict(zip(DL_F, dlrow(e))) for e in E]}, ensure_ascii=False, indent=0))
 _b = _io.StringIO(); _w = _csv.writer(_b); _w.writerow(DL_F); [_w.writerow(dlrow(e)) for e in E]
 (S/"datos/proveedores.csv").write_text(_b.getvalue(), encoding="utf-8")
-(S/"meta.json").write_text(json.dumps({"lastSuccessfulRefresh": CHECKED, "esmaFileDate": M["date"], "source": M["source"], "active": M["count"], "withdrawn": M.get("inactive", 0),
+(S/"meta.json").write_text(json.dumps({"lastSuccessfulRefresh": CHECKED, "esmaFileDate": M["date"], "source": M["source"], "active": M["count"], "startingLater": M.get("pending", 0), "withdrawn": M.get("inactive", 0),
     "canOperateInSpain": M["es"], "art59": M["k"]["art59"], "art60": M["k"]["art60"], "undetermined": M["k"]["incierto"], "built": TODAY.isoformat()}, ensure_ascii=False, indent=1))
 # dominio propio: deploy/CNAME entra en el artefacto de Pages solo si coincide con la URL base (si no, se retira)
 _cn = (R/"deploy/CNAME").read_text().strip() if (R/"deploy/CNAME").exists() else ""

@@ -1,0 +1,310 @@
+{
+ "_doc": "Fichas editoriales de las marcas más buscadas. Solo hechos comprobados en fuentes primarias (ESMA, CNMV, supervisor de origen, página legal de la empresa). El estado MiCA, la fecha y el supervisor salen siempre de los datos de ESMA (build.json); aquí solo va lo que no está en el registro. Si un dato no se puede verificar, no se pone. Revisa 'reviewed' al editar.",
+ "reviewed": "2026-10-24",
+ "cnmvListDate": "2026-10-20",
+ "brands": {
+  "Binance": {
+   "contract": {
+    "t": "Ninguna sociedad del grupo Binance figura en el registro MiCA de ESMA ni en la relación de proveedores de la CNMV, así que no hay una entidad con autorización MiCA a la que asociar la marca.",
+    "src": [
+     "esma",
+     "cnmv"
+    ]
+   },
+   "cnmv": null,
+   "check": [
+    "Si tienes cuenta, mira en los términos de uso qué sociedad te presta el servicio y búscala en el registro de ESMA y en el listado de la CNMV.",
+    "Desde el 1 de julio de 2026 solo pueden operar en España los proveedores autorizados. La CNMV pide a los que no lo estén un plan de migración para que los clientes puedan sacar sus criptoactivos y fondos, y recomienda a los inversores que se lo soliciten."
+   ],
+   "checkSrc": [
+    "cnmv-com"
+   ],
+   "sources": {
+    "cnmv-com": {
+     "t": "CNMV: Comunicado sobre el fin del periodo transitorio del Reglamento MiCA",
+     "u": "https://www.cnmv.es/webservices/verdocumento/ver?t=%7Be9effe73-ba00-4058-9ace-e88d39468cd4%7D",
+     "d": "2026-06-15",
+     "k": "doc"
+    }
+   }
+  },
+  "Coinbase": {
+   "contract": {
+    "t": "El acuerdo de usuario para el Espacio Económico Europeo (en vigor para clientes en España desde el 13/10/2025) es un contrato con dos sociedades: Coinbase Luxembourg S.A., que presta los servicios de criptoactivos, y Coinbase Ireland Limited, que presta el servicio de dinero electrónico (supervisada por el Banco Central de Irlanda).",
+    "src": [
+     "ua"
+    ]
+   },
+   "cnmv": {
+    "name": "COINBASE LUXEMBOURG S.A.",
+    "key": "COINBASE LUXEMBOURG",
+    "type": "PSC en régimen de libre prestación (país de origen: Luxemburgo)",
+    "from": "2025-06-20"
+   },
+   "check": [
+    "En tus documentos o en la app, comprueba que los servicios cripto te los presta Coinbase Luxembourg S.A. Según el acuerdo, la CSSF la tiene registrada como proveedor de servicios de criptoactivos con el número N00000004."
+   ],
+   "checkSrc": [
+    "ua"
+   ],
+   "sources": {
+    "ua": {
+     "t": "Coinbase: User Agreement (Espacio Económico Europeo)",
+     "u": "https://www.coinbase.com/legal/eea/user_agreement_irlux",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  },
+  "Kraken": {
+   "contract": {
+    "t": "La página legal de Kraken en español indica que dos sociedades operan como Kraken, Payward Europe Solutions Limited y Payward Global Solutions Limited, ambas reguladas por el Banco Central de Irlanda. Los residentes en el EEE, España incluida, tienen sus propios términos de servicio para el EEE.",
+    "src": [
+     "legal"
+    ]
+   },
+   "cnmv": {
+    "name": "PAYWARD EUROPE SOLUTIONS LIMITED",
+    "key": "PAYWARD EUROPE SOLUTIONS",
+    "type": "PSC en régimen de libre prestación (país de origen: Irlanda)",
+    "from": "2025-06-25"
+   },
+   "check": [
+    "Las dos sociedades figuran en el registro de ESMA, pero solo Payward Europe Solutions Limited tiene España entre sus países notificados. Comprueba cuál de ellas aparece en tu contrato."
+   ],
+   "checkSrc": [
+    "esma"
+   ],
+   "sources": {
+    "legal": {
+     "t": "Kraken: Términos de servicio (página legal en español)",
+     "u": "https://www.kraken.com/es-es/legal",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  },
+  "Bitpanda": {
+   "contract": {
+    "t": "La autoridad austriaca (FMA) concedió a Bitpanda GmbH la autorización como proveedor de servicios de criptoactivos (art. 63 de MiCA) por resolución del 09/04/2025.",
+    "src": [
+     "fma"
+    ]
+   },
+   "cnmv": {
+    "name": "BITPANDA GMBH",
+    "key": "BITPANDA GMBH",
+    "type": "PSC en régimen de libre prestación (país de origen: Austria)",
+    "from": "2025-04-14"
+   },
+   "check": [
+    "La página legal de Bitpanda publica condiciones aparte para productos de otras sociedades del grupo, como Bitpanda Financial Services GmbH. Para los criptoactivos, la sociedad que figura en el registro MiCA es Bitpanda GmbH. Comprueba con qué sociedad contratas cada producto."
+   ],
+   "checkSrc": [
+    "legal"
+   ],
+   "sources": {
+    "fma": {
+     "t": "FMA (Austria): Granting of Authorisation: Bitpanda GmbH",
+     "u": "https://www.fma.gv.at/en/granting-of-authorisation-bitpanda-gmbh/",
+     "d": "2025-04-10",
+     "k": "doc"
+    },
+    "legal": {
+     "t": "Bitpanda: Legal, regulatorio y privacidad",
+     "u": "https://www.bitpanda.com/es/legal",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  },
+  "Bit2Me": {
+   "contract": {
+    "t": "Según los términos y condiciones generales de Bit2Me (versión 2026.1, vigente desde el 17/07/2026), el titular de la web y de la app es BITCOINFORME, S.L., con domicilio en Elche (Alicante).",
+    "src": [
+     "tyc"
+    ]
+   },
+   "cnmv": {
+    "name": "BITCOINFORME, S.L. (BIT2ME)",
+    "key": "BITCOINFORME",
+    "type": "PSC (España)",
+    "from": "2025-10-31"
+   },
+   "check": [
+    "Es una sociedad española supervisada por la CNMV. Comprueba que tu contrato es con Bitcoinforme, S.L."
+   ],
+   "checkSrc": [
+    "tyc"
+   ],
+   "sources": {
+    "tyc": {
+     "t": "Bit2Me: Términos y condiciones generales de los servicios",
+     "u": "https://legal.bit2me.com/es/support/solutions/articles/35000292850-t%C3%A9rminos-y-condiciones-generales-de-los-servicios-de-bit2me",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  },
+  "Revolut": {
+   "contract": {
+    "t": "Los términos de criptomonedas de Revolut para España forman un contrato con Revolut Digital Assets Europe Ltd, sociedad registrada en Chipre (HE430310) y autorizada por la CySEC como proveedor de servicios de criptoactivos. La cuenta y los pagos dependen de otra sociedad del grupo (Revolut Bank UAB o su sucursal).",
+    "src": [
+     "terms"
+    ]
+   },
+   "cnmv": {
+    "name": "REVOLUT DIGITAL ASSETS EUROPE LTD",
+    "key": "REVOLUT DIGITAL ASSETS",
+    "type": "PSC en régimen de libre prestación (país de origen: Chipre)",
+    "from": "2025-10-21"
+   },
+   "check": [
+    "La parte cripto y la cuenta bancaria son contratos distintos. Para los criptoactivos, la sociedad debe ser Revolut Digital Assets Europe Ltd. Según esos términos, al comprar criptoactivos no te protegen ni el sistema europeo de garantía de depósitos ni el fondo de compensación de inversores de Chipre."
+   ],
+   "checkSrc": [
+    "terms"
+   ],
+   "sources": {
+    "terms": {
+     "t": "Revolut España: Cryptocurrency terms",
+     "u": "https://www.revolut.com/es-ES/legal/cryptocurrency-terms/",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  },
+  "eToro": {
+   "contract": {
+    "t": "Según la página de regulación de eToro, eToro (Europe) Ltd está autorizada y regulada por la CySEC (licencia 109/10) y la CySEC le concedió una licencia MiCA en enero de 2025.",
+    "src": [
+     "reg"
+    ]
+   },
+   "cnmv": {
+    "name": "ETORO (EUROPE) LTD",
+    "key": "ETORO (EUROPE)",
+    "type": "PSC en régimen de libre prestación (país de origen: Chipre)",
+    "from": "2025-03-22"
+   },
+   "note": {
+    "t": "El registro de ESMA no publica la base legal de esta entidad. Nuestra clasificación es una inferencia y puede no coincidir con lo que dice la propia empresa.",
+    "src": [
+     "esma"
+    ]
+   },
+   "check": [
+    "Comprueba que tu cuenta cripto está con eToro (Europe) Ltd. La página de regulación de eToro indica que la custodia para clientes en Alemania va por otra vía (Tangany GmbH), así que no todos los países funcionan igual."
+   ],
+   "checkSrc": [
+    "reg"
+   ],
+   "sources": {
+    "reg": {
+     "t": "eToro: Regulation and License",
+     "u": "https://www.etoro.com/customer-service/regulation-license/",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  },
+  "OKX": {
+   "contract": {
+    "t": "Los términos de servicio de OKX para el EEE (actualizados el 26/05/2026) indican que los servicios en la UE y el EEE los presta OKX Europe Limited, sociedad maltesa con licencia de proveedor de servicios de criptoactivos de la MFSA.",
+    "src": [
+     "tos"
+    ]
+   },
+   "cnmv": {
+    "name": "OKX EUROPE LIMITED",
+    "key": "OKX EUROPE LIMITED",
+    "type": "PSC en régimen de libre prestación (país de origen: Malta)",
+    "from": "2025-11-27"
+   },
+   "check": [
+    "Comprueba que tu cuenta está con OKX Europe Limited, bajo los términos para el EEE, y no con otra sociedad del grupo."
+   ],
+   "checkSrc": [
+    "tos"
+   ],
+   "sources": {
+    "tos": {
+     "t": "OKX: Terms of Service - EEA",
+     "u": "https://www.okx.com/help/terms-of-service-eea",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  },
+  "Bybit": {
+   "contract": {
+    "t": "La FMA austriaca concedió a Bybit EU GmbH la autorización como proveedor de servicios de criptoactivos (art. 63 de MiCA) por resolución del 28/05/2025. Bybit EU tiene sus propios términos en bybit.eu.",
+    "src": [
+     "fma",
+     "tc"
+    ]
+   },
+   "cnmv": {
+    "name": "BYBIT EU GMBH",
+    "key": "BYBIT EU GMBH",
+    "type": "PSC en régimen de libre prestación (país de origen: Austria)",
+    "from": "2025-05-28"
+   },
+   "check": [
+    "La sociedad autorizada es Bybit EU GmbH y su plataforma es bybit.eu. Comprueba que tu cuenta y tus términos son los de Bybit EU."
+   ],
+   "checkSrc": [
+    "tc"
+   ],
+   "sources": {
+    "fma": {
+     "t": "FMA (Austria): Granting of Authorisation Bybit EU GmbH",
+     "u": "https://www.fma.gv.at/en/granting-of-authorisation-bybit-eu-gmbh/",
+     "d": "2025-05-30",
+     "k": "doc"
+    },
+    "tc": {
+     "t": "Bybit EU: Platform Terms and Conditions",
+     "u": "https://www.bybit.eu/en-EU/help-center/article/Bybit-Europe-Platform-Terms-and-Conditions",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  },
+  "Crypto.com": {
+   "contract": {
+    "t": "Según los términos de la app y la web de Crypto.com (actualizados el 14/07/2026), esos servicios los presta Foris DAX MT Limited, sociedad maltesa (C88392) autorizada por la MFSA como proveedor de servicios de criptoactivos.",
+    "src": [
+     "tc"
+    ]
+   },
+   "cnmv": {
+    "name": "FORIS DAX MALTA LTD (CRYPTO.COM)",
+    "key": "FORIS DAX MALTA",
+    "type": "PSC en régimen de libre prestación (país de origen: Malta)",
+    "from": "2025-02-12"
+   },
+   "note": {
+    "t": "La CNMV la lista como «Foris DAX Malta Ltd (Crypto.com)» y ESMA como «Foris DAX MT Limited».",
+    "src": [
+     "cnmv",
+     "esma"
+    ]
+   },
+   "check": [
+    "Comprueba que tu contrato es con Foris DAX MT Limited."
+   ],
+   "checkSrc": [
+    "tc"
+   ],
+   "sources": {
+    "tc": {
+     "t": "Crypto.com: App and Web Terms and Conditions",
+     "u": "https://crypto.com/document/mco_services",
+     "d": "2026-10-24",
+     "k": "consulta"
+    }
+   }
+  }
+ }
+}

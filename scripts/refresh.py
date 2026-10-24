@@ -136,9 +136,12 @@ def from_ct():
     if not re.fullmatch(r"\d{4}-\d\d-\d\d", date): raise ValueError("CASP Tracker: fecha inválida")
     return [sanitize(x) for x in d["items"] if isinstance(x, dict)], date, raw
 def keyof(x): return (x.get("lei") or "").strip().upper() or "name:" + re.sub(r"\s+", " ", (x.get("legalName") or "").replace("\xa0", " ")).strip().lower()
+def started(x):
+    """Fecha de inicio de la autorización (authDate) ya alcanzada. Una autorización que empieza en el futuro aún no permite operar."""
+    d = x.get("authDate"); return not d or d <= TODAY.isoformat()
 def es_of(x):
     end = x.get("endDate"); active = not end or end > TODAY.isoformat()
-    return active and ("ES" in (x.get("countries") or []) or x.get("homeState") == "ES")
+    return active and started(x) and ("ES" in (x.get("countries") or []) or x.get("homeState") == "ES")
 def validate(items, prev, cols=None):
     """Controles de cordura ANTES de escribir la instantánea o publicar. Devuelve la lista de problemas."""
     errs = []
@@ -292,15 +295,17 @@ for e in items:
     if conf == "oficial":
         hk = heuristic(e)
         if hk[0] != k: corrections.append({"l": e["legalName"], "from": hk[0], "fromConf": hk[1], "to": k, "basis": e["legalBasis"]})
-    active = not e.get("endDate") or e["endDate"] > TODAY.isoformat()
+    active = not e.get("endDate") or e["endDate"] > TODAY.isoformat()   # sin fin pasado (no retirada)
+    pending = active and not started(e)                                   # autorizada, pero empieza más adelante: aún no opera
     cs = e.get("countries", []); home_only = not cs and bool(e["homeState"])
     ents.append({"slug": slug_for(e), "n": e["name"], "l": e["legalName"], "h": e["homeState"], "a": e["authority"], "lei": e.get("lei", ""),
         "addr": e.get("address", ""), "w": e.get("websiteHref", ""), "ws": e.get("websites", []), "wp": e.get("platforms", []),
         "s": e.get("services", []), "cs": cs or ([e["homeState"]] if e["homeState"] else []), "homeOnly": home_only,
-        "es": active and ("ES" in cs or e["homeState"] == "ES"), "active": active, "d": e.get("authDate"), "dt": e.get("authDateText", ""), "end": e.get("endDate"), "cm": e.get("comments", ""),
+        "es": active and not pending and ("ES" in cs or e["homeState"] == "ES"), "active": active, "pending": pending, "d": e.get("authDate"), "dt": e.get("authDateText", ""), "end": e.get("endDate"), "cm": e.get("comments", ""),
         "lu": e.get("lastUpdate"), "lb": e.get("legalBasis", ""),
         "k": k, "conf": conf, "why": why, "src": src, "srcUrl": (OVR.get(keyof(e)) or {}).get("url") if src == "verificado" else SRCURL[src], "brands": []})
 assert not any(x["es"] and x["end"] and x["end"] <= TODAY.isoformat() for x in ents), "regresión: autorización retirada marcada como operativa"
+assert not any(x["es"] and x["d"] and x["d"] > TODAY.isoformat() for x in ents), "regresión: autorización futura marcada como operativa"
 byL = {re.sub(r"\s+", " ", x["l"]).lower(): x for x in ents}
 nc = []
 raw = cached("NCASP.csv", lambda: get(ESMA_NC)[0])
@@ -342,11 +347,12 @@ for a, b in zip(snaps, snaps[1:]):
 for k in list(gone):
     if k in cur_keys: del gone[k]
 changes.reverse()
-act = [x for x in ents if x["active"]]
+act = [x for x in ents if x["active"] and not x["pending"]]   # operativos hoy: sin retirada y con fecha de inicio alcanzada
+pend = [x for x in ents if x["pending"]]
 try: prev_meta = json.loads((D/"build.json").read_text())["meta"]
 except Exception: prev_meta = {}
 checked = TODAY.isoformat() if not OFF else (prev_meta.get("checked") or (snaps[-1].stem if snaps else date))   # última consulta correcta a ESMA
-meta = {"date": date, "count": len(act), "countAll": len(ents), "inactive": len(ents) - len(act), "es": sum(x["es"] for x in ents), "source": source_used,
+meta = {"date": date, "count": len(act), "countAll": len(ents), "inactive": len(ents) - len(act) - len(pend), "pending": len(pend), "es": sum(x["es"] for x in ents), "source": source_used,
         "k": {k: sum(x["k"] == k for x in act) for k in ("art59", "art60", "incierto")},
         "conf": {c: sum(x["conf"] == c for x in act) for c in ("oficial", "verificado", "alta", "media", "baja")},
         "official": sum(1 for x in act if x["conf"] == "oficial"),
@@ -357,7 +363,7 @@ def ekey(x): return (x.get("lei") or "").upper() or re.sub(r"\s+", " ", x.get("l
 try: prev_ents = {ekey(x): x for x in json.loads((D/"build.json").read_text())["ents"] if x.get("active")}
 except Exception: prev_ents = {}
 if prev_ents:
-    common = [(prev_ents[ekey(x)], x) for x in act if ekey(x) in prev_ents]
+    common = [(prev_ents[ekey(x)], x) for x in act + pend if ekey(x) in prev_ents]
     moved = [(a, b) for a, b in common if a["k"] != b["k"]]
     off_moved = [(a, b) for a, b in moved if b["conf"] == "oficial"]           # el campo oficial de ESMA manda: se acepta
     inf_moved = [(a, b) for a, b in moved if b["conf"] != "oficial"]
