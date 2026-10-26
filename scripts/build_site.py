@@ -347,9 +347,27 @@ def li(name, slug, extra=""):
     has = slug and (slug in bySlug or slug in goneBy)
     nm = f'<a href="p/{slug}.html">{esc(name)}</a>' if has else esc(name)
     return f'<li>{elogo(e, "xs") if e else tile({}, name, "xs")}<span>{nm}</span>{extra}</li>'
+# notas editoriales por instantánea (data/notas.json): texto revisado a mano; [[slug|texto]] enlaza a la ficha (el build falla si no existe)
+try: NOTAS = json.load(open(R/"data/notas.json")).get("notes", {})
+except FileNotFoundError: NOTAS = {}
+def nlinks(t):
+    def rep(m):
+        tgt, txt = m.group(1), m.group(2)
+        if re.fullmatch(r"[a-z0-9-]+\.html(#[a-z0-9-]+)?", tgt): return f'<a href="{esc(tgt)}">{esc(txt)}</a>'
+        if tgt not in bySlug and tgt not in goneBy: raise SystemExit(f"notas.json: ficha inexistente {tgt}")
+        return f'<a href="p/{esc(tgt)}.html">{esc(txt)}</a>'
+    parts = re.split(r"(\[\[[^\]|]+\|[^\]]+\]\])", t)
+    return "".join(rep(re.fullmatch(r"\[\[([^\]|]+)\|([^\]]+)\]\]", x)) if x.startswith("[[") else esc(x) for x in parts)
+def nota(c):
+    n = NOTAS.get(c["to"])
+    if not n: return ""
+    figs = "".join(f'<div><dt>{esc(a)}</dt><dd><span class="was">{esc(b)}</span><span class="arr" aria-label="pasa a">→</span><b>{esc(d)}</b></dd></div>' for a, b, d in n.get("figures", []))
+    return (f'<section class="tl-note" id="nota-{esc(c["to"])}" aria-labelledby="nota-h-{esc(c["to"])}"><p class="kick">Nota · {esc(fmt(c["to"]))}</p><h3 id="nota-h-{esc(c["to"])}">{esc(n["title"])}</h3>'
+            + (f'<dl class="tl-figs">{figs}</dl>' if figs else "") + "".join(f"<p>{nlinks(x)}</p>" for x in n.get("p", []))
+            + (f'<p class="tl-foot">{nlinks(n["foot"])}</p>' if n.get("foot") else "") + "</section>")
 tl = "".join(f'''<li class="tl-i"><span class="tl-dot" aria-hidden="true"></span><div class="card"><div class="tl-h"><time datetime="{esc(c["to"])}">{esc(fmt(c["to"]))}</time><span class="muted">desde {esc(fmt(c["from"]))} · total {c["total"]}</span>
 <span class="delta"><span class="pill ok sm">+{len(c["added"])}<span class="sr"> altas</span></span><span class="pill no sm">−{len(c["removed"])}<span class="sr"> bajas</span></span></span></div>
-{('<h3>Altas</h3><ul class="ent">'+"".join(li(x[0], x[3], ' <span class="pill ok sm">España</span>' if x[2] else "") for x in c["added"])+'</ul>') if c["added"] else ""}
+{nota(c)}{('<h3>Altas</h3><ul class="ent">'+"".join(li(x[0], x[3], ' <span class="pill ok sm">España</span>' if x[2] else "") for x in c["added"])+'</ul>') if c["added"] else ""}
 {('<h3>Bajas</h3><ul class="ent">'+"".join(li(x[0], x[2] if len(x) > 2 else None) for x in c["removed"])+'</ul>') if c["removed"] else ""}
 {('<h3>Cambio de acceso a España</h3><ul class="ent">'+"".join(li(x[0], x[2], f'<span class="pill {"ok" if x[1] else "no"} sm">{"Añade España" if x[1] else ("Retirada" if (bySlug.get(x[2]) or {}).get("active", True) is False else "Retira España")}</span>') for x in c["es"])+'</ul>') if c["es"] else ""}
 {'' if (c["added"] or c["removed"] or c["es"]) else '<p class="muted">Sin altas ni bajas (puede haber cambios de formato o actualización de fichas).</p>'}</div></li>''' for c in CH)

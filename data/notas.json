@@ -1,0 +1,21 @@
+{
+ "_doc": "Notas editoriales del historial de cambios (cambios.html), por fecha de instantánea («to»). Solo hechos comprobados en data/snapshots y data/build.json. Enlaces a fichas con [[slug|texto]]: el build falla si el slug no existe.",
+ "notes": {
+  "2026-10-22": {
+   "title": "ESMA actualiza el registro: 9 altas y ninguna baja",
+   "figures": [
+    ["Entradas en el registro", "375", "384"],
+    ["Operativos en la UE", "371", "377"],
+    ["Pueden operar en España", "208", "209"],
+    ["Autorizados, aún sin empezar", "2", "5"]
+   ],
+   "p": [
+    "El archivo CASPS.csv que ESMA publicó el 22/10/2026 añade 9 entradas y no retira ninguna: el registro pasa de 375 a 384 entradas. Las retiradas siguen siendo 2, las mismas que antes.",
+    "[[penning-financial-services-aps|Penning Financial Services ApS]] (Dinamarca, supervisada por Finanstilsynet) es la única alta que puede operar en España: el registro incluye España entre los países donde presta servicios y fecha su autorización el 15/01/2026. ESMA no rellena su base legal, así que su clasificación como autorización CASP (Art. 59) es una inferencia nuestra, con confianza media ([[metodologia.html|ver metodología]]).",
+    "Las otras 8 altas son bancos cooperativos alemanes supervisados por BaFin que prestan servicios cripto por notificación, como entidades ya supervisadas (Art. 60, según el campo oficial de ESMA): [[volksbank-in-der-region-eg|Volksbank in der Region eG]], [[volksbank-mittlerer-neckar-eg|Volksbank Mittlerer Neckar eG]], [[sparda-bank-baden-wrttemberg-eg|Sparda-Bank Baden-Württemberg eG]], [[raiffeisenbank-eifel-eg|Raiffeisenbank Eifel eG]], [[volksbank-niederrhein-eg|Volksbank Niederrhein eG]], [[volksbank-in-der-hohen-mark-eg|Volksbank in der Hohen Mark eG]], [[volksbank-in-ostwestfalen-eg|Volksbank in Ostwestfalen eG]] y [[volksbank-oberberg-eg|Volksbank Oberberg eG]]. Ninguno tiene España entre sus países, así que no cambian el recuento español.",
+    "Tres de ellos empiezan más adelante: Volksbank in der Hohen Mark eG el 30/10/2026, Volksbank in Ostwestfalen eG el 18/11/2026 y Volksbank Oberberg eG el 19/11/2026. Hasta esa fecha aparecen como «autorizado, empieza el…» y no cuentan como operativos. Con ellos, las autorizaciones pendientes de inicio pasan de 2 a 5."
+   ],
+   "foot": "Las cifras usan el criterio vigente desde el 24/10/2026, que no cuenta como operativas las autorizaciones con fecha de inicio futura. Con el criterio anterior, la web mostraba 373 operativos el 19/10; con ese criterio, hoy serían 382."
+  }
+ }
+}
