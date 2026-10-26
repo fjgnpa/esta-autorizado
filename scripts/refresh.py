@@ -5,14 +5,48 @@ CNMV listado PDF; cryptocodes.eu. Uso: python3 scripts/refresh.py [--offline] [-
 --force acepta cambios que los controles de cordura bloquean; --allow-fallback publica datos de CASP Tracker si ESMA falla.
 Las fuentes de clasificación (BCE MFI, registro ESMA MiFID/AIFM/UCITS, CNMV) son obligatorias: si faltan o no se leen, incluso en
 --offline se intenta descargarlas una vez y, si no se puede, se aborta antes de escribir nada (nunca se publica una clasificación degradada)."""
-import csv, io, json, re, sys, gzip, urllib.request, urllib.parse, email.utils, datetime, pathlib, subprocess, html, shutil, hashlib
+import csv, io, json, os, re, sys, gzip, urllib.request, urllib.parse, email.utils, datetime, pathlib, subprocess, html, shutil, hashlib
 R = pathlib.Path(__file__).resolve().parent.parent
 D, SRC, SNAP, SITE = R/"data", R/"data/sources", R/"data/snapshots", R/"site"
 for p in (SRC, SNAP, SITE): p.mkdir(parents=True, exist_ok=True)
 OFF = "--offline" in sys.argv
 UA = {"User-Agent": "Mozilla/5.0 (Registro MiCA refresh)"}
-def get(url, t=90):
-    r = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=t); return r.read(), r.headers
+# Cabeceras de navegador real: el CDN de ESMA (CloudFront) devolvió 403 a los runners de GitHub el 24/10 y el 26/10
+BROWSER = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+           "Accept": "text/csv,application/csv,text/plain;q=0.9,text/html;q=0.8,*/*;q=0.7", "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+           "Referer": "https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/markets-crypto-assets-regulation-mica"}
+def get(url, t=90, headers=None):
+    r = urllib.request.urlopen(urllib.request.Request(url, headers=headers or UA), timeout=t); return r.read(), r.headers
+def get_curl(url, t=90):
+    """Segunda vía con otra pila HTTP/TLS (curl, HTTP/2). Devuelve (cuerpo, cabeceras) como get()."""
+    import tempfile, email.parser
+    with tempfile.TemporaryDirectory() as td:
+        body, hdr = pathlib.Path(td)/"b", pathlib.Path(td)/"h"
+        cmd = ["curl", "-sS", "-L", "--compressed", "--max-time", str(t), "-o", str(body), "-D", str(hdr), "-w", "%{http_code}"]
+        for k, v in BROWSER.items(): cmd += ["-H", f"{k}: {v}"]
+        r = subprocess.run(cmd + [url], capture_output=True, text=True, timeout=t + 30)
+        code = r.stdout.strip()[-3:]
+        if r.returncode or code != "200": raise OSError(f"curl: HTTP {code or '?'} {r.stderr.strip()[:200]}".strip())
+        blocks = [b for b in hdr.read_bytes().decode("latin-1").split("\r\n\r\n") if b.strip()]   # con -L puede haber varias respuestas
+        h = email.parser.Parser().parsestr(blocks[-1].split("\r\n", 1)[1] if blocks and "\r\n" in blocks[-1] else "")
+        return body.read_bytes(), h
+def get_robust(url, t=90, tries=3):
+    """urllib con cabeceras de navegador y reintentos con espera creciente; después, curl. Lanza la última excepción si todo falla."""
+    import time
+    last = None
+    for i in range(tries):
+        for how, f in (("urllib", lambda: get(url, t, BROWSER)), ("curl", lambda: get_curl(url, t))):
+            try:
+                out = f()
+                if i or how != "urllib": print(f"aviso: {url} descargado con {how} (intento {i+1})")
+                return out
+            except Exception as ex:
+                last = ex; print(f"aviso: {url} con {how} (intento {i+1}/{tries}): {ex}")
+        if i < tries - 1: time.sleep(20 * (i + 1))
+    raise last
+def gh_notice(level, msg):
+    """Anotación visible en GitHub Actions; fuera de Actions no hace nada."""
+    if os.environ.get("GITHUB_ACTIONS"): print(f"::{level} title=Registro MiCA::{msg}")
 ESMA_CSV = "https://www.esma.europa.eu/sites/default/files/2024-12/CASPS.csv"
 ESMA_NC = "https://www.esma.europa.eu/sites/default/files/2024-12/NCASP.csv"
 CT_JSON = "https://raw.githubusercontent.com/CASP-Tracker/mica-register-data/main/data/casps.json"
@@ -105,7 +139,7 @@ def sanitize(e):
 # ---------- 1. Registro CASP ----------
 source_used = None
 def from_esma():
-    raw, h = get(ESMA_CSV)
+    raw, h = get_robust(ESMA_CSV)
     lm = h.get("Last-Modified"); date = email.utils.parsedate_to_datetime(lm).date().isoformat() if lm else TODAY.isoformat()
     return parse_esma(raw.decode("utf-8-sig")), date, raw
 COLS = set()
@@ -183,7 +217,17 @@ else:
     except SystemExit: raise
     except Exception as ex:
         print("ESMA falló:", ex)
-        if not ALLOW_FB: abort("ESMA no disponible; el respaldo CASP Tracker requiere revisión manual (--allow-fallback)")
+        if not ALLOW_FB:
+            # Sin ESMA no se toca nada: datos, instantánea, «checked» y sitio publicados siguen como estaban, así que el aviso
+            # «Datos posiblemente desactualizados» (días desde la última consulta correcta) sigue funcionando. Salida limpia.
+            msg = (f"ESMA no disponible ({ex}) tras reintentos con cabeceras de navegador y curl. No se ha escrito ni publicado nada; "
+                   "el sitio mantiene los datos de la última consulta correcta. Repite más tarde o refresca en local.")
+            print("SIN CAMBIOS:", msg); gh_notice("warning", msg)
+            if os.environ.get("GITHUB_OUTPUT"):
+                with open(os.environ["GITHUB_OUTPUT"], "a") as f: f.write("esma=blocked\n")
+            if os.environ.get("GITHUB_STEP_SUMMARY"):
+                with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f: f.write(f"### ⚠️ ESMA no disponible: sin publicar\n\n{msg}\n")
+            sys.exit(0)
         items, date, _ = from_ct(); source_used = "CASP Tracker (respaldo)"
     prev = json.loads(snaps[-1].read_text())["items"] if snaps else None
     if snaps and snaps[-1].stem == date and len(snaps) > 1: prev = json.loads(snaps[-2].read_text())["items"]
@@ -308,7 +352,7 @@ assert not any(x["es"] and x["end"] and x["end"] <= TODAY.isoformat() for x in e
 assert not any(x["es"] and x["d"] and x["d"] > TODAY.isoformat() for x in ents), "regresión: autorización futura marcada como operativa"
 byL = {re.sub(r"\s+", " ", x["l"]).lower(): x for x in ents}
 nc = []
-raw = cached("NCASP.csv", lambda: get(ESMA_NC)[0])
+raw = cached("NCASP.csv", lambda: get(ESMA_NC, 90, BROWSER)[0])
 if raw:
     for x in csv.DictReader(io.StringIO(raw.decode("utf-8-sig", "ignore"))):
         nc.append({"n": clean(x.get("ae_commercial_name") or x.get("ae_lei_name")), "l": clean(x.get("ae_lei_name")), "a": clean(x.get("ae_competentAuthority")), "w": " ".join(urls(x.get("ae_website")))})

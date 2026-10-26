@@ -25,6 +25,8 @@ jobs:
     timeout-minutes: 40
     permissions:
       contents: read
+    outputs:
+      esma: ${{ steps.refresh.outputs.esma }}
     env:
       SITE_BASE: ${{ vars.SITE_BASE }}   # vacío = data/config.json (github.io mientras useCustomDomain sea false)
     steps:
@@ -40,13 +42,16 @@ jobs:
           sudo apt-get update && sudo apt-get install -y poppler-utils
           pip install --only-binary=:all: "pillow>=11,<13" || echo "sin Pillow: se mantienen los logos en caché"
       - name: Refrescar datos (ESMA, BCE, CNMV), validar y generar sitio
+        id: refresh
         if: github.event_name != 'push'
         run: python3 scripts/refresh.py ${{ inputs.offline && '--offline' || '' }} ${{ inputs.force && '--force' || '' }}
       - name: Generar sitio con los datos del repositorio
         if: github.event_name == 'push'
         run: python3 scripts/build_site.py
+      # Si ESMA no responde (p. ej. 403 del CDN a los runners), refresh.py sale limpio con esma=blocked:
+      # no se sube nada, no se hace commit ni se despliega; el sitio publicado se queda como estaba.
       - name: Pasar datos y sitio al job de commit
-        if: github.event_name != 'push'
+        if: github.event_name != 'push' && steps.refresh.outputs.esma != 'blocked'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: data-site
@@ -56,11 +61,12 @@ jobs:
           include-hidden-files: true
           retention-days: 3
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        if: steps.refresh.outputs.esma != 'blocked'
         with:
           path: site
   commit:
     needs: build
-    if: github.event_name != 'push'
+    if: github.event_name != 'push' && needs.build.outputs.esma != 'blocked'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -84,7 +90,7 @@ jobs:
           git push origin "HEAD:${GITHUB_REF_NAME}"
   deploy:
     needs: [build, commit]
-    if: always() && needs.build.result == 'success' && (needs.commit.result == 'success' || needs.commit.result == 'skipped')
+    if: always() && needs.build.result == 'success' && needs.build.outputs.esma != 'blocked' && (needs.commit.result == 'success' || needs.commit.result == 'skipped')
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
