@@ -12,7 +12,7 @@ try: LG = json.load(open(R/"data/logos.json"))
 except Exception: LG = {"brands": {}, "ents": {}}
 bySlug = {e["slug"]: e for e in E}
 GONE = [g for g in GONE if g["slug"] not in bySlug]; goneBy = {g["slug"]: g for g in GONE}
-for p in [S/"p", S/"marca"]: shutil.rmtree(p, ignore_errors=True); p.mkdir(parents=True)
+for p in [S/"p", S/"marca", S/"pais"]: shutil.rmtree(p, ignore_errors=True); p.mkdir(parents=True)
 for f in S.glob("*.html"): f.unlink()
 esc = lambda s: html.escape(str(s or ""), quote=True)
 def fmt(x):
@@ -130,11 +130,12 @@ CSP = (f"default-src 'self'; script-src 'self' 'sha256-{THEME_H}' https://gc.zgo
        f"connect-src 'self' {GC_HOST}; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests")
 def page(title, desc, body, depth=0, path="", ld=None, otype="website", cur="", up=None, robots=None):
     up = "../" * depth if up is None else up
+    hm = up or "./"   # portada: siempre «/» (nunca /index.html, que Google trata como duplicado con canónica)
     canon = BASE + path
     ldj = "".join(f'<script type="application/ld+json">{ldjson(x)}</script>' for x in (ld or []))
-    nav = [("index.html#buscar", "Buscar", "buscar", ""), ("marcas.html", "Marcas", "marcas", ""), ("cambios.html", "Cambios", "cambios", "hide-m"), ("metodologia.html", "Metodología", "metodologia", "hide-m")]
-    navh = "".join(f'<a href="{up}{u}"{" aria-current=\"page\"" if cur == k else ""}{f" class=\"{c}\"" if c else ""}>{t}</a>' for u, t, k, c in nav)
-    nsr = "" if cur == "buscar" else f'<form class="nsr" action="{up}index.html" method="get" role="search"><label class="sr" for="nq">Buscar marca o sociedad</label>{ICON["search"]}<input id="nq" name="q" type="search" maxlength="60" placeholder="Buscar…" autocomplete="off" spellcheck="false"></form>'
+    nav = [("#buscar", "Buscar", "buscar", ""), ("marcas.html", "Marcas", "marcas", ""), ("cambios.html", "Cambios", "cambios", "hide-m"), ("metodologia.html", "Metodología", "metodologia", "hide-m")]
+    navh = "".join(f'<a href="{hm if u.startswith("#") else up}{u}"{" aria-current=\"page\"" if cur == k else ""}{f" class=\"{c}\"" if c else ""}>{t}</a>' for u, t, k, c in nav)
+    nsr = "" if cur == "buscar" else f'<form class="nsr" action="{hm}" method="get" role="search"><label class="sr" for="nq">Buscar marca o sociedad</label>{ICON["search"]}<input id="nq" name="q" type="search" maxlength="60" placeholder="Buscar…" autocomplete="off" spellcheck="false"></form>'
     stale = f'<div class="stale" id="stale" data-checked="{esc(CHECKED)}"{"" if STALE_DAYS > 10 else " hidden"}><div class="wrap"><b>Datos posiblemente desactualizados.</b> La última comprobación del registro de ESMA fue el {esc(fmt(CHECKED))}. Confirma en <a href="{ESMA_URL}" {EXT}>ESMA</a> y la <a href="{CNMV_URL}" {EXT}>CNMV</a> antes de decidir.</div></div>'
     return f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="{CSP}"><meta name="referrer" content="strict-origin-when-cross-origin">
@@ -146,13 +147,13 @@ def page(title, desc, body, depth=0, path="", ld=None, otype="website", cur="", 
 <link rel="icon" href="{up}favicon.ico" sizes="48x48"><link rel="icon" href="{up}assets/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{up}assets/brand/apple-touch-icon.png"><link rel="manifest" href="{up}site.webmanifest">
 <script>{THEME_JS}</script></head><body>
 <a class="skip" href="#main">Saltar al contenido</a>
-<header class="nav"><div class="wrap nav-in"><a class="logo" href="{up}index.html" aria-label="Registro MiCA, inicio"><img src="{up}assets/brand/mark.svg" alt="" width="32" height="32"><span>Registro <b>MiCA</b></span></a>
+<header class="nav"><div class="wrap nav-in"><a class="logo" href="{hm}" aria-label="Registro MiCA, inicio"><img src="{up}assets/brand/mark.svg" alt="" width="32" height="32"><span>Registro <b>MiCA</b></span></a>
 {nsr}<nav aria-label="Principal">{navh}
 <button class="theme" type="button" aria-label="Tema oscuro" aria-pressed="false">{ICON["moon"]}{ICON["sun"]}</button></nav></div></header>{stale}
 <main id="main">{body}</main>
-<footer class="foot"><div class="wrap"><div class="foot-g"><div><a class="logo" href="{up}index.html"><img src="{up}assets/brand/mark.svg" alt="" width="28" height="28" loading="lazy"><span>Registro <b>MiCA</b></span></a>
+<footer class="foot"><div class="wrap"><div class="foot-g"><div><a class="logo" href="{hm}"><img src="{up}assets/brand/mark.svg" alt="" width="28" height="28" loading="lazy"><span>Registro <b>MiCA</b></span></a>
 <p><strong>Registro MiCA</strong> es un proyecto independiente: <strong>no es el registro oficial</strong> de ESMA ni de la CNMV. Reproduce, con fecha, el registro provisional MiCA de ESMA (actualizado {esc(fmt(M["date"]))}). No es asesoramiento financiero ni una determinación oficial. Confirma siempre en <a href="{ESMA_URL}" {EXT}>ESMA</a> y en la <a href="{CNMV_URL}" {EXT}>CNMV</a>.</p></div>
-<p class="flinks"><a href="{up}index.html#buscar">Buscador</a><a href="{up}marcas.html">Todas las marcas</a><a href="{up}proveedores.html">Lista de proveedores</a><a href="{up}guia-mica.html">Guía MiCA</a><a href="{up}cambios.html">Cambios recientes</a><a href="{up}metodologia.html">Metodología</a><a href="{up}aviso-legal.html">Aviso legal</a><a href="{up}privacidad.html">Política de privacidad</a></p></div>
+<p class="flinks"><a href="{hm}#buscar">Buscador</a><a href="{up}marcas.html">Todas las marcas</a><a href="{up}proveedores.html">Lista de proveedores</a><a href="{up}guia-mica.html">Guía MiCA</a><a href="{up}cambios.html">Cambios recientes</a><a href="{up}metodologia.html">Metodología</a><a href="{up}aviso-legal.html">Aviso legal</a><a href="{up}privacidad.html">Política de privacidad</a></p></div>
 <p class="disc"><strong>Aviso:</strong> proyecto informativo sin ánimo de lucro, sin publicidad ni enlaces de afiliado. Nada de lo publicado es asesoramiento financiero, fiscal ni jurídico, ni recomendación de inversión. Los criptoactivos son de alto riesgo y puedes perder todo lo invertido.</p>
 <p class="src">Fuentes: ESMA (CASPS.csv, NCASP.csv, registro MiFID), BCE (lista de IFM), CNMV, cryptocodes.eu. Histórico hasta el 06/10/2026: <a href="https://casptracker.eu" {EXT}>CASP Tracker</a>, licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" {EXT}>CC BY 4.0</a>, datos transformados. Los logotipos pertenecen a sus titulares y solo identifican a cada entidad.</p></div></footer>
 <script src="{up}assets/app.js" defer></script>{GC_TAG}</body></html>'''
@@ -193,6 +194,17 @@ def bsub(b):
     return f'{C.get(e["h"], e["h"])} · {kind(e)[2] if not kind(e)[0].startswith("unk") else "vía por confirmar"}'
 def bcard(b, up="", eager=False):
     return f'<a class="bc" href="{up}marca/{b["slug"]}.html" data-st="{b["st"]}" data-n="{esc(slugify(b["b"]) + " " + " ".join(b.get("aliases", [])))}">{blogo(b, "md", up, eager)}<span class="bc-t"><b>{esc(b["b"])}</b><small>{esc(bsub(b))}</small>{bstatus(b)}</span></a>'
+# ---- países de origen: páginas «hub» (todas las fichas a ≤2 clics de la portada) y enlaces entre fichas del mismo país
+def cslug(h): return slugify(C.get(h, h))
+BYH = {}
+for _e in sorted(E, key=lambda x: x["n"].lower()): BYH.setdefault(_e["h"], []).append(_e)
+HUBS = sorted(BYH, key=lambda h: (-sum(x["active"] and not x["pending"] for x in BYH[h]), C.get(h, h)))
+def hstats(h):
+    L = BYH.get(h, []); a = [x for x in L if x["active"] and not x["pending"]]
+    return {"act": len(a), "es": sum(x["es"] for x in a), "pend": sum(x["pending"] for x in L), "ret": sum(not x["active"] for x in L),
+            "art59": sum(x["k"] == "art59" for x in a), "art60": sum(x["k"] == "art60" for x in a), "inc": sum(x["k"] == "incierto" for x in a)}
+def cgrid(up=""):
+    return '<div class="cgrid">' + "".join(f'<a href="{up}pais/{cslug(h)}.html"><span class="cc" aria-hidden="true">{esc("GR" if h == "EL" else h)}</span><span class="cg-t"><b>{esc(C.get(h, h))}</b><small>{hstats(h)["act"]} activo{"s" if hstats(h)["act"] != 1 else ""} · {hstats(h)["es"]} en España</small></span></a>' for h in HUBS) + '</div>'
 # ---- home
 popular = [b for b in B if b["cat"] in ("exchange", "bróker", "banco/neobanco/pagos")][:16]
 chipsB = {x["b"]: x for x in B}
@@ -228,7 +240,7 @@ home = f'''<section class="hero"><div class="aurora" aria-hidden="true"><i></i><
 <p class="eyebrow"><span class="live"></span>Registro ESMA · actualizado {esc(fmt(M["date"]))}</p>
 <h1>¿Tu exchange está <span class="grad">autorizado</span> en España?</h1>
 <p class="lede">Comprueba en segundos si una plataforma cripto tiene licencia MiCA, quién está detrás y si puede operar legalmente aquí.</p>
-<form class="search" id="buscar" role="search" action="index.html" method="get"><div class="s-box"><span class="s-ic">{ICON["search"]}</span>
+<form class="search" id="buscar" role="search" action="./" method="get"><div class="s-box"><span class="s-ic">{ICON["search"]}</span>
 <label class="sr" for="q">Buscar marca o sociedad</label>
 <input id="q" name="q" type="search" maxlength="60" autocomplete="off" spellcheck="false" placeholder="Coinbase, Bit2Me, Binance, Revolut…" role="combobox" aria-expanded="false" aria-controls="ac" aria-autocomplete="list" aria-describedby="rcount">
 <kbd class="k">/</kbd></div><ul id="ac" class="ac" role="listbox" aria-label="Sugerencias" hidden></ul></form>
@@ -239,6 +251,7 @@ home = f'''<section class="hero"><div class="aurora" aria-hidden="true"><i></i><
 <section class="sec"><div class="sec-h"><div><span class="kick">Lo más buscado</span><h2>Marcas populares</h2><p class="muted">Estado de cada marca en el registro MiCA de ESMA a {esc(fmt(M["date"]))}.</p></div><a href="marcas.html">Ver las {len(B)} marcas →</a></div><div class="grid">{"".join(bcard(b) for b in popular)}</div></section>
 {chg_teaser()}
 {ret_block()}
+<section class="sec"><div class="sec-h"><div><span class="kick">Por país</span><h2>Proveedores por país de origen</h2><p class="muted">Una autorización MiCA vale en toda la UE/EEE; para operar en España el proveedor tiene que notificarlo.</p></div><a href="proveedores.html">Lista completa →</a></div>{cgrid()}</section>
 <section class="sec how"><div class="sec-h"><div><span class="kick">Guía rápida</span><h2>Qué significa cada etiqueta</h2></div></div><div class="grid3">
 <div class="card"><span class="ic lic">{ICON["shield"]}</span><h3>Licencia MiCA completa</h3><p>Autorización como proveedor de servicios de criptoactivos (CASP) concedida por un supervisor de la UE/EEE. Si ESMA no publica la base legal y la deducimos, se marca como «inferida».</p><p><span class="pill lic">Licencia MiCA completa<em>Art. 59</em></span></p></div>
 <div class="card"><span class="ic ntf">{ICON["bank"]}</span><h3>Notificación de entidad financiera</h3><p>Bancos, empresas de inversión y gestoras ya supervisados que notifican servicios cripto sin licencia CASP aparte.</p><p><span class="pill ntf">Notificación de entidad financiera<em>Art. 60</em></span></p></div>
@@ -277,13 +290,52 @@ def weblinks(e):
     return f'<span class="wl">{h}</span>' if h else "—"
 def ecard(e, up="../"):
     return f'<a class="bc" href="{up}p/{e["slug"]}.html">{elogo(e, "md", up)}<span class="bc-t"><b>{esc(e["n"])}</b><small>{esc(C.get(e["h"], e["h"]))} · {esc(kind(e)[2])}</small>{stsmall(e)}</span></a>'
+# primera instantánea en la que apareció cada ficha (solo si consta un alta en el historial de cambios)
+FIRST = {}
+for _c in sorted(CH, key=lambda c: c["to"]):
+    for _x in _c["added"]:
+        if len(_x) > 3 and _x[3]: FIRST.setdefault(_x[3], _c["to"])
 def related_ents(e, n=6):
-    """Enlaces internos rastreables: otros proveedores activos del mismo país (primero los que pueden operar en España)."""
-    pool = [x for x in E if x is not e and x["h"] == e["h"] and x.get("active", True)]
-    pool.sort(key=lambda x: (not x["es"], x["n"].lower()))
-    if not pool: return ""
-    hs = C.get(e["h"], e["h"])
-    return f'<section class="sec"><div class="sec-h"><h2>Otros proveedores con sede en {esc(hs)}</h2><a href="../proveedores.html">Ver la lista completa →</a></div><div class="grid chg">{"".join(ecard(x) for x in pool[:n])}</div><p class="muted" style="margin-top:14px">¿Dudas sobre licencias, notificaciones o el periodo transitorio? Lee la <a href="../guia-mica.html">guía MiCA para España</a>.</p></section>'
+    """Enlaces internos rastreables: vecinos (por orden alfabético, en círculo) entre los proveedores del mismo país.
+    Así cada ficha recibe enlaces de otras fichas, no solo las primeras de la lista."""
+    pool = [x for x in BYH.get(e["h"], []) if x.get("active", True)]
+    if e in pool:
+        i = pool.index(e); m = len(pool) - 1; k = min(n, m)
+        seq = [pool[(i + d) % len(pool)] for d in range(1, k // 2 + k % 2 + 1)] + [pool[(i - d) % len(pool)] for d in range(1, k // 2 + 1)]
+        out = []
+        for x in seq:
+            if x is not e and x not in out: out.append(x)
+    else: out = pool[:n]
+    if not out: return ""
+    out.sort(key=lambda x: x["n"].lower())
+    hs = C.get(e["h"], e["h"]); st = hstats(e["h"])
+    return f'<section class="sec"><div class="sec-h"><h2>Otros proveedores con sede en {esc(hs)}</h2><a href="../pais/{cslug(e["h"])}.html">Ver los {st["act"]} de {esc(hs)} →</a></div><div class="grid chg">{"".join(ecard(x) for x in out)}</div><p class="muted" style="margin-top:14px">¿Dudas sobre licencias, notificaciones o el periodo transitorio? Lee la <a href="../guia-mica.html">guía MiCA para España</a> o consulta la <a href="../proveedores.html">lista completa de proveedores</a>.</p></section>'
+def lower1(x): return x[:1].lower() + x[1:]
+def resumen(e):
+    """Resumen en prosa generado solo con datos del registro (ESMA) y del historial propio: nada inventado."""
+    hs = C.get(e["h"], e["h"]); act = e.get("active", True); pend = e.get("pending"); st = hstats(e["h"])
+    via = {"art59": "con licencia MiCA completa (autorización CASP, Art. 59)", "art60": "por notificación como entidad financiera ya supervisada (Art. 60)"}.get(e["k"], "por una vía (licencia o notificación) que el registro no permite determinar")
+    fuente = "dato oficial del registro de ESMA" if e["conf"] == "oficial" else ("verificado manualmente" if e["conf"] == "verificado" else "clasificación inferida")
+    p = [f'<b>{esc(e["l"])}</b> es una sociedad con sede en {esc(hs)}, supervisada por {esc(e["a"])}. Figura en el registro MiCA de ESMA {via}; <a href="../metodologia.html">{fuente}</a>.']
+    if e.get("d") and not pend: p.append(f'Está en el registro de ESMA desde el {esc(fmt(e["d"]))}.')
+    sv = [lower1(SV[x]) for x in e["s"] if x in SV]
+    if sv: p.append(f'{"Tenía" if not act else "Tiene"} autorizado{"s" if len(sv) != 1 else ""} {len(sv)} de los 10 servicios de criptoactivos que define MiCA: {esc(", ".join(sv[:-1]) + (" y " if len(sv) > 1 else "") + sv[-1])}.')
+    others = [x for x in e["cs"] if x != e["h"]]
+    if not act: p.append(f'La autorización terminó el {esc(fmt(e["end"]))}: desde entonces no puede prestar estos servicios con ella, tampoco en España.')
+    elif pend: p.append(f'La autorización empieza a aplicarse el {esc(fmt(e["d"]))}; hasta entonces no puede operar con ella{", tampoco en España" if ("ES" in e["cs"] or e["h"] == "ES") else ""}.')
+    elif e["h"] == "ES": p.append(f'Al tener sede en España, puede prestar sus servicios a residentes en España{f" y ha notificado además {len(others)} país" + ("es" if len(others) != 1 else "") + " de la UE/EEE" if others else ""}.')
+    elif e.get("homeOnly") or not others: p.append(f'Según el registro, solo opera en su país de origen ({esc(hs)}): no ha notificado otros países de la UE/EEE, España incluida.')
+    elif "ES" in e["cs"]: p.append(f'Ha notificado {len(others)} países de la UE/EEE además de {esc(hs)}, entre ellos España: puede prestar sus servicios a residentes en España con el pasaporte europeo de MiCA, y su supervisor sigue siendo {esc(e["a"])}.')
+    else: p.append(f'Ha notificado {len(others)} país{"es" if len(others) != 1 else ""} de la UE/EEE además de {esc(hs)}, pero España no está entre ellos: no consta que pueda prestar servicios a residentes en España.')
+    hub = f'../pais/{cslug(e["h"])}.html'; npes = f'{st["es"]} de ellos {"puede" if st["es"] == 1 else "pueden"} operar en España'
+    if act and not pend and st["act"] == 1: p.append(f'Es el único <a href="{hub}">proveedor activo con sede en {esc(hs)}</a> en el registro.')
+    elif act and not pend: p.append(f'Es uno de los <a href="{hub}">{st["act"]} proveedores activos con sede en {esc(hs)}</a>; {npes}.')
+    else: p.append(f'Con sede en {esc(hs)} hay <a href="{hub}">{st["act"]} proveedor{"es" if st["act"] != 1 else ""} activo{"s" if st["act"] != 1 else ""}</a>; {npes}.')
+    if FIRST.get(e["slug"]): p.append(f'En nuestro seguimiento del registro apareció por primera vez en la instantánea del {esc(fmt(FIRST[e["slug"]]))} (ver <a href="../cambios.html">cambios</a>).')
+    lei = f' o su LEI <code>{esc(e["lei"])}</code>' if e.get("lei") else ""
+    cnmv = f' y en el <a href="{CNMV_URL}" {EXT}>listado de la CNMV</a>' if (e["es"] or e["h"] == "ES") else ""
+    chk = f'Para comprobarlo tú, busca «{esc(e["l"])}»{lei} en el <a href="{ESMA_URL}" {EXT}>registro MiCA de ESMA</a>{cnmv}.'
+    return f'<section class="card"><h2>En resumen</h2><p>{" ".join(p)}</p><p class="muted">{chk}</p></section>'
 def entld(e, title, desc):
     org = {"@type": "Organization", "name": e["n"], "legalName": e["l"]}
     if e.get("lei"): org["leiCode"] = e["lei"]
@@ -318,10 +370,11 @@ for e in E:
     if dup and len(title) <= 34: title = fit([title + ": ¿autorizado en España?", title + " · registro MiCA", title])
     srcu = safe_url(e.get("srcUrl"))
     ctyh = "Países notificados (antes de la retirada)" if not act else ("Solo en su país de origen" if e.get("homeOnly") else "Países donde puede operar")
-    body = f'''<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../index.html">Inicio</a><span>/</span><span>{esc(e["n"])}</span></nav>
+    body = f'''<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../">Inicio</a><span>/</span><a href="../pais/{cslug(e["h"])}.html">{esc(hs)}</a><span>/</span><span>{esc(e["n"])}</span></nav>
 <section class="phead card"{f' style="--brand:{bc}"' if bc else ""}>{elogo(e, "lg", "../", True)}<div><h1>{esc(e["n"])}</h1><p class="muted">{esc(e["l"])}{f' · marcas: {esc(", ".join(e["brands"]))}' if e["brands"] else ""}</p>
 <div class="pills">{esb(e)}{kb(e)}</div></div></section>
 {vd}
+{resumen(e)}
 <dl class="facts"><div><dt>País de origen</dt><dd>{esc(hs)}</dd></div><div><dt>{"Autorización hasta" if not act else ("Empieza el" if e.get("pending") else "En el registro desde")}</dt><dd>{esc(fmt(e["end"])) if not act else since}</dd></div><div><dt>Servicios MiCA</dt><dd>{len(e["s"])}</dd></div><div><dt>Países donde opera</dt><dd>{0 if not act else len(e["cs"])}</dd></div></dl>
 <section class="card"><h2>Tipo de habilitación</h2><p><span class="pill {c}">{t}<em>{a}</em></span> <span class="conf conf-{esc(e["conf"])}">{CONF.get(e["conf"], e["conf"])}</span></p><p>{esc(e["why"])}.</p><p class="muted">Fuente: {f'<a href="{esc(srcu)}" {EXT}>{esc(SRCN.get(e["src"], e["src"]))}</a>' if srcu else esc(SRCN.get(e["src"], e["src"]))}</p></section>
 <section class="card"><h2>Ficha del registro</h2><dl class="kv">
@@ -334,12 +387,15 @@ for e in E:
 {brandlinks(e)}
 {related_ents(e)}</div>'''
     desc = clip(f'{e["l"]} ({hs}). {meta_d} {t} ({a}). Registro ESMA a {fmt(M["date"])}.')
-    (S/"p"/f'{e["slug"]}.html').write_text(page(title, desc, body, 1, f'p/{e["slug"]}.html', [entld(e, title, desc), crumbs([("Inicio",""),("Proveedores","proveedores.html"),(e["n"],f'p/{e["slug"]}.html')])]))
+    (S/"p"/f'{e["slug"]}.html').write_text(page(title, desc, body, 1, f'p/{e["slug"]}.html', [entld(e, title, desc), crumbs([("Inicio",""),("Proveedores","proveedores.html"),(hs,f'pais/{cslug(e["h"])}.html'),(e["n"],f'p/{e["slug"]}.html')])]))
+def _ln(x): return re.sub(r"[^a-z0-9]+", "", unicodedata.normalize("NFKD", x or "").encode("ascii", "ignore").decode().lower())
 for g in GONE:
-    body = f'''<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../index.html">Inicio</a><span>/</span><span>{esc(g["n"])}</span></nav>
+    twin = next((x for x in E if _ln(x["l"]) == _ln(g["l"]) and x["h"] == g["h"]), None)
+    twinh = f'<section class="card"><h2>La sociedad sigue en el registro con otra entrada</h2><p>{esc(g["l"])} ({esc(C.get(g["h"], g["h"]))}) figura en el registro de ESMA en otra entrada con el mismo nombre de sociedad y país de origen. Su estado actual está en esa ficha:</p><div class="grid chg" style="margin-top:12px">{ecard(twin)}</div></section>' if twin else ""
+    body = f'''<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../">Inicio</a><span>/</span><a href="../cambios.html">Cambios</a><span>/</span><span>{esc(g["n"])}</span></nav>
 <section class="phead card">{tile({}, g["n"], "lg")}<div><h1>{esc(g["n"])}</h1><p class="muted">{esc(g["l"])}</p><div class="pills"><span class="pill no">{ICON["x"]}Ya no figura en el registro</span></div></div></section>
 {verdict("v-no", f'Ya no figura en el registro MiCA desde el {esc(fmt(g["removed"]))}', f'Aparecía en la instantánea del {esc(fmt(g["last"]))} y no en la del {esc(fmt(g["removed"]))}. Sin entrada en el registro no consta que pueda prestar servicios cripto bajo MiCA. Si crees que es un error, compruébalo en ESMA.')}
-<section class="card"><h2>Último dato conocido</h2><dl class="kv"><dt>Sociedad</dt><dd>{esc(g["l"])}</dd><dt>País de origen</dt><dd>{esc(C.get(g["h"], g["h"]))}</dd><dt>Supervisor</dt><dd>{esc(g["a"])}</dd><dt>LEI</dt><dd><code>{esc(g["lei"] or "—")}</code></dd></dl></section></div>'''
+<section class="card"><h2>Último dato conocido</h2><dl class="kv"><dt>Sociedad</dt><dd>{esc(g["l"])}</dd><dt>País de origen</dt><dd>{esc(C.get(g["h"], g["h"]))}</dd><dt>Supervisor</dt><dd>{esc(g["a"])}</dd><dt>LEI</dt><dd><code>{esc(g["lei"] or "—")}</code></dd></dl></section>{twinh}</div>'''
     (S/"p"/f'{g["slug"]}.html').write_text(page(fit([f'{g["n"]}: ya no figura en el registro MiCA', f'{g["n"]} · baja del registro MiCA']) if len(g["n"]) < 40 else g["n"][:38].rstrip() + "… · baja del registro", clip(f'{g["l"]} ya no figura en el registro MiCA de ESMA desde el {fmt(g["removed"])}.'), body, 1, f'p/{g["slug"]}.html', robots="noindex"))
 # ---- cambios
 def li(name, slug, extra=""):
@@ -569,7 +625,7 @@ for b in B:
     if ents:
         e0k = next((x for x in ents if x["es"]), ents[0]); pills += kb(e0k)
     entl = "".join(f'<a class="rc" href="../p/{x["slug"]}.html"><span class="rc-v {"ok" if x["es"] else "no"}" aria-hidden="true"></span>{elogo(x, "md", "../")}<div class="b"><h3>{esc(x["l"])}</h3><div class="sub">{esc(C.get(x["h"], x["h"]))} · {esc(x["a"])}</div><div class="pills">{esb(x)}{kb(x)}</div></div><span class="go" aria-hidden="true">→</span></a>' for x in ents)
-    body = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../index.html">Inicio</a><span>/</span><a href="../marcas.html">Marcas</a><span>/</span><span>{nm}</span></nav>
+    body = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../">Inicio</a><span>/</span><a href="../marcas.html">Marcas</a><span>/</span><span>{nm}</span></nav>
 <section class="phead card"{f' style="--brand:{bc}"' if bc else ""}>{blogo(b, "lg", "../", True)}<div><p class="eyebrow">{esc(CATN.get(b["cat"], b["cat"]))} · registro ESMA a {esc(dt)}{f' · revisado el <time datetime="{esc(edm["rev"])}">{esc(fmt(edm["rev"]))}</time>' if edm else ""}</p><h1>¿Está {nm} autorizado en España?</h1>
 <div class="pills">{pills}</div></div></section>
 {verdict(ver[0], ver[1], vtxt, (('<p class="muted" style="margin-top:.5em">'+esc(b["note"])+'</p>') if b["note"] else "") + warn)}
@@ -592,9 +648,9 @@ mi = f"""<div class="wrap"><header class="ph"><p class="eyebrow">{len(B)} marcas
 """ + "".join(f'<section class="sec" style="margin:34px 0"><div class="sec-h"><h2>{esc(CATN.get(k, k))} <span class="muted" style="font-weight:600;font-size:.7em">{len(v)}</span></h2></div><div class="grid">' + "".join(bcard(x) for x in sorted(v, key=lambda x: x["b"].lower())) + '</div></section>' for k, v in groups.items()) + newsletter() + "</div>"
 (S/"marcas.html").write_text(page("Exchanges cripto autorizados en España: lista MiCA", clip(f"Estado en el registro MiCA de {len(B)} exchanges, brókers, neobancos y apps cripto populares en España: quién puede operar y quién no. Datos ESMA a {fmt(M['date'])}."), mi, 0, "marcas.html", [crumbs([("Inicio",""),("Marcas","marcas.html")])], cur="marcas"))
 # ---- lista completa de proveedores (enlaces rastreables a todas las fichas activas y retiradas)
-def pli(e):
+def pli(e, up=""):
     c, t, a = kind(e)
-    return f'<li>{elogo(e, "xs")}<span><a href="p/{e["slug"]}.html">{esc(e["n"])}</a>{f" <small class=\"muted\">{esc(e["l"])}</small>" if e["l"] != e["n"] else ""}</span> <span class="pill {c} sm">{esc(a)}</span></li>'
+    return f'<li>{elogo(e, "xs", up)}<span><a href="{up}p/{e["slug"]}.html">{esc(e["n"])}</a>{f" <small class=\"muted\">{esc(e["l"])}</small>" if e["l"] != e["n"] else ""}</span> <span class="pill {c} sm">{esc(a)}</span></li>'
 def bycountry(L):
     g = {}
     for e in sorted(L, key=lambda x: x["n"].lower()): g.setdefault(C.get(e["h"], e["h"]), []).append(e)
@@ -603,11 +659,12 @@ ACT = [e for e in E if e.get("active", True) and not e.get("pending")]
 PEND = sorted([e for e in E if e.get("pending")], key=lambda x: (x["d"], x["n"].lower()))
 P_ES = [e for e in ACT if e["es"] and e["h"] == "ES"]; P_PASS = [e for e in ACT if e["es"] and e["h"] != "ES"]; P_NO = [e for e in ACT if not e["es"]]
 def pgroup(L, hid):
-    return "".join(f'<h3 id="{hid}-{slugify(k)}">{esc(k)} <span class="muted" style="font-weight:600">{len(v)}</span></h3><ul class="ent">{"".join(pli(x) for x in v)}</ul>' for k, v in bycountry(L))
-pv = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="index.html">Inicio</a><span>/</span><span>Proveedores</span></nav><header class="ph"><p class="eyebrow">Registro ESMA a {esc(fmt(M["date"]))} · {M["count"]} proveedores activos</p><h1>Lista de proveedores cripto autorizados en España</h1>
+    return "".join(f'<h3 id="{hid}-{slugify(k)}"><a href="pais/{slugify(k)}.html">{esc(k)}</a> <span class="muted" style="font-weight:600">{len(v)}</span></h3><ul class="ent">{"".join(pli(x) for x in v)}</ul>' for k, v in bycountry(L))
+pv = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="./">Inicio</a><span>/</span><span>Proveedores</span></nav><header class="ph"><p class="eyebrow">Registro ESMA a {esc(fmt(M["date"]))} · {M["count"]} proveedores activos</p><h1>Lista de proveedores cripto autorizados en España</h1>
 <p class="lede">Los {M["es"]} proveedores de servicios de criptoactivos (CASP) que, según el registro MiCA de ESMA, pueden operar en España: {len(P_ES)} con sede en España y {len(P_PASS)} autorizados en otro país de la UE/EEE con España notificada.</p>
 <p class="muted">Busca por el nombre de la sociedad, que es el que aparece en los términos legales de cada app. Si buscas por marca (Coinbase, Bit2Me, Revolut…), usa la <a href="marcas.html">lista de marcas</a>. Qué significa cada etiqueta: <a href="guia-mica.html">guía MiCA</a>.</p>
 <p class="pills"><a class="pill ok" href="#sede-espana">{ICON["check"]}Sede en España · {len(P_ES)}</a> <a class="pill ok" href="#pasaporte">{ICON["check"]}Con pasaporte a España · {len(P_PASS)}</a> <a class="pill no" href="#sin-espana">{ICON["minus"]}Sin España · {len(P_NO)}</a>{f' <a class="pill pend" href="#empiezan">{ICON["clock"]}Empiezan más adelante · {len(PEND)}</a>' if PEND else ""}{f' <a class="pill no" href="#retiradas">{ICON["x"]}Retiradas · {len(RET)}</a>' if RET else ""}</p></header>
+<section class="card"><h2>Por país de origen</h2><p class="muted">Todos los proveedores de cada país (activos, sin España, pendientes y retirados) con su supervisor.</p>{cgrid()}</section>
 <section class="card" id="sede-espana"><h2>Con sede en España <span class="n">{len(P_ES)}</span></h2><p class="muted">Autorizados o notificados ante la CNMV, su supervisor según el registro de ESMA.</p><ul class="ent">{"".join(pli(x) for x in sorted(P_ES, key=lambda x: x["n"].lower()))}</ul></section>
 <section class="card" id="pasaporte"><h2>Autorizados en otro país, con España notificada <span class="n">{len(P_PASS)}</span></h2><p class="muted">Una autorización MiCA vale en toda la UE/EEE; para operar en España el proveedor debe incluirla entre sus países notificados (pasaporte europeo). Agrupados por país de origen.</p>{pgroup(P_PASS, "pas")}</section>
 <section class="card" id="sin-espana"><h2>En el registro MiCA, pero sin España <span class="n">{len(P_NO)}</span></h2><p class="muted">Tienen autorización MiCA vigente, pero España no figura entre sus países: no consta que puedan prestar servicios a residentes en España.</p>{pgroup(P_NO, "sin")}</section>
@@ -617,6 +674,43 @@ pv = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href
 {newsletter()}</div>"""
 (S/"proveedores.html").write_text(page("Proveedores cripto autorizados en España: lista MiCA (CASP)", clip(f"Lista de los {M['es']} proveedores de criptoactivos (CASP) que pueden operar en España según el registro MiCA de ESMA: {len(P_ES)} con sede en España y {len(P_PASS)} con pasaporte. Datos a {fmt(M['date'])}."),
     pv, 0, "proveedores.html", [crumbs([("Inicio",""),("Proveedores","proveedores.html")])], cur="proveedores"))
+# ---- páginas por país de origen (hubs rastreables: portada → país → ficha)
+PAGES_REV = "2026-10-27"   # último cambio relevante de plantilla en fichas y países (resumen, enlaces): cuenta para lastmod
+def flm(e):
+    ds = [e.get("lu") or "", FIRST.get(e["slug"], ""), PAGES_REV] + [x for x in (e.get("d"), e.get("end")) if x and x <= _TD]
+    return max(ds)
+HUBLM = {}
+for h in HUBS:
+    L = BYH[h]; hs = C.get(h, h); st = hstats(h); cs_ = cslug(h)
+    A = [x for x in L if x["active"] and not x["pending"]]
+    ok_ = [x for x in A if x["es"]]; no_ = [x for x in A if not x["es"]]; pe_ = [x for x in L if x["pending"]]; rt_ = [x for x in L if not x["active"]]
+    sups = {}
+    for x in L: sups[x["a"]] = sups.get(x["a"], 0) + 1
+    suph = "".join(f'<dt>{esc(a)}</dt><dd>{n} en el registro</dd>' for a, n in sorted(sups.items(), key=lambda kv: -kv[1]))
+    if h == "ES": ctx = f'Los proveedores con sede en España pueden prestar servicios a residentes en España sin pasaporte. Según el registro de ESMA, su supervisor es {esc(" / ".join(sups))}. Conviene comprobarlo también en el <a href="{CNMV_URL}" {EXT}>listado de la CNMV</a>.'
+    else: ctx = f'Una autorización MiCA concedida en {esc(hs)} vale en toda la UE/EEE, pero para prestar servicios a residentes en España el proveedor debe incluir España entre sus países notificados (pasaporte europeo). Según el registro de ESMA, {st["es"]} de los {st["act"]} proveedores activos con sede en {esc(hs)} lo han hecho.'
+    ex = [t for n, t in [(st["inc"], f'{st["inc"]} con vía no determinada'), (st["pend"], f'{st["pend"]} autorizado{"s" if st["pend"] != 1 else ""} que empieza{"n" if st["pend"] != 1 else ""} más adelante'), (st["ret"], f'{st["ret"]} con la autorización retirada')] if n]
+    extra_p = f'<p class="muted">Además: {", ".join(ex[:-1]) + (" y " if len(ex) > 1 else "") + ex[-1]}.</p>' if ex else ""
+    def blk(title, L2, note="", extra=lambda x: ""):
+        if not L2: return ""
+        return f'<section class="card"><h2>{title} <span class="n">{len(L2)}</span></h2>{f"<p class=\"muted\">{note}</p>" if note else ""}<ul class="ent">{"".join(pli(x, "../").replace("</li>", extra(x) + "</li>") for x in L2)}</ul></section>'
+    body = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="../">Inicio</a><span>/</span><a href="../proveedores.html">Proveedores</a><span>/</span><span>{esc(hs)}</span></nav>
+<header class="ph"><p class="eyebrow">Registro ESMA a {esc(fmt(M["date"]))} · país de origen</p><h1>Proveedores cripto MiCA con sede en {esc(hs)}</h1>
+<p class="lede">{st["act"]} proveedor{"es" if st["act"] != 1 else ""} de servicios de criptoactivos con sede en {esc(hs)} figura{"n" if st["act"] != 1 else ""} como activo{"s" if st["act"] != 1 else ""} en el registro MiCA de ESMA; {st["es"]} {"puede" if st["es"] == 1 else "pueden"} operar en España.</p></header>
+<dl class="facts"><div><dt>Activos</dt><dd>{st["act"]}</dd></div><div><dt>Pueden operar en España</dt><dd>{st["es"]}</dd></div><div><dt>Licencia CASP (Art. 59)</dt><dd>{st["art59"]}</dd></div><div><dt>Notificación (Art. 60)</dt><dd>{st["art60"]}</dd></div></dl>
+<section class="card"><h2>Acceso a España</h2><p>{ctx}</p>{extra_p}</section>
+<section class="card"><h2>Supervisor{"es" if len(sups) != 1 else ""}</h2><dl class="kv">{suph}</dl><p class="muted">Autoridad nacional competente indicada en el registro de ESMA para cada proveedor.</p></section>
+{blk("Pueden operar en España", ok_, "Autorización vigente y España como país de origen o entre sus países notificados." if h != "ES" else "")}
+{blk("Sin España notificada", no_, "Autorización MiCA vigente, pero España no figura entre sus países: no consta que puedan prestar servicios a residentes en España.")}
+{blk("Autorizados que empiezan más adelante", pe_, "Fecha de inicio futura: hasta ese día no cuentan como activos ni pueden operar.", lambda x: f' <span class="pill pend sm">{ICON["clock"]}empieza el {esc(fmt(x["d"]))}</span>')}
+{blk("Autorizaciones retiradas", rt_, "Siguen en el archivo de ESMA con fecha de fin: ya no pueden operar con esa autorización.", lambda x: f' <span class="pill no sm">{ICON["x"]}desde el {esc(fmt(x["end"]))}</span>')}
+<section class="card"><h2>Otros países</h2>{cgrid("../")}</section>
+<p class="muted">Fuente: registro provisional MiCA de <a href="{ESMA_URL}" {EXT}>ESMA</a> (CASPS.csv), actualizado el {esc(fmt(M["date"]))}. Qué significa cada etiqueta: <a href="../guia-mica.html">guía MiCA</a> y <a href="../metodologia.html">metodología</a>.</p></div>"""
+    title = fit([f"Proveedores cripto MiCA en {hs}: acceso a España", f"Proveedores cripto MiCA en {hs}", f"Cripto MiCA · {hs}"])
+    desc = clip(f"Los {st['act']} proveedores de criptoactivos con sede en {hs} en el registro MiCA de ESMA: {st['es']} pueden operar en España. Supervisor, licencias y notificaciones. Datos a {fmt(M['date'])}.")
+    (S/"pais").mkdir(exist_ok=True)
+    (S/"pais"/f"{cs_}.html").write_text(page(title, desc, body, 1, f"pais/{cs_}.html", [crumbs([("Inicio",""),("Proveedores","proveedores.html"),(hs,f"pais/{cs_}.html")])]))
+    HUBLM[f"pais/{cs_}.html"] = max(flm(x) for x in L)
 # ---- guía MiCA (solo hechos verificados en fuentes oficiales citadas; revisada el GUIDE_REV)
 GUIDE_REV = "2026-10-17"
 CNMV_MICA = "https://www.cnmv.es/portal/mica/regulacion-criptoactivos?lang=es"
@@ -637,7 +731,7 @@ gl = [("CASP", "Proveedor de servicios de criptoactivos (crypto-asset service pr
       ("Registro de ESMA", "Registro provisional MiCA que publica la Autoridad Europea de Valores y Mercados (archivo CASPS.csv), con todos los proveedores autorizados o notificados en la UE/EEE."),
       ("Entidades no conformes", "Lista de ESMA (NCASP.csv) con entidades que prestan servicios cripto sin autorización, según los supervisores nacionales."),
       ("LEI", "Código identificador de entidad jurídica (20 caracteres). Es la forma más fiable de distinguir dos sociedades con nombres parecidos.")]
-gu = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="index.html">Inicio</a><span>/</span><span>Guía MiCA</span></nav><header class="ph"><p class="eyebrow">Guía · revisada el {esc(fmt(GUIDE_REV))} · datos ESMA a {esc(fmt(M["date"]))}</p><h1>Guía MiCA en España: licencia CASP, notificación y fin del periodo transitorio</h1>
+gu = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href="./">Inicio</a><span>/</span><span>Guía MiCA</span></nav><header class="ph"><p class="eyebrow">Guía · revisada el {esc(fmt(GUIDE_REV))} · datos ESMA a {esc(fmt(M["date"]))}</p><h1>Guía MiCA en España: licencia CASP, notificación y fin del periodo transitorio</h1>
 <p class="lede">Qué exige MiCA para ofrecer servicios cripto en España, qué significan «Art. 59» y «Art. 60» y cómo comprobar si tu exchange está autorizado.</p></header>
 <section class="card"><h2>En cifras</h2><dl class="kv"><dt>Pueden operar en España</dt><dd><a href="proveedores.html">{M["es"]} proveedores</a> ({len(P_ES)} con sede en España)</dd><dt>Proveedores MiCA activos en la UE/EEE</dt><dd>{M["count"]}</dd><dt>Con licencia CASP (Art. 59)</dt><dd>{M["k"]["art59"]}</dd><dt>Por notificación (Art. 60)</dt><dd>{M["k"]["art60"]}</dd><dt>Vía no determinada</dt><dd>{M["k"]["incierto"]}</dd></dl><p class="muted">Registro de ESMA a {esc(fmt(M["date"]))}. Cómo se clasifica cada proveedor: <a href="metodologia.html">metodología</a>.</p></section>
 {"".join(f'<section class="card"><h2>{esc(q)}</h2><p>{esc(a)}</p></section>' for q, a in GQ)}
@@ -654,8 +748,8 @@ for f in S.glob("*.txt"):
 if re.fullmatch(r"[0-9a-f]{32}", INK): (S/f"{INK}.txt").write_text(INK)
 # ---- 404 (rutas absolutas: funciona a cualquier profundidad)
 nf = f'''<div class="wrap narrow"><section class="nf card"><p class="nf-c" aria-hidden="true">404</p><h1>Esta página no existe</h1><p class="lede">Puede que la ficha haya cambiado de dirección o que la sociedad ya no figure en el registro. Busca la marca o la sociedad:</p>
-<form class="nf-s" action="{BPATH}index.html" method="get" role="search"><label class="sr" for="q404">Buscar marca o sociedad</label><input id="q404" name="q" type="search" maxlength="60" placeholder="Coinbase, Bit2Me, Binance…" autocomplete="off"><button class="btn" type="submit">Buscar</button></form>
-<p class="muted"><a href="{BPATH}index.html">Ir a la portada</a> · <a href="{BPATH}marcas.html">Ver todas las marcas</a> · <a href="{BPATH}cambios.html">Cambios recientes</a></p></section></div>'''
+<form class="nf-s" action="{BPATH}" method="get" role="search"><label class="sr" for="q404">Buscar marca o sociedad</label><input id="q404" name="q" type="search" maxlength="60" placeholder="Coinbase, Bit2Me, Binance…" autocomplete="off"><button class="btn" type="submit">Buscar</button></form>
+<p class="muted"><a href="{BPATH}">Ir a la portada</a> · <a href="{BPATH}marcas.html">Ver todas las marcas</a> · <a href="{BPATH}cambios.html">Cambios recientes</a></p></section></div>'''
 (S/"404.html").write_text(page("Página no encontrada · Registro MiCA", "La página que buscas no existe en Registro MiCA.", nf, 0, "404.html", up=BPATH, robots="noindex"))
 # ---- data for search (logo: [fichero, modo] o índice de paleta para el monograma)
 def lgref(info, name):
@@ -694,8 +788,16 @@ _cn = (R/"deploy/CNAME").read_text().strip() if (R/"deploy/CNAME").exists() else
 if _cn and urllib.parse.urlsplit(BASE).hostname == _cn: (S/"CNAME").write_text(_cn + "\n")
 elif (S/"CNAME").exists(): (S/"CNAME").unlink()
 (S/"robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
-urls = [("", "1.0", "daily", M["date"]), ("marcas.html", "0.9", "weekly", M["date"]), ("cambios.html", "0.8", "weekly", M["date"]), ("proveedores.html", "0.9", "weekly", M["date"]), ("guia-mica.html", "0.7", "monthly", max(GUIDE_REV, M["date"])), ("metodologia.html", "0.4", "monthly", M["date"]), ("aviso-legal.html", "0.1", "yearly", "2026-10-17"), ("privacidad.html", "0.1", "yearly", "2026-10-17")] \
-     + [(f'marca/{b["slug"]}.html', "0.8", "weekly", LASTMOD.get(f'marca/{b["slug"]}.html', M["date"])) for b in B] + [(f'p/{e["slug"]}.html', "0.6", "weekly", e.get("lu") or M["date"]) for e in E]
-(S/"sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "".join(f"<url><loc>{esc(BASE + u)}</loc><lastmod>{lm}</lastmod><changefreq>{f}</changefreq><priority>{pr}</priority></url>" for u, pr, f, lm in urls) + "</urlset>\n")
+# sitemaps: índice (sitemap.xml) con dos hijos para seguir la indexación por separado en Search Console.
+# lastmod = fecha real del último cambio de datos de cada página (ESMA «última actualización», inicio/fin ya alcanzados,
+# alta en nuestro historial) o del último cambio relevante de plantilla (PAGES_REV), nunca la fecha del build.
+MAIN = [("", "1.0", "daily", M["date"]), ("marcas.html", "0.9", "weekly", M["date"]), ("proveedores.html", "0.9", "weekly", M["date"]), ("cambios.html", "0.8", "weekly", M["date"]), ("guia-mica.html", "0.7", "monthly", max(GUIDE_REV, M["date"])), ("metodologia.html", "0.4", "monthly", M["date"]), ("aviso-legal.html", "0.1", "yearly", "2026-10-17"), ("privacidad.html", "0.1", "yearly", "2026-10-17")] \
+     + [(u, "0.8", "weekly", lm) for u, lm in sorted(HUBLM.items())] + [(f'marca/{b["slug"]}.html', "0.8", "weekly", LASTMOD.get(f'marca/{b["slug"]}.html', M["date"])) for b in B]
+FICHAS = [(f'p/{e["slug"]}.html', "0.6", "weekly", flm(e)) for e in sorted(E, key=lambda x: x["slug"])]
+def urlset(L): return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{esc(BASE + u)}</loc><lastmod>{lm}</lastmod><changefreq>{f}</changefreq><priority>{pr}</priority></url>\n" for u, pr, f, lm in L) + "</urlset>\n"
+SMAPS = [("sitemap-paginas.xml", MAIN), ("sitemap-fichas.xml", FICHAS)]
+for f in S.glob("sitemap*.xml"): f.unlink()
+for fn, L in SMAPS: (S/fn).write_text(urlset(L))
+(S/"sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<sitemap><loc>{esc(BASE + fn)}</loc><lastmod>{max(x[3] for x in L)}</lastmod></sitemap>\n" for fn, L in SMAPS) + "</sitemapindex>\n")
 nl = sum(1 for b in B if lgfile(linfo("brands", b["b"]))); ne = sum(1 for e in E if lgfile(linfo("ents", e["slug"])))
 print("site:", len(E), "fichas,", len(GONE), "bajas,", len(B), "marcas · logos:", nl, "marcas,", ne, "fichas · BASE", BASE)

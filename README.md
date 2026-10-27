@@ -53,6 +53,6 @@ Edita `data/config.json`:
 Haz push a `main`: el workflow regenera y publica.
 
 ## SEO
-- Páginas: portada, `marcas.html`, `proveedores.html` (lista completa con enlaces a todas las fichas), `guia-mica.html` (guía con fuentes oficiales; revisar `GUIDE_REV` en `scripts/build_site.py` si se edita), fichas `p/` y `marca/`. Todas en `sitemap.xml`; las bajas llevan `noindex`.
+- Páginas: portada, `marcas.html`, `proveedores.html` (lista completa con enlaces a todas las fichas), `guia-mica.html` (guía con fuentes oficiales; revisar `GUIDE_REV` en `scripts/build_site.py` si se edita), fichas `p/` y `marca/`, y una página por país de origen `pais/` (portada → país → ficha: toda ficha a ≤2 clics). `sitemap.xml` es un índice con `sitemap-paginas.xml` (portada, listas, países, marcas) y `sitemap-fichas.xml` (fichas); `lastmod` = último cambio real de datos o `PAGES_REV` (cambio relevante de plantilla), nunca la fecha del build. Las bajas llevan `noindex` y no van al sitemap. Los enlaces internos a la portada apuntan a `/`, nunca a `/index.html`.
 - IndexNow: la clave está en `data/config.json` (`indexNowKey`) y se publica en `https://registromica.es/<clave>.txt`. No se envía ningún aviso automáticamente. Para avisar a mano tras un cambio:
   `curl "https://api.indexnow.org/indexnow?url=https://registromica.es/&key=<clave>"`
