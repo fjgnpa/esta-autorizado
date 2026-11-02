@@ -1,6 +1,6 @@
 {
  "_ayuda": "Generado por scripts/logos.py. 'domains' es la caché por dominio (se reintenta a los 30 días si falló). 'overrides': {\"marca o slug\": null} para forzar monograma.",
- "updated": "2026-10-24",
+ "updated": "2026-11-02",
  "overrides": {},
  "brands": {
   "Coinbase": {
@@ -2837,6 +2837,56 @@
   },
   "volksbank-in-der-hohen-mark-eg": {
    "domain": "vb-hm.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
+  "raiffeisen-volksbank-ebersberg-eg": {
+   "domain": "rv-ebe.de",
+   "from": "registro ESMA (web)",
+   "logo": "rv-ebe-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#416e90",
+   "status": "ok"
+  },
+  "volksbank-raiffeisenbank-regensburg-schwandorf-eg": {
+   "domain": "vr-rs.de",
+   "from": "registro ESMA (web)",
+   "logo": "vr-rs-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#5880a4",
+   "status": "ok"
+  },
+  "raiffeisenbank-wittelsbacher-land-eg": {
+   "domain": "rb-wila.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
+  "raiffeisenbank-kirchweihtal-eg": {
+   "domain": "rb-kirchweihtal.de",
+   "from": "registro ESMA (web)",
+   "logo": "rb-kirchweihtal-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#577d9f",
+   "status": "ok"
+  },
+  "vr-bank-neuburg-rain-eg": {
+   "domain": "vr-neuburg-rain.de",
    "from": "registro ESMA (web)",
    "logo": null,
    "mode": null,
@@ -10970,6 +11020,27 @@
    "light": true,
    "lowres": false
   },
+  "rb-kirchweihtal.de": {
+   "domain": "rb-kirchweihtal.de",
+   "checked": "2026-11-02",
+   "home": "https://www.rb-kirchweihtal.de/startseite.html",
+   "ids": [
+    "Startseite - Raiffeisenbank Kirchweihtal eG",
+    "Startseite"
+   ],
+   "status": "ok",
+   "file": "rb-kirchweihtal-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/favicon-9",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#577d9f",
+   "light": true,
+   "lowres": false
+  },
   "rb-schwaben.de": {
    "domain": "rb-schwaben.de",
    "checked": "2026-10-17",
@@ -10990,6 +11061,17 @@
    "color": "#3a678e",
    "light": false,
    "lowres": false
+  },
+  "rb-wila.de": {
+   "domain": "rb-wila.de",
+   "checked": "2026-11-02",
+   "home": "https://www.rb-wila.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Raiffeisenbank Wittelsbacher Land eG - Raiffeisenbank Wittelsbacher Land eG",
+    "Füreinander da sein"
+   ],
+   "status": "monogram",
+   "why": "icon: InvalidURL; apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
   },
   "rbfalkenstein-woerth.de": {
    "domain": "rbfalkenstein-woerth.de",
@@ -11234,6 +11316,27 @@
    ],
    "mode": "full",
    "color": "#192d4d",
+   "light": true,
+   "lowres": false
+  },
+  "rv-ebe.de": {
+   "domain": "rv-ebe.de",
+   "checked": "2026-11-02",
+   "home": "https://www.rv-ebe.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Raiffeisen-Volksbank Ebersberg eG - Raiffeisen-Volksbank Ebersberg eG",
+    "Füreinander da sein"
+   ],
+   "status": "ok",
+   "file": "rv-ebe-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/markenzeichen%20Favicon%20144",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#416e90",
    "light": true,
    "lowres": false
   },
@@ -12815,6 +12918,38 @@
    ],
    "mode": "full",
    "color": "#577d9f",
+   "light": true,
+   "lowres": false
+  },
+  "vr-neuburg-rain.de": {
+   "domain": "vr-neuburg-rain.de",
+   "checked": "2026-11-02",
+   "home": "https://www.vr-neuburg-rain.de/startseite.html",
+   "ids": [
+    "Startseite",
+    "Startseite"
+   ],
+   "status": "monogram",
+   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
+  },
+  "vr-rs.de": {
+   "domain": "vr-rs.de",
+   "checked": "2026-11-02",
+   "home": "https://www.volksbank-raiffeisenbank-regensburg-schwandorf.de/privatkunden.html",
+   "ids": [
+    "Startseite - Volksbank Raiffeisenbank Regensburg-Schwandorf eG",
+    "Füreinander da sein"
+   ],
+   "status": "ok",
+   "file": "vr-rs-de.png",
+   "src": "google-s2",
+   "url": "https://www.google.com/s2/favicons?domain=vr-rs.de&sz=256",
+   "orig": [
+    256,
+    256
+   ],
+   "mode": "full",
+   "color": "#5880a4",
    "light": true,
    "lowres": false
   },
