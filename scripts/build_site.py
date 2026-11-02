@@ -164,6 +164,11 @@ def newsletter(up=""):
 <ul class="news-pts"><li>{ICON["check"]}Gratis</li><li>{ICON["check"]}Un correo a la semana</li><li>{ICON["check"]}Baja en un clic</li></ul></div>
 <div class="news-r"><a class="btn btn-lg" href="{esc(sub)}" target="_blank" rel="noopener noreferrer">Suscribirme gratis{ICON["ext"]}</a>
 <p class="news-legal">Se abre la página de suscripción de Beehiiv en una pestaña nueva: esta web no carga nada de Beehiiv ni recoge tu correo. Allí Beehiiv trata tu dirección como encargado del tratamiento. Más información en la <a href="{up}privacidad.html">política de privacidad</a>.</p></div></section>'''
+def newsbox():
+    """Recuadro compacto de suscripción (fichas y páginas por país)."""
+    sub = safe_url(CFG.get("beehiivSubscribeUrl"))
+    if not sub: return ""
+    return f'''<aside class="news news-sm card" aria-label="Newsletter"><span class="news-ic">{ICON["mail"]}</span><p><strong>¿Quieres saber cuándo cambia el registro?</strong> Te escribimos cuando ESMA publica altas y bajas. Gratis, sin publicidad.</p><a class="btn" href="{esc(sub)}" target="_blank" rel="noopener noreferrer" aria-label="Suscribirme (se abre en una pestaña nueva)">Suscribirme{ICON["ext"]}</a></aside>'''
 def slugify(x):
     x = unicodedata.normalize("NFKD", x).encode("ascii", "ignore").decode().lower()
     return re.sub(r"[^a-z0-9]+", "-", x).strip("-")
@@ -384,6 +389,7 @@ for e in E:
 <dt>Web</dt><dd>{weblinks(e)}</dd>{f'<dt>Comentarios ESMA</dt><dd>{esc(e["cm"])}</dd>' if e["cm"] else ""}<dt>Última actualización</dt><dd>{esc(fmt(e.get("lu")))}</dd></dl></section>
 <section class="card"><h2>Servicios MiCA {"que tenía autorizados" if not act else "autorizados"} <span class="n">{len(e["s"])}</span></h2><ul class="svc">{"".join(f'<li><b>{esc(s)}</b>{esc(SV.get(s, s))}</li>' for s in e["s"] if s in SV)}</ul></section>
 <section class="card"><h2>{ctyh} <span class="n">{len(e["cs"])}</span></h2><div class="cty">{cty}</div></section>
+{newsbox()}
 {brandlinks(e)}
 {related_ents(e)}</div>'''
     desc = clip(f'{e["l"]} ({hs}). {meta_d} {t} ({a}). Registro ESMA a {fmt(M["date"])}.')
@@ -704,6 +710,7 @@ for h in HUBS:
 {blk("Sin España notificada", no_, "Autorización MiCA vigente, pero España no figura entre sus países: no consta que puedan prestar servicios a residentes en España.")}
 {blk("Autorizados que empiezan más adelante", pe_, "Fecha de inicio futura: hasta ese día no cuentan como activos ni pueden operar.", lambda x: f' <span class="pill pend sm">{ICON["clock"]}empieza el {esc(fmt(x["d"]))}</span>')}
 {blk("Autorizaciones retiradas", rt_, "Siguen en el archivo de ESMA con fecha de fin: ya no pueden operar con esa autorización.", lambda x: f' <span class="pill no sm">{ICON["x"]}desde el {esc(fmt(x["end"]))}</span>')}
+{newsbox()}
 <section class="card"><h2>Otros países</h2>{cgrid("../")}</section>
 <p class="muted">Fuente: registro provisional MiCA de <a href="{ESMA_URL}" {EXT}>ESMA</a> (CASPS.csv), actualizado el {esc(fmt(M["date"]))}. Qué significa cada etiqueta: <a href="../guia-mica.html">guía MiCA</a> y <a href="../metodologia.html">metodología</a>.</p></div>"""
     title = fit([f"Proveedores cripto MiCA en {hs}: acceso a España", f"Proveedores cripto MiCA en {hs}", f"Cripto MiCA · {hs}"])

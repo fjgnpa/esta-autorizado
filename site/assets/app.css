@@ -283,3 +283,10 @@ html,body{overflow-x:clip}
 .cgrid .cg-t{display:flex;flex-direction:column;min-width:0}
 .cgrid .cg-t b{font-size:14.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cgrid .cg-t small{font-size:12.5px;color:var(--tx2)}
+.news-sm,.narrow .news-sm{grid-template-columns:auto minmax(0,1fr) auto;gap:18px;padding:20px 22px;margin:28px 0;border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh)}
+.news-sm::before{background:radial-gradient(360px 180px at 0% 0%,color-mix(in srgb,#34d399 16%,transparent),transparent 70%),radial-gradient(320px 160px at 100% 100%,color-mix(in srgb,#38bdf8 13%,transparent),transparent 70%)}
+.news-sm .news-ic{margin:0}
+.news-sm p{margin:0;font-size:15px;line-height:1.5;color:var(--tx2)}
+.news-sm p strong{display:block;margin-bottom:2px;font-size:16.5px;font-weight:720;color:var(--tx)}
+.news-sm .btn{width:auto;gap:8px;white-space:nowrap}
+@media (max-width:640px){.narrow .news-sm,.news-sm{grid-template-columns:auto minmax(0,1fr);padding:18px}.news-sm .news-ic{align-self:start}.news-sm .btn{grid-column:1/-1;width:100%;justify-content:center}}
