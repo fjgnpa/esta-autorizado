@@ -1,6 +1,6 @@
 {
  "_ayuda": "Generado por scripts/logos.py. 'domains' es la caché por dominio (se reintenta a los 30 días si falló). 'overrides': {\"marca o slug\": null} para forzar monograma.",
- "updated": "2026-11-05",
+ "updated": "2026-11-09",
  "overrides": {},
  "brands": {
   "Coinbase": {
@@ -2685,6 +2685,16 @@
    "color": "#577d9f",
    "status": "ok"
   },
+  "vr-bank-amberg-sulzbach-eg": {
+   "domain": "vr-as.de",
+   "from": "registro ESMA (web)",
+   "logo": "vr-as-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#577d9f",
+   "status": "ok"
+  },
   "raiffeisenbank-rehling-eg": {
    "domain": "raiba-rehling.de",
    "from": "registro ESMA (web)",
@@ -2887,6 +2897,26 @@
   },
   "vr-bank-neuburg-rain-eg": {
    "domain": "vr-neuburg-rain.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
+  "vr-bank-ostalb-eg": {
+   "domain": "vrbank-ostalb.de",
+   "from": "registro ESMA (web)",
+   "logo": "vrbank-ostalb-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#577d9f",
+   "status": "ok"
+  },
+  "capricorn-capital-gmbh-co-kg": {
+   "domain": "capricorn-capital.de",
    "from": "registro ESMA (web)",
    "logo": null,
    "mode": null,
@@ -4555,6 +4585,16 @@
    "color": null,
    "status": "sin dominio"
   },
+  "sparkasse-bank-malta-plc": {
+   "domain": "sbm.bank",
+   "from": "registro ESMA (web)",
+   "logo": "sbm-bank.png",
+   "mode": "pad",
+   "lowres": false,
+   "light": false,
+   "color": "#25408f",
+   "status": "ok"
+  },
   "moonpay-europe-b-v": {
    "domain": "moonpay.com",
    "from": "registro ESMA (web)",
@@ -5033,6 +5073,16 @@
    "lowres": false,
    "light": false,
    "color": "#5acd00",
+   "status": "ok"
+  },
+  "tatra-banka-a-s": {
+   "domain": "tatrabanka.sk",
+   "from": "registro ESMA (web)",
+   "logo": "tatrabanka-sk.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": null,
    "status": "ok"
   }
  },
@@ -6591,6 +6641,14 @@
    "color": "#5d5ca0",
    "light": false,
    "lowres": true
+  },
+  "capricorn-capital.de": {
+   "domain": "capricorn-capital.de",
+   "checked": "2026-11-09",
+   "home": null,
+   "ids": [],
+   "status": "monogram",
+   "why": "apple-touch-icon: URLError; favicon.ico: URLError; google-s2: HTTPError; duckduckgo: HTTPError"
   },
   "cc.com.mt": {
    "domain": "cc.com.mt",
@@ -11381,6 +11439,26 @@
    "light": false,
    "lowres": false
   },
+  "sbm.bank": {
+   "domain": "sbm.bank",
+   "checked": "2026-11-09",
+   "home": "https://sbm.bank/",
+   "ids": [
+    "Sparkasse Bank - Home Page"
+   ],
+   "status": "ok",
+   "file": "sbm-bank.png",
+   "src": "icon",
+   "url": "https://sbm.bank/Assets/img/favicon.ico",
+   "orig": [
+    92,
+    82
+   ],
+   "mode": "pad",
+   "color": "#25408f",
+   "light": false,
+   "lowres": false
+  },
   "sc.com": {
    "domain": "sc.com",
    "checked": "2026-10-17",
@@ -11943,6 +12021,24 @@
    ],
    "mode": "pad",
    "color": "#66cea2",
+   "light": false,
+   "lowres": false
+  },
+  "tatrabanka.sk": {
+   "domain": "tatrabanka.sk",
+   "checked": "2026-11-09",
+   "home": null,
+   "ids": [],
+   "status": "ok",
+   "file": "tatrabanka-sk.png",
+   "src": "google-s2",
+   "url": "https://www.google.com/s2/favicons?domain=tatrabanka.sk&sz=256",
+   "orig": [
+    180,
+    180
+   ],
+   "mode": "full",
+   "color": null,
    "light": false,
    "lowres": false
   },
@@ -12794,6 +12890,27 @@
    "light": true,
    "lowres": false
   },
+  "vr-as.de": {
+   "domain": "vr-as.de",
+   "checked": "2026-11-09",
+   "home": "https://www.vr-as.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer VR Bank Amberg-Sulzbach eG - VR Bank Amberg-Sulzbach eG",
+    "Füreinander da sein"
+   ],
+   "status": "ok",
+   "file": "vr-as-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/apple-touch-icon-144x144-4",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#577d9f",
+   "light": true,
+   "lowres": false
+  },
   "vr-bank-erding.de": {
    "domain": "vr-bank-erding.de",
    "checked": "2026-10-17",
@@ -13034,6 +13151,27 @@
    ],
    "mode": "full",
    "color": "#5b729a",
+   "light": true,
+   "lowres": false
+  },
+  "vrbank-ostalb.de": {
+   "domain": "vrbank-ostalb.de",
+   "checked": "2026-11-09",
+   "home": "https://www.vrbank-ostalb.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer VR-Bank Ostalb eG - VR-Bank Ostalb eG",
+    "Füreinander da sein"
+   ],
+   "status": "ok",
+   "file": "vrbank-ostalb-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/apple-touch-icon-144x144-2",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#577d9f",
    "light": true,
    "lowres": false
   },
