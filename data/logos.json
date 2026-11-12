@@ -1,6 +1,6 @@
 {
  "_ayuda": "Generado por scripts/logos.py. 'domains' es la caché por dominio (se reintenta a los 30 días si falló). 'overrides': {\"marca o slug\": null} para forzar monograma.",
- "updated": "2026-11-09",
+ "updated": "2026-11-12",
  "overrides": {},
  "brands": {
   "Coinbase": {
@@ -324,14 +324,14 @@
    "status": "ok"
   },
   "Robinhood": {
-   "domain": "robinhood.com",
-   "from": "registro ESMA (web de Robinhood Europe UAB)",
-   "logo": "robinhood-com.png",
-   "mode": "full",
-   "lowres": false,
-   "light": false,
-   "color": "#c2f200",
-   "status": "ok"
+   "domain": null,
+   "from": null,
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "sin dominio"
   },
   "Scalable Capital": {
    "domain": "scalable.capital",
@@ -1265,6 +1265,16 @@
    "color": null,
    "status": "monogram"
   },
+  "transak-gmbh": {
+   "domain": "eu.transak.com",
+   "from": "registro ESMA (web)",
+   "logo": "eu-transak-com.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": "#1c66dd",
+   "status": "ok"
+  },
   "kbc-bank-nv": {
    "domain": "kbc.com",
    "from": "registro ESMA (web)",
@@ -1583,6 +1593,16 @@
    "lowres": false,
    "light": false,
    "color": "#d00667",
+   "status": "ok"
+  },
+  "vsmarkets-ltd": {
+   "domain": "vsmarkets.com",
+   "from": "registro ESMA (web)",
+   "logo": "vsmarkets-com.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": null,
    "status": "ok"
   },
   "invity-finance-s-r-o": {
@@ -2925,6 +2945,56 @@
    "color": null,
    "status": "monogram"
   },
+  "raiffeisenbank-landshuter-land-eg": {
+   "domain": "rb-lala.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
+  "vr-bank-passau-eg": {
+   "domain": "vr-bank-passau.de",
+   "from": "registro ESMA (web)",
+   "logo": "vr-bank-passau-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#4d789c",
+   "status": "ok"
+  },
+  "volksbank-erft-eg": {
+   "domain": "volksbank-erft.de",
+   "from": "registro ESMA (web)",
+   "logo": "volksbank-erft-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#416f96",
+   "status": "ok"
+  },
+  "volksbank-ettlingen-eg": {
+   "domain": "volksbank-ettlingen.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
+  "raiffeisenbank-aresing-gerolsbach-eg": {
+   "domain": "rb-arge.de",
+   "from": "registro ESMA (web)",
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
+   "color": null,
+   "status": "monogram"
+  },
   "penning-financial-services-aps": {
    "domain": "penning.io",
    "from": "registro ESMA (web)",
@@ -3183,6 +3253,16 @@
    "lowres": false,
    "light": false,
    "color": "#e03762",
+   "status": "ok"
+  },
+  "abanca-corporacion-bancaria-s-a": {
+   "domain": "abanca.com",
+   "from": "registro ESMA (web)",
+   "logo": "abanca-com.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#7095dc",
    "status": "ok"
   },
   "coinmotion-oy": {
@@ -3695,6 +3775,16 @@
    "color": "#ec212a",
    "status": "ok"
   },
+  "tiwala-solutions-korltolt-felelssg-trsasg": {
+   "domain": "coincash.eu",
+   "from": "registro ESMA (web)",
+   "logo": "coincash-eu.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#ff8926",
+   "status": "ok"
+  },
   "payward-global-solutions-limited": {
    "domain": "kraken.com",
    "from": "registro ESMA (web)",
@@ -4076,14 +4166,14 @@
    "status": "ok"
   },
   "uab-micar-assets": {
-   "domain": "myriadcapital.lt",
+   "domain": "micarassets.com",
    "from": "registro ESMA (web)",
-   "logo": "myriadcapital-lt.png",
-   "mode": "pad",
-   "lowres": false,
-   "light": false,
+   "logo": null,
+   "mode": null,
+   "lowres": null,
+   "light": null,
    "color": null,
-   "status": "ok"
+   "status": "monogram"
   },
   "newrails-uab": {
    "domain": "newrails.xyz",
@@ -4103,6 +4193,16 @@
    "lowres": false,
    "light": false,
    "color": "#0f51b6",
+   "status": "ok"
+  },
+  "uab-drivewealth-europe": {
+   "domain": "drivewealth.com",
+   "from": "registro ESMA (web)",
+   "logo": "drivewealth-com.png",
+   "mode": "pad",
+   "lowres": false,
+   "light": false,
+   "color": "#fec308",
    "status": "ok"
   },
   "clearstream-banking-s-a": {
@@ -6860,6 +6960,28 @@
    "light": false,
    "lowres": false
   },
+  "coincash.eu": {
+   "domain": "coincash.eu",
+   "checked": "2026-11-12",
+   "home": "https://coincash.eu/",
+   "ids": [
+    "CoinCash | Bitcoin, made simple!",
+    "CoinCash",
+    "CoinCash | Bitcoin, made simple!"
+   ],
+   "status": "ok",
+   "file": "coincash-eu.png",
+   "src": "google-s2",
+   "url": "https://www.google.com/s2/favicons?domain=coincash.eu&sz=256",
+   "orig": [
+    213,
+    230
+   ],
+   "mode": "full",
+   "color": "#ff8926",
+   "light": true,
+   "lowres": false
+  },
   "coinero.cz": {
    "domain": "coinero.cz",
    "checked": "2026-10-17",
@@ -7730,6 +7852,28 @@
    "status": "monogram",
    "why": "icon: svg no apto; icon: diminuto (16x16); apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: icono genérico de CMS; duckduckgo: HTTPError"
   },
+  "drivewealth.com": {
+   "domain": "drivewealth.com",
+   "checked": "2026-11-12",
+   "home": "https://www.drivewealth.com/",
+   "ids": [
+    "DriveWealth - Infrastructure for Modern Investing",
+    "DriveWealth – Infrastructure for Modern Investing",
+    "DriveWealth - Infrastructure for Modern Investing"
+   ],
+   "status": "ok",
+   "file": "drivewealth-com.png",
+   "src": "manifest",
+   "url": "https://www.drivewealth.com/wp-content/uploads/fbrfg/android-chrome-256x256.png?v=1",
+   "orig": [
+    256,
+    256
+   ],
+   "mode": "pad",
+   "color": "#fec308",
+   "light": false,
+   "lowres": false
+  },
   "drpam.de": {
    "domain": "drpam.de",
    "checked": "2026-10-17",
@@ -7938,6 +8082,26 @@
    ],
    "mode": "pad",
    "color": null,
+   "light": false,
+   "lowres": false
+  },
+  "eu.transak.com": {
+   "domain": "eu.transak.com",
+   "checked": "2026-11-12",
+   "home": "https://eu.transak.com/access?from=%2F",
+   "ids": [
+    "Access | Transak"
+   ],
+   "status": "ok",
+   "file": "eu-transak-com.png",
+   "src": "icon",
+   "url": "https://transak.com/favicon-new.png",
+   "orig": [
+    768,
+    768
+   ],
+   "mode": "full",
+   "color": "#1c66dd",
    "light": false,
    "lowres": false
   },
@@ -9803,6 +9967,17 @@
    "light": false,
    "lowres": false
   },
+  "micarassets.com": {
+   "domain": "micarassets.com",
+   "checked": "2026-11-12",
+   "home": "https://micarassets.com/",
+   "ids": [
+    "Home",
+    "Home"
+   ],
+   "status": "monogram",
+   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: UnidentifiedImageError"
+  },
   "minos.global": {
    "domain": "minos.global",
    "checked": "2026-10-17",
@@ -9991,28 +10166,6 @@
    ],
    "mode": "full",
    "color": "#ffca42",
-   "light": false,
-   "lowres": false
-  },
-  "myriadcapital.lt": {
-   "domain": "myriadcapital.lt",
-   "checked": "2026-10-17",
-   "home": "https://myriadcapital.lt/",
-   "ids": [
-    "Investavimo platforma ir investicinė sąskaita | Myriad Capital",
-    "Myriad Capital",
-    "Investavimo platforma ir investicinė sąskaita | Myriad Capital"
-   ],
-   "status": "ok",
-   "file": "myriadcapital-lt.png",
-   "src": "icon",
-   "url": "https://myriadcapital.lt/wp-content/themes/myriad-capital/images/favicon.png",
-   "orig": [
-    512,
-    488
-   ],
-   "mode": "pad",
-   "color": null,
    "light": false,
    "lowres": false
   },
@@ -11018,6 +11171,17 @@
    "light": true,
    "lowres": false
   },
+  "rb-arge.de": {
+   "domain": "rb-arge.de",
+   "checked": "2026-11-12",
+   "home": "https://www.rb-arge.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Raiffeisenbank Aresing-Gerolsbach eG - Raiffeisenbank Aresing-Gerolsbach eG",
+    "Füreinander da sein"
+   ],
+   "status": "monogram",
+   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
+  },
   "rb-eifel.de": {
    "domain": "rb-eifel.de",
    "checked": "2026-10-24",
@@ -11098,6 +11262,17 @@
    "color": "#577d9f",
    "light": true,
    "lowres": false
+  },
+  "rb-lala.de": {
+   "domain": "rb-lala.de",
+   "checked": "2026-11-12",
+   "home": "https://www.rb-lala.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Raiffeisenbank Landshuter Land eG - Raiffeisenbank Landshuter Land eG",
+    "Füreinander da sein"
+   ],
+   "status": "monogram",
+   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
   },
   "rb-schwaben.de": {
    "domain": "rb-schwaben.de",
@@ -12816,6 +12991,38 @@
    "light": true,
    "lowres": false
   },
+  "volksbank-erft.de": {
+   "domain": "volksbank-erft.de",
+   "checked": "2026-11-12",
+   "home": "https://www.volksbank-erft.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Volksbank Erft eG - Volksbank Erft eG",
+    "Füreinander da sein"
+   ],
+   "status": "ok",
+   "file": "volksbank-erft-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/Volks-%20u.%20Raiba-Zeichen",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#416f96",
+   "light": true,
+   "lowres": false
+  },
+  "volksbank-ettlingen.de": {
+   "domain": "volksbank-ettlingen.de",
+   "checked": "2026-11-12",
+   "home": "https://www.volksbank-ettlingen.de/startseite.html",
+   "ids": [
+    "Startseite Ihrer Volksbank Ettlingen eG - Volksbank Ettlingen eG",
+    "Füreinander da sein"
+   ],
+   "status": "monogram",
+   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
+  },
   "volksbank-goeppingen.de": {
    "domain": "volksbank-goeppingen.de",
    "checked": "2026-10-17",
@@ -12942,6 +13149,27 @@
    "color": "#4e7095",
    "light": true,
    "lowres": true
+  },
+  "vr-bank-passau.de": {
+   "domain": "vr-bank-passau.de",
+   "checked": "2026-11-12",
+   "home": "https://www.vr-bank-passau.de/startseite.html",
+   "ids": [
+    "VR-Bank Passau eG - VR-Bank Passau eG",
+    "VR-Bank Passau eG – Regionale Bank mit persönlichem Service und maßgeschneiderten Lösungen"
+   ],
+   "status": "ok",
+   "file": "vr-bank-passau-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/Favicon%20neu",
+   "orig": [
+    512,
+    512
+   ],
+   "mode": "full",
+   "color": "#4d789c",
+   "light": true,
+   "lowres": false
   },
   "vr-bank-wuerzburg.de": {
    "domain": "vr-bank-wuerzburg.de",
@@ -13289,6 +13517,27 @@
    "mode": "full",
    "color": "#577d9f",
    "light": true,
+   "lowres": false
+  },
+  "vsmarkets.com": {
+   "domain": "vsmarkets.com",
+   "checked": "2026-11-12",
+   "home": "https://www.vsmarkets.com/",
+   "ids": [
+    "Innovative All-in-One Financial Brokerage | VS Markets",
+    "Innovative All-in-One Financial Brokerage | VS Markets"
+   ],
+   "status": "ok",
+   "file": "vsmarkets-com.png",
+   "src": "apple-touch-icon",
+   "url": "https://cdn.prod.website-files.com/68f89f939a31943e49dffbc5/68f89f939a31943e49dffc81_lg.png",
+   "orig": [
+    256,
+    256
+   ],
+   "mode": "full",
+   "color": null,
+   "light": false,
    "lowres": false
   },
   "vvrb.de": {
