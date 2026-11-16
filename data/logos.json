@@ -1,6 +1,6 @@
 {
  "_ayuda": "Generado por scripts/logos.py. 'domains' es la caché por dominio (se reintenta a los 30 días si falló). 'overrides': {\"marca o slug\": null} para forzar monograma.",
- "updated": "2026-11-12",
+ "updated": "2026-11-16",
  "overrides": {},
  "brands": {
   "Coinbase": {
@@ -856,12 +856,12 @@
   "Prosegur Crypto": {
    "domain": "prosegurcrypto.com",
    "from": "registro ESMA (web de PROSEGUR CUSTODIA DE ACTIVOS DIGITALES S.L.U.)",
-   "logo": null,
-   "mode": null,
-   "lowres": null,
-   "light": null,
-   "color": null,
-   "status": "monogram"
+   "logo": "prosegurcrypto-com.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": "#cbab00",
+   "status": "ok"
   },
   "Minos": {
    "domain": "minos.global",
@@ -1488,12 +1488,12 @@
   "ronin-em-ltd": {
    "domain": "em.ron.in",
    "from": "registro ESMA (web)",
-   "logo": null,
-   "mode": null,
-   "lowres": null,
-   "light": null,
-   "color": null,
-   "status": "monogram"
+   "logo": "em-ron-in.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": "#53535b",
+   "status": "ok"
   },
   "krypto-knight-ltd": {
    "domain": "krypto-knight.com",
@@ -2258,12 +2258,12 @@
   "vermgensbutler-gmbh": {
    "domain": "vermoegensbutler.de",
    "from": "registro ESMA (web)",
-   "logo": null,
-   "mode": null,
-   "lowres": null,
-   "light": null,
-   "color": null,
-   "status": "monogram"
+   "logo": "vermoegensbutler-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": "#318db3",
+   "status": "ok"
   },
   "volksbank-heiden-eg": {
    "domain": "vbheiden.de",
@@ -3208,12 +3208,12 @@
   "prosegur-custodia-de-activos-digitales-s-l-u": {
    "domain": "prosegurcrypto.com",
    "from": "registro ESMA (web)",
-   "logo": null,
-   "mode": null,
-   "lowres": null,
-   "light": null,
-   "color": null,
-   "status": "monogram"
+   "logo": "prosegurcrypto-com.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": "#cbab00",
+   "status": "ok"
   },
   "iqana-technologies-s-l": {
    "domain": "iqana.io",
@@ -3758,12 +3758,12 @@
   "in-kapital-limited-liability-company-for-trade-and-services": {
    "domain": "inkapital.hr",
    "from": "registro ESMA (web)",
-   "logo": null,
-   "mode": null,
-   "lowres": null,
-   "light": null,
-   "color": null,
-   "status": "monogram"
+   "logo": "inkapital-hr.png",
+   "mode": "full",
+   "lowres": false,
+   "light": false,
+   "color": "#f9970c",
+   "status": "ok"
   },
   "hrvatska-potanska-banka-d-d": {
    "domain": "hpb.hr",
@@ -5771,7 +5771,7 @@
   },
   "bcash.eu": {
    "domain": "bcash.eu",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://bcash.eu/",
    "ids": [
     "Bcash | Buy & Sell Cryptocurrencies at Bitcoin ATMs",
@@ -5866,7 +5866,7 @@
   },
   "bingx.eu": {
    "domain": "bingx.eu",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": null,
    "ids": [],
    "status": "monogram",
@@ -6084,7 +6084,7 @@
   },
   "bitkub.com": {
    "domain": "bitkub.com",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": null,
    "ids": [],
    "verified": false,
@@ -6365,7 +6365,7 @@
   },
   "bitwala.com": {
    "domain": "bitwala.com",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://bitwala.com/",
    "ids": [
     "Bitwala — Bitcoin Wallet & Visa Card",
@@ -6503,7 +6503,7 @@
   },
   "bpifrance.fr": {
    "domain": "bpifrance.fr",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.bpifrance.fr:443/",
    "ids": [
     "Bpifrance - Servir l'Avenir"
@@ -7567,7 +7567,7 @@
   },
   "cryptovoucher.io": {
    "domain": "cryptovoucher.io",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://cryptovoucher.io/",
    "ids": [
     "Crypto Voucher: Buy a Bitcoin Gift Card Online Instantly"
@@ -7844,7 +7844,7 @@
   },
   "donaucapital.de": {
    "domain": "donaucapital.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://donaucapital.de/",
    "ids": [
     "DonauCapital Wertpapier GmbH"
@@ -7963,13 +7963,23 @@
   },
   "em.ron.in": {
    "domain": "em.ron.in",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://em.ron.in/",
    "ids": [
     "Ronin EM - Crypto Service Provider"
    ],
-   "status": "monogram",
-   "why": "apple-touch-icon: HTTPError; icon: HTTPError; apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
+   "status": "ok",
+   "file": "em-ron-in.png",
+   "src": "apple-touch-icon",
+   "url": "https://em.ron.in/apple-touch-icon.png",
+   "orig": [
+    180,
+    180
+   ],
+   "mode": "full",
+   "color": "#53535b",
+   "light": false,
+   "lowres": false
   },
   "enum8.com": {
    "domain": "enum8.com",
@@ -8012,7 +8022,7 @@
   },
   "eu-banking.de": {
    "domain": "eu-banking.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.eu-banking.de/startseite.html",
    "ids": [
     "Startseite Ihrer Volksbank Euskirchen eG - Volksbank Euskirchen eG",
@@ -8107,13 +8117,13 @@
   },
   "euwax-ag.de": {
    "domain": "euwax-ag.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.euwax-ag.de/",
    "ids": [
     "Euwax AG :: Startseite"
    ],
    "status": "monogram",
-   "why": "icon: diminuto (16x16); apple-touch-icon: HTTPError; google-s2: HTTPError; duckduckgo: HTTPError"
+   "why": "icon: diminuto (16x16); apple-touch-icon: HTTPError; google-s2: HTTPError; duckduckgo: diminuto (16x16)"
   },
   "everest.org": {
    "domain": "everest.org",
@@ -8724,14 +8734,11 @@
   },
   "hal-privatbank.com": {
    "domain": "hal-privatbank.com",
-   "checked": "2026-10-17",
-   "home": "https://www.bethmann-hal.de/de/index.html",
-   "ids": [
-    "Bethmann HAL - die Privatbank für Vermögensverwaltung",
-    "Bethmann HAL - die Privatbank für Vermögensverwaltung"
-   ],
+   "checked": "2026-11-16",
+   "home": null,
+   "ids": [],
    "status": "monogram",
-   "why": "icon: diminuto (16x16); apple-touch-icon: html; favicon.ico: diminuto (16x16); google-s2: diminuto (16x16); duckduckgo: HTTPError"
+   "why": "apple-touch-icon: HTTPError; favicon.ico: HTTPError; google-s2: diminuto (16x16); duckduckgo: HTTPError"
   },
   "hannoversche-volksbank.de": {
    "domain": "hannoversche-volksbank.de",
@@ -9229,15 +9236,25 @@
   },
   "inkapital.hr": {
    "domain": "inkapital.hr",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.inkapital.hr/",
    "ids": [
     "Mjenjačnice kriptovaluta i novca - IN KAPITAL d.o.o. mjenjačnica Zagreb",
     "INKAPITAL",
     "Mjenjačnice kriptovaluta i novca - IN KAPITAL d.o.o. mjenjačnica Zagreb"
    ],
-   "status": "monogram",
-   "why": "icon: html; icon: html; apple-touch-icon: html; favicon.ico: html; google-s2: HTTPError; duckduckgo: HTTPError"
+   "status": "ok",
+   "file": "inkapital-hr.png",
+   "src": "icon",
+   "url": "https://www.inkapital.hr/wp-content/uploads/2026/11/bitcoin-45.png",
+   "orig": [
+    190,
+    190
+   ],
+   "mode": "full",
+   "color": "#f9970c",
+   "light": false,
+   "lowres": false
   },
   "interactivebrokers.ie": {
    "domain": "interactivebrokers.ie",
@@ -9263,7 +9280,7 @@
   },
   "inversis.com": {
    "domain": "inversis.com",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.inversis.com/index.html",
    "ids": [
     "Inversis"
@@ -9769,7 +9786,7 @@
   },
   "ls-tc.de": {
    "domain": "ls-tc.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.ls-tc.de/de/",
    "ids": [
     "Lang und Schwarz Tradecenter"
@@ -10387,7 +10404,7 @@
   },
   "noemon.tech": {
    "domain": "noemon.tech",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.noemon.tech/",
    "ids": [
     "Noemon Tech Ltd | CySEC-Regulated Crypto-Asset Service Provider"
@@ -10504,7 +10521,7 @@
   },
   "olmipay.com": {
    "domain": "olmipay.com",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://olmi.eu/",
    "ids": [
     "Olmi — Crypto and euro payments, one app for both. Coming soon."
@@ -11018,13 +11035,23 @@
   },
   "prosegurcrypto.com": {
    "domain": "prosegurcrypto.com",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.prosegurcrypto.com/",
    "ids": [
     "Custodia de criptoactivos para el mercado institucional | Prosegur Crypto"
    ],
-   "status": "monogram",
-   "why": "apple-touch-icon: diminuto (25x25); icon: diminuto (25x25); apple-touch-icon: diminuto (25x25); favicon.ico: diminuto (25x25); google-s2: diminuto (25x25); duckduckgo: HTTPError"
+   "status": "ok",
+   "file": "prosegurcrypto-com.png",
+   "src": "icon",
+   "url": "https://www.prosegurcrypto.com/favicon.png",
+   "orig": [
+    48,
+    48
+   ],
+   "mode": "full",
+   "color": "#cbab00",
+   "light": false,
+   "lowres": false
   },
   "push.co": {
    "domain": "push.co",
@@ -11308,7 +11335,7 @@
   },
   "rbfalkenstein-woerth.de": {
    "domain": "rbfalkenstein-woerth.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.rbfalkenstein-woerth.de/startseite.html",
    "ids": [
     "Startseite Ihrer Raiffeisenbank Falkenstein-Wörth eG - Raiffeisenbank Falkenstein-Wörth eG",
@@ -12014,14 +12041,14 @@
   },
   "stokr.io": {
    "domain": "stokr.io",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://stokr.io/",
    "ids": [
     "STOKR – The Future of Capital Markets. Today.",
     "STOKR – The Future of Capital Markets. Today."
    ],
    "status": "monogram",
-   "why": "manifest: diminuto (16x16); apple-touch-icon: HTTPError; google-s2: diminuto (16x16); duckduckgo: HTTPError"
+   "why": "manifest: diminuto (16x16); apple-touch-icon: HTTPError; google-s2: diminuto (16x16); duckduckgo: diminuto (16x16)"
   },
   "stonex.com": {
    "domain": "stonex.com",
@@ -12474,7 +12501,7 @@
   },
   "triabridge.com": {
    "domain": "triabridge.com",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://triabridge.com/",
    "ids": [
     "Tría Bridge — Reliable bridge to crypto assets"
@@ -12720,7 +12747,7 @@
   },
   "vb-sauerland.de": {
    "domain": "vb-sauerland.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.vb-sauerland.de/privatkunden.html",
    "ids": [
     "Produkte und Leistungen für Privatkundinnen und Privatkunden - Volksbank Sauerland eG",
@@ -12826,15 +12853,25 @@
   },
   "vermoegensbutler.de": {
    "domain": "vermoegensbutler.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.vermoegensbutler.de/",
    "ids": [
     "Vermögensbutler GmbH",
     "Vermögensbutler GmbH",
     "Vermögensbutler GmbH"
    ],
-   "status": "monogram",
-   "why": "icon: URLError; apple-touch-icon: HTTPError; favicon.ico: URLError; google-s2: diminuto (16x16); duckduckgo: diminuto (16x16)"
+   "status": "ok",
+   "file": "vermoegensbutler-de.png",
+   "src": "favicon.ico",
+   "url": "https://www.vermoegensbutler.de/favicon.ico",
+   "orig": [
+    80,
+    80
+   ],
+   "mode": "full",
+   "color": "#318db3",
+   "light": false,
+   "lowres": false
   },
   "virtu.com": {
    "domain": "virtu.com",
@@ -12901,7 +12938,7 @@
   },
   "voba-msw.de": {
    "domain": "voba-msw.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.voba-msw.de/startseite.html",
    "ids": [
     "Volksbank Mittlerer Schwarzwald eG - Volksbank Mittlerer Schwarzwald eG",
@@ -13025,11 +13062,11 @@
   },
   "volksbank-goeppingen.de": {
    "domain": "volksbank-goeppingen.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.volksbank-goeppingen.de/startseite.html",
    "ids": [
-    "Volksbank Göppingen eG - Volksbank Göppingen eG",
-    "Volksbank Göppingen eG"
+    "Startseite - Volksbank Göppingen eG",
+    "Startseite"
    ],
    "status": "monogram",
    "why": "icon: no cuadrado (196x134): suele ser un recorte del logotipo; apple-touch-icon: HTTPError; favicon.ico: no cuadrado (196x134): suele ser un recorte del logotipo; google-s2: no cuadrado (196x134): suele ser un recorte del logotipo; duckduckgo: no cuadrado (196x134): suele ser un recorte del logotipo"
@@ -13120,14 +13157,14 @@
   },
   "vr-bank-erding.de": {
    "domain": "vr-bank-erding.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.vr-bank-erding.de/startseite.html",
    "ids": [
     "Startseite Ihrer VR-Bank Erding eG - VR-Bank Erding eG",
     "Füreinander da sein"
    ],
    "status": "monogram",
-   "why": "icon: no cuadrado (60x41): suele ser un recorte del logotipo; apple-touch-icon: HTTPError; favicon.ico: no cuadrado (60x41): suele ser un recorte del logotipo; google-s2: no cuadrado (60x41): suele ser un recorte del logotipo; duckduckgo: no cuadrado (60x41): suele ser un recorte del logotipo"
+   "why": "icon: no cuadrado (60x41): suele ser un recorte del logotipo; apple-touch-icon: HTTPError; favicon.ico: no cuadrado (60x41): suele ser un recorte del logotipo; google-s2: no cuadrado (60x41): suele ser un recorte del logotipo; duckduckgo: HTTPError"
   },
   "vr-bank-muenchen-land.de": {
    "domain": "vr-bank-muenchen-land.de",
@@ -13173,7 +13210,7 @@
   },
   "vr-bank-wuerzburg.de": {
    "domain": "vr-bank-wuerzburg.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.vr-bank-wuerzburg.de/startseite.html",
    "ids": [
     "Startseite VR-Bank Würzburg - Die Zukunftsgenossenschaft",
@@ -13447,7 +13484,7 @@
   },
   "vrbankabd.de": {
    "domain": "vrbankabd.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.vrbankabd.de/startseite.html",
    "ids": [
     "Startseite Ihrer VR-Bank Alb-Blau-Donau eG - VR-Bank Alb-Blau-Donau eG",
@@ -13648,7 +13685,7 @@
   },
   "whitebit.eu": {
    "domain": "whitebit.eu",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://whitebit.eu/",
    "ids": [
     "WhiteBIT EU — Coming Soon"
@@ -13726,7 +13763,7 @@
   },
   "wsw-pm.de": {
    "domain": "wsw-pm.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.wsw-pm.de/",
    "ids": [
     "Vermögensverwaltung Berlin | wSw PortfolioManagement AG",
@@ -13734,11 +13771,11 @@
     "Vermögensverwaltung Berlin | wSw PortfolioManagement AG"
    ],
    "status": "monogram",
-   "why": "icon: diminuto (16x16); apple-touch-icon: HTTPError; favicon.ico: diminuto (16x16); google-s2: diminuto (16x16); duckduckgo: diminuto (16x16)"
+   "why": "icon: diminuto (16x16); apple-touch-icon: HTTPError; favicon.ico: diminuto (16x16); google-s2: diminuto (16x16); duckduckgo: HTTPError"
   },
   "wvb.de": {
    "domain": "wvb.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": "https://www.wvb.de/startseite.html",
    "ids": [
     "Startseite - Wiesbadener Volksbank eG",
@@ -13749,7 +13786,7 @@
   },
   "www-vrbank-obb-so.de": {
    "domain": "www-vrbank-obb-so.de",
-   "checked": "2026-10-17",
+   "checked": "2026-11-16",
    "home": null,
    "ids": [],
    "status": "monogram",
