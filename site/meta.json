@@ -1,13 +1,13 @@
 {
- "lastSuccessfulRefresh": "2026-11-16",
- "esmaFileDate": "2026-11-11",
+ "lastSuccessfulRefresh": "2026-11-19",
+ "esmaFileDate": "2026-11-18",
  "source": "ESMA CASPS.csv (oficial)",
- "active": 397,
- "startingLater": 5,
+ "active": 400,
+ "startingLater": 3,
  "withdrawn": 2,
  "canOperateInSpain": 216,
- "art59": 212,
- "art60": 179,
+ "art59": 213,
+ "art60": 181,
  "undetermined": 6,
- "built": "2026-11-16"
+ "built": "2026-11-19"
 }

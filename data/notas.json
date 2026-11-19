@@ -4,10 +4,26 @@
   "2026-10-22": {
    "title": "ESMA actualiza el registro: 9 altas y ninguna baja",
    "figures": [
-    ["Entradas en el registro", "375", "384"],
-    ["Operativos en la UE", "371", "377"],
-    ["Pueden operar en España", "208", "209"],
-    ["Autorizados, aún sin empezar", "2", "5"]
+    [
+     "Entradas en el registro",
+     "375",
+     "384"
+    ],
+    [
+     "Operativos en la UE",
+     "371",
+     "377"
+    ],
+    [
+     "Pueden operar en España",
+     "208",
+     "209"
+    ],
+    [
+     "Autorizados, aún sin empezar",
+     "2",
+     "5"
+    ]
    ],
    "p": [
     "El archivo CASPS.csv que ESMA publicó el 22/10/2026 añade 9 entradas y no retira ninguna: el registro pasa de 375 a 384 entradas. Las retiradas siguen siendo 2, las mismas que antes.",
@@ -16,6 +32,37 @@
     "Tres de ellos empiezan más adelante: Volksbank in der Hohen Mark eG el 30/10/2026, Volksbank in Ostwestfalen eG el 18/11/2026 y Volksbank Oberberg eG el 19/11/2026. Hasta esa fecha aparecen como «autorizado, empieza el…» y no cuentan como operativos. Con ellos, las autorizaciones pendientes de inicio pasan de 2 a 5."
    ],
    "foot": "Las cifras usan el criterio vigente desde el 24/10/2026, que no cuenta como operativas las autorizaciones con fecha de inicio futura. Con el criterio anterior, la web mostraba 373 operativos el 19/10; con ese criterio, hoy serían 382."
+  },
+  "2026-11-18": {
+   "title": "ESMA actualiza el registro: 2 altas y 1 baja",
+   "figures": [
+    [
+     "Entradas en el registro",
+     "404",
+     "405"
+    ],
+    [
+     "Operativos en la UE",
+     "397",
+     "400"
+    ],
+    [
+     "Pueden operar en España",
+     "216",
+     "216"
+    ],
+    [
+     "Autorizados, aún sin empezar",
+     "5",
+     "3"
+    ]
+   ],
+   "p": [
+    "Altas: [[uphold-digital-assets-europe-unipessoal-lda|Uphold Digital Assets Europe, Unipessoal Lda]] (Portugal, Banco de Portugal), que sí puede operar en España y cuya autorización figura con fecha 11/11/2026. ESMA no rellena su base legal, así que su clasificación como autorización CASP (Art. 59) es una inferencia nuestra, con confianza media. La otra alta es [[volksbank-magdeburg-eg|Volksbank Magdeburg eG]] (Alemania, BaFin), con base legal oficial Art. 60 y autorización fechada el 23/10/2026; no figura entre las entidades que pueden operar en España.",
+    "Baja: [[ilirika-borzno-posrednika-hia-d-d|ILIRIKA borzno posredniška hiša d.d.]] (Eslovenia, ATVP) ya no aparece en el archivo de ESMA; figuraba en la instantánea anterior y podía operar en España. Su ficha se conserva como baja.",
+    "Además, dos autorizaciones con inicio futuro pasan a operativas por llegar su fecha: [[volksbank-in-ostwestfalen-eg|Volksbank in Ostwestfalen eG]] (18/11/2026) y [[volksbank-oberberg-eg|Volksbank Oberberg eG]] (19/11/2026). Por eso los pendientes bajan de 5 a 3."
+   ],
+   "foot": "Las cifras usan el criterio vigente desde el 24/10/2026, que no cuenta como operativas las autorizaciones con fecha de inicio futura."
   }
  }
 }

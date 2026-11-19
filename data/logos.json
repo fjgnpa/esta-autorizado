@@ -1,6 +1,6 @@
 {
  "_ayuda": "Generado por scripts/logos.py. 'domains' es la caché por dominio (se reintenta a los 30 días si falló). 'overrides': {\"marca o slug\": null} para forzar monograma.",
- "updated": "2026-11-16",
+ "updated": "2026-11-19",
  "overrides": {},
  "brands": {
   "Coinbase": {
@@ -2995,6 +2995,16 @@
    "color": null,
    "status": "monogram"
   },
+  "volksbank-magdeburg-eg": {
+   "domain": "volksbank-magdeburg.de",
+   "from": "registro ESMA (web)",
+   "logo": "volksbank-magdeburg-de.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#577d9f",
+   "status": "ok"
+  },
   "penning-financial-services-aps": {
    "domain": "penning.io",
    "from": "registro ESMA (web)",
@@ -5055,14 +5065,14 @@
    "color": "#f48b1a",
    "status": "ok"
   },
-  "ilirika-borzno-posrednika-hia-d-d": {
-   "domain": "ilirika.si",
+  "uphold-digital-assets-europe-unipessoal-lda": {
+   "domain": "uphold.com",
    "from": "registro ESMA (web)",
-   "logo": "ilirika-si.png",
+   "logo": "uphold-com.png",
    "mode": "full",
    "lowres": false,
-   "light": true,
-   "color": "#36599c",
+   "light": false,
+   "color": "#50ce6d",
    "status": "ok"
   },
   "incrementum-poslovne-storitve-d-o-o": {
@@ -9170,27 +9180,6 @@
    "light": false,
    "lowres": false
   },
-  "ilirika.si": {
-   "domain": "ilirika.si",
-   "checked": "2026-10-17",
-   "home": "https://www.ilirika.si/",
-   "ids": [
-    "ILIRIKA — Sodobno vlaganje. Preizkušeno zaupanje.",
-    "ILIRIKA — Sodobno vlaganje. Preizkušeno zaupanje."
-   ],
-   "status": "ok",
-   "file": "ilirika-si.png",
-   "src": "apple-touch-icon",
-   "url": "https://framerusercontent.com/images/wRgSw3VqZ7INni9g6AOyURfswLw.jpg",
-   "orig": [
-    512,
-    512
-   ],
-   "mode": "full",
-   "color": "#36599c",
-   "light": true,
-   "lowres": false
-  },
   "incrementum.si": {
    "domain": "incrementum.si",
    "checked": "2026-10-17",
@@ -13070,6 +13059,27 @@
    ],
    "status": "monogram",
    "why": "icon: no cuadrado (196x134): suele ser un recorte del logotipo; apple-touch-icon: HTTPError; favicon.ico: no cuadrado (196x134): suele ser un recorte del logotipo; google-s2: no cuadrado (196x134): suele ser un recorte del logotipo; duckduckgo: no cuadrado (196x134): suele ser un recorte del logotipo"
+  },
+  "volksbank-magdeburg.de": {
+   "domain": "volksbank-magdeburg.de",
+   "checked": "2026-11-19",
+   "home": "https://www.volksbank-magdeburg.de/startseite.html",
+   "ids": [
+    "Startseite",
+    "Startseite"
+   ],
+   "status": "ok",
+   "file": "volksbank-magdeburg-de.png",
+   "src": "icon",
+   "url": "https://atruvia.scene7.com/is/image/atruvia/favicon-9",
+   "orig": [
+    144,
+    144
+   ],
+   "mode": "full",
+   "color": "#577d9f",
+   "light": true,
+   "lowres": false
   },
   "volksbank-niederrhein.de": {
    "domain": "volksbank-niederrhein.de",
