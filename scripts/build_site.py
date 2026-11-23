@@ -295,11 +295,40 @@ def weblinks(e):
     return f'<span class="wl">{h}</span>' if h else "—"
 def ecard(e, up="../"):
     return f'<a class="bc" href="{up}p/{e["slug"]}.html">{elogo(e, "md", up)}<span class="bc-t"><b>{esc(e["n"])}</b><small>{esc(C.get(e["h"], e["h"]))} · {esc(kind(e)[2])}</small>{stsmall(e)}</span></a>'
-# primera instantánea en la que apareció cada ficha (solo si consta un alta en el historial de cambios)
-FIRST = {}
-for _c in sorted(CH, key=lambda c: c["to"]):
-    for _x in _c["added"]:
-        if len(_x) > 3 and _x[3]: FIRST.setdefault(_x[3], _c["to"])
+# Primera aparición y reapariciones, a partir de las instantáneas (clave: LEI).
+# Una alta posterior no es la primera vez: si el LEI ya figuraba, salió y volvió,
+# la fecha correcta es la instantánea más antigua. No decimos «apareció por primera
+# vez» si ya estaba en la primera instantánea del archivo: entonces no vimos el alta real.
+# Un LEI con o sin el dígito de control (20 vs 19) cuenta como la misma entidad al
+# detectar ausencias, para no tratar un error de formato como baja y reaparición.
+def _keyof(x):
+    return (x.get("lei") or "").strip().upper() or "name:" + re.sub(r"\s+", " ", (x.get("legalName") or x.get("l") or "").replace("\xa0", " ")).strip().lower()
+def _related(a, b):
+    if a == b: return True
+    if not a or not b or a.startswith("name:") or b.startswith("name:"): return False
+    return min(len(a), len(b)) >= 18 and abs(len(a) - len(b)) == 1 and (a.startswith(b) or b.startswith(a))
+_snap_keys = []
+for _p in sorted((R/"data/snapshots").glob("*.json")):
+    _snap_keys.append((_p.stem, [_keyof(x) for x in json.loads(_p.read_text())["items"]]))
+_first_arch = _snap_keys[0][0] if _snap_keys else None
+FIRST, REAP = {}, {}
+for _e in E:
+    _k = _keyof({"lei": _e.get("lei"), "legalName": _e.get("l")})
+    _exact = [d for d, keys in _snap_keys if _k in keys]
+    _present = [d for d, keys in _snap_keys if any(_related(_k, o) for o in keys)]
+    if _exact and _exact[0] != _first_arch: FIRST[_e["slug"]] = _exact[0]
+    if not _present: continue
+    _pset, _all = set(_present), [d for d, _ in _snap_keys]
+    _i = _all.index(_present[0]); _gaps = []
+    while _i < len(_all):
+        if _all[_i] not in _pset:
+            _j = _i
+            while _j < len(_all) and _all[_j] not in _pset: _j += 1
+            if _j < len(_all): _gaps.append((_all[_i], _all[_j]))
+            _i = _j
+        else:
+            _i += 1
+    if _gaps: REAP[_e["slug"]] = _gaps
 def related_ents(e, n=6):
     """Enlaces internos rastreables: vecinos (por orden alfabético, en círculo) entre los proveedores del mismo país.
     Así cada ficha recibe enlaces de otras fichas, no solo las primeras de la lista."""
@@ -337,6 +366,10 @@ def resumen(e):
     elif act and not pend: p.append(f'Es uno de los <a href="{hub}">{st["act"]} proveedores activos con sede en {esc(hs)}</a>; {npes}.')
     else: p.append(f'Con sede en {esc(hs)} hay <a href="{hub}">{st["act"]} proveedor{"es" if st["act"] != 1 else ""} activo{"s" if st["act"] != 1 else ""}</a>; {npes}.')
     if FIRST.get(e["slug"]): p.append(f'En nuestro seguimiento del registro apareció por primera vez en la instantánea del {esc(fmt(FIRST[e["slug"]]))} (ver <a href="../cambios.html">cambios</a>).')
+    if REAP.get(e["slug"]):
+        _ss = [f'Dejó de figurar en el archivo del {esc(fmt(a))} y volvió a aparecer en el del {esc(fmt(b))}.' for a, b in REAP[e["slug"]]]
+        if not FIRST.get(e["slug"]): _ss[-1] = _ss[-1][:-1] + ' (ver <a href="../cambios.html">cambios</a>).'
+        p.extend(_ss)
     lei = f' o su LEI <code>{esc(e["lei"])}</code>' if e.get("lei") else ""
     cnmv = f' y en el <a href="{CNMV_URL}" {EXT}>listado de la CNMV</a>' if (e["es"] or e["h"] == "ES") else ""
     chk = f'Para comprobarlo tú, busca «{esc(e["l"])}»{lei} en el <a href="{ESMA_URL}" {EXT}>registro MiCA de ESMA</a>{cnmv}.'
@@ -684,6 +717,7 @@ pv = f"""<div class="wrap narrow"><nav class="crumbs" aria-label="Migas"><a href
 PAGES_REV = "2026-10-27"   # último cambio relevante de plantilla en fichas y países (resumen, enlaces): cuenta para lastmod
 def flm(e):
     ds = [e.get("lu") or "", FIRST.get(e["slug"], ""), PAGES_REV] + [x for x in (e.get("d"), e.get("end")) if x and x <= _TD]
+    if REAP.get(e["slug"]): ds.extend(b for _, b in REAP[e["slug"]])
     return max(ds)
 HUBLM = {}
 for h in HUBS:
