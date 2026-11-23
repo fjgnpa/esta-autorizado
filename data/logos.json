@@ -1,6 +1,6 @@
 {
  "_ayuda": "Generado por scripts/logos.py. 'domains' es la caché por dominio (se reintenta a los 30 días si falló). 'overrides': {\"marca o slug\": null} para forzar monograma.",
- "updated": "2026-11-19",
+ "updated": "2026-11-23",
  "overrides": {},
  "brands": {
   "Coinbase": {
@@ -5075,6 +5075,16 @@
    "color": "#50ce6d",
    "status": "ok"
   },
+  "ilirika-borzno-posrednika-hia-d-d": {
+   "domain": "ilirika.si",
+   "from": "registro ESMA (web)",
+   "logo": "ilirika-si.png",
+   "mode": "full",
+   "lowres": false,
+   "light": true,
+   "color": "#37599d",
+   "status": "ok"
+  },
   "incrementum-poslovne-storitve-d-o-o": {
    "domain": "incrementum.si",
    "from": "registro ESMA (web)",
@@ -9180,6 +9190,27 @@
    "light": false,
    "lowres": false
   },
+  "ilirika.si": {
+   "domain": "ilirika.si",
+   "checked": "2026-11-23",
+   "home": "https://www.ilirika.si/",
+   "ids": [
+    "ILIRIKA — Sodobno vlaganje. Preizkušeno zaupanje.",
+    "ILIRIKA — Sodobno vlaganje. Preizkušeno zaupanje."
+   ],
+   "status": "ok",
+   "file": "ilirika-si.png",
+   "src": "apple-touch-icon",
+   "url": "https://framerusercontent.com/images/wRgSw3VqZ7INni9g6AOyURfswLw.jpg",
+   "orig": [
+    512,
+    512
+   ],
+   "mode": "full",
+   "color": "#37599d",
+   "light": true,
+   "lowres": false
+  },
   "incrementum.si": {
    "domain": "incrementum.si",
    "checked": "2026-10-17",
@@ -12628,7 +12659,7 @@
   },
   "v-mn.de": {
    "domain": "v-mn.de",
-   "checked": "2026-10-24",
+   "checked": "2026-11-23",
    "home": "https://www.v-mn.de/startseite.html",
    "ids": [
     "Startseite - Volksbank Mittlerer Neckar eG",
@@ -12704,7 +12735,7 @@
   },
   "vb-hm.de": {
    "domain": "vb-hm.de",
-   "checked": "2026-10-24",
+   "checked": "2026-11-23",
    "home": "https://www.vb-hm.de/startseite.html",
    "ids": [
     "Startseite Ihrer Volksbank in der Hohen Mark eG - Volksbank in der Hohen Mark eG in Reken, Lembeck, Gemen und Rhade",
@@ -12768,7 +12799,7 @@
   },
   "vbidr.de": {
    "domain": "vbidr.de",
-   "checked": "2026-10-24",
+   "checked": "2026-11-23",
    "home": "https://www.vbidr.de/startseite.html",
    "ids": [
     "Startseite Ihrer Volksbank in der Region eG - Volksbank in der Region",

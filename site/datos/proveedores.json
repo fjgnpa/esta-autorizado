@@ -1,7 +1,7 @@
 {
 "fuente": "Fuente: ESMA, registro provisional MiCA (CASPS.csv), datos transformados por Registro MiCA. ESMA no respalda esta publicación. Histórico hasta 06/10/2026: CASP Tracker (CC BY 4.0). Condiciones: https://registromica.es/metodologia.html#licencia",
-"registroEsma": "2026-11-18",
-"comprobado": "2026-11-19",
+"registroEsma": "2026-11-20",
+"comprobado": "2026-11-23",
 "campos": [
 "slug",
 "nombre",
@@ -7488,6 +7488,25 @@
 "servicios": "a c d j",
 "en_registro_desde": "2026-11-11",
 "ficha": "https://registromica.es/p/uphold-digital-assets-europe-unipessoal-lda.html"
+},
+{
+"slug": "ilirika-borzno-posrednika-hia-d-d",
+"nombre": "Ilirika",
+"sociedad": "ILIRIKA borzno posredniška hiša d.d.",
+"lei": "529900OSVFQK3XISEQ85",
+"pais_origen": "SI",
+"supervisor": "Securities Market Agency (ATVP)",
+"activo": true,
+"inicio_pendiente": false,
+"fin_autorizacion": "",
+"puede_operar_en_espana": true,
+"via": "Art. 60",
+"base_legal_esma": "",
+"confianza": "media",
+"paises": "AT BE BG CY CZ DE DK EE EL ES FI FR HR HU IE IS IT LI LT LU LV MT NL NO PL PT RO SE SI SK",
+"servicios": "a e g i",
+"en_registro_desde": "2025-10-04",
+"ficha": "https://registromica.es/p/ilirika-borzno-posrednika-hia-d-d.html"
 },
 {
 "slug": "incrementum-poslovne-storitve-d-o-o",

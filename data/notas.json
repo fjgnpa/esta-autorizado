@@ -63,6 +63,36 @@
     "Además, dos autorizaciones con inicio futuro pasan a operativas por llegar su fecha: [[volksbank-in-ostwestfalen-eg|Volksbank in Ostwestfalen eG]] (18/11/2026) y [[volksbank-oberberg-eg|Volksbank Oberberg eG]] (19/11/2026). Por eso los pendientes bajan de 5 a 3."
    ],
    "foot": "Las cifras usan el criterio vigente desde el 24/10/2026, que no cuenta como operativas las autorizaciones con fecha de inicio futura."
+  },
+  "2026-11-20": {
+   "title": "ESMA actualiza el registro: reaparece ILIRIKA",
+   "figures": [
+    [
+     "Entradas en el registro",
+     "405",
+     "406"
+    ],
+    [
+     "Operativos en la UE",
+     "400",
+     "401"
+    ],
+    [
+     "Pueden operar en España",
+     "216",
+     "217"
+    ],
+    [
+     "Autorizados, aún sin empezar",
+     "3",
+     "3"
+    ]
+   ],
+   "p": [
+    "Alta: [[ilirika-borzno-posrednika-hia-d-d|ILIRIKA borzno posredniška hiša d.d.]] (Eslovenia, ATVP), que sí puede operar en España. Esta misma entidad dejó de figurar en el archivo de ESMA del 18/11/2026 y su ficha se conservó como baja. En el archivo del 20/11/2026 vuelve a aparecer, con el mismo LEI (529900OSVFQK3XISEQ85) y la misma fecha de autorización (4/10/2025). ESMA no rellena su base legal, así que su clasificación como notificación (Art. 60) es una inferencia nuestra, con confianza media.",
+    "No hay bajas en esta actualización. Los autorizados con fecha de inicio futura siguen siendo tres."
+   ],
+   "foot": "Las cifras usan el criterio vigente desde el 24/10/2026, que no cuenta como operativas las autorizaciones con fecha de inicio futura."
   }
  }
 }
